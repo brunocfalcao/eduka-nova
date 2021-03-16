@@ -1,0 +1,34 @@
+{
+    "name": "brunocfalcao/eduka-nova",
+    "description": "A Laravel Nova tool.",
+    "keywords": [
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1.0",
+        "ebess/advanced-nova-media-library": "^3.0",
+        "brunocfalcao/eduka-cube": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Eduka\\Nova\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Eduka\\Nova\\EdukaNovaServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
