@@ -7,7 +7,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.1.0|^8.0",
         "ebess/advanced-nova-media-library": "^3.0",
         "brunocfalcao/eduka-cube": "dev-master"
     },
