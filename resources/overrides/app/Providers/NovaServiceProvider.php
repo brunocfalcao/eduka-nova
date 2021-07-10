@@ -45,7 +45,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         Gate::define('viewNova', function ($user) {
             return in_array($user->email, [
-                Course::all()->first()->admin_email,
+                env('EDUKA_ADMIN_ADDRESS'),
             ]);
         });
     }
