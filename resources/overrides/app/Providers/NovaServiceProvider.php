@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Eduka\Cube\Models\Course;
 use Eduka\Nova\EdukaNova;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;

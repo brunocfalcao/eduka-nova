@@ -2,7 +2,6 @@
 
 namespace Eduka\Nova\Resources;
 
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Eduka\Abstracts\EdukaResource;
 use Eduka\Cube\Models\Course as CourseModel;
 use Illuminate\Http\Request;
@@ -33,7 +32,7 @@ class Course extends EdukaResource
      * @var array
      */
     public static $search = [
-        'name'
+        'name',
     ];
 
     /**
@@ -58,7 +57,7 @@ class Course extends EdukaResource
                     ->keyLabel('Tag')
                     ->valueLabel('Content')
                     ->disableAddingRows()
-                    ->disableDeletingRows()
+                    ->disableDeletingRows(),
         ];
     }
 
