@@ -4,9 +4,12 @@ namespace Eduka\Nova\Resources;
 
 use Eduka\Abstracts\EdukaResource;
 use Eduka\Cube\Models\Course as CourseModel;
+use Eduka\Nova\Services\MetaImageLogoAttachment;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Text;
 
@@ -53,11 +56,21 @@ class Course extends EdukaResource
 
             Boolean::make('Is Active?', 'is_active'),
 
-            KeyValue::make('Meta')
+            KeyValue::make('Meta Tags', 'meta_tags')
+                    ->help('Remaining meta tags are non-editable and system generated')
                     ->keyLabel('Tag')
                     ->valueLabel('Content')
                     ->disableAddingRows()
                     ->disableDeletingRows(),
+
+            Image::make('Meta Image', 'meta_image')
+                 ->store(new MetaImageLogoAttachment)
+                 ->help('Min resolution 1600px by 800px, and aspect ratio of 2:1')
+                 ->rules('dimensions:min_width=1600,min_height=800,ratio=2:1')
+                 ->prunable()
+                 ->nullable(),
+
+            Date::make('Launched at', 'launched_at')
         ];
     }
 
