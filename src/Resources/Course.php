@@ -70,7 +70,7 @@ class Course extends EdukaResource
                  ->prunable()
                  ->nullable(),
 
-            Date::make('Launched at', 'launched_at')
+            Date::make('Launched at', 'launched_at'),
         ];
     }
 
