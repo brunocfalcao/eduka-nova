@@ -8,7 +8,7 @@ use Eduka\Nova\Metrics\Subscriber\NewSubscribers;
 use Eduka\Nova\Metrics\Subscriber\SubscribersPerDay;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Datetime;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -66,7 +66,7 @@ class Subscriber extends EdukaResource
                 ->readonly()
                 ->onlyOnIndex(),
 
-            Datetime::make('Subscribed on', 'created_at')
+            DateTime::make('Subscribed on', 'created_at')
                 ->readonly()
                 ->onlyOnDetail(),
 
