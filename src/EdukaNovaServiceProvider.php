@@ -5,6 +5,7 @@ namespace Eduka\Nova;
 use Brunocfalcao\EdukaNova\Http\Middleware\Authorize;
 use Eduka\Nova\Resources\Chapter;
 use Eduka\Nova\Resources\Course;
+use Eduka\Nova\Resources\Domain;
 use Eduka\Nova\Resources\Subscriber;
 use Eduka\Nova\Resources\User;
 use Eduka\Nova\Resources\Video;
@@ -74,6 +75,7 @@ class EdukaNovaServiceProvider extends ServiceProvider
             User::class,
             Subscriber::class,
             Course::class,
+            Domain::class,
             Chapter::class,
             Video::class,
 

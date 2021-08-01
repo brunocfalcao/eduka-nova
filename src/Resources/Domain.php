@@ -3,25 +3,19 @@
 namespace Eduka\Nova\Resources;
 
 use Eduka\Abstracts\EdukaResource;
-use Eduka\Cube\Models\Course as CourseModel;
-use Eduka\Nova\Services\MetaImageLogoAttachment;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Text;
 
-class Course extends EdukaResource
+class Domain extends EdukaResource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = CourseModel::class;
+    public static $model = \Eduka\Cube\Models\Domain::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -49,35 +43,13 @@ class Course extends EdukaResource
     {
         return [
             ID::make()
-              ->onlyOnDetail(),
+              ->sortable(),
 
-            Text::make('Name', 'name')
+            Text::make('URL', 'name')
+                ->sortable()
                 ->rules('required'),
 
-            Text::make('Provider namespace', 'provider_namespace')
-                ->help('E.g.: MasteringNova\MasteringNovaServiceProvider::class')
-                ->rules('required'),
-
-            Boolean::make('Is Active?', 'is_active'),
-
-            KeyValue::make('Meta Tags', 'meta_tags')
-                    ->help('Remaining meta tags are non-editable and system generated')
-                    ->keyLabel('Tag')
-                    ->valueLabel('Content')
-                    ->disableAddingRows()
-                    ->disableDeletingRows()
-                    ->hideWhenCreating(),
-
-            Image::make('Meta Image', 'meta_image')
-                 ->store(new MetaImageLogoAttachment)
-                 ->help('Min resolution 1600px by 800px, and aspect ratio of 2:1')
-                 ->rules('dimensions:min_width=1600,min_height=800,ratio=2:1')
-                 ->prunable()
-                 ->nullable(),
-
-            Date::make('Launched at', 'launched_at'),
-
-            HasMany::make('Domains', 'domains', Domain::class),
+            BelongsTo::make('Course', 'course', Course::class),
         ];
     }
 

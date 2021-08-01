@@ -40,7 +40,7 @@
                 resourceName: 'courses'
             }
         }" class="text-white ml-8 no-underline dim">
-            Course
+            Courses
         </router-link>
     </li>
     <li class="leading-wide mb-4 text-sm">
@@ -51,6 +51,16 @@
             }
         }" class="text-white ml-8 no-underline dim">
             Chapters
+        </router-link>
+    </li>
+    <li class="leading-wide mb-4 text-sm">
+        <router-link :to="{
+            name: 'index',
+            params: {
+                resourceName: 'domains'
+            }
+        }" class="text-white ml-8 no-underline dim">
+            Domains
         </router-link>
     </li>
     <li class="leading-wide mb-4 text-sm">
