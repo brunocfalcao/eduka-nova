@@ -55,7 +55,7 @@ class Course extends EdukaResource
                 ->rules('required'),
 
             Text::make('Provider namespace', 'provider_namespace')
-                ->help('E.g.: MasteringNova\MasteringNovaServiceProvider::class')
+                ->help('E.g.: MasteringNova\MasteringNovaServiceProvider')
                 ->rules('required'),
 
             Boolean::make('Is Active?', 'is_active'),
