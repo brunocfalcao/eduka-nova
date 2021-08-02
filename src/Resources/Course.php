@@ -54,9 +54,28 @@ class Course extends EdukaResource
             Text::make('Name', 'name')
                 ->rules('required'),
 
+            Text::make('Postmark Token', 'postmark_token')
+                ->help('The postmark API token')
+                ->rules('required')
+                ->hideFromIndex(),
+
+            Text::make('Config name', 'config_name')
+                ->help('The php config filename when you publish your course assets config file. E.g.: "nova-advanced-ui"')
+                ->rules('required')
+                ->hideFromIndex(),
+
+            Text::make('Email name', 'from_name')
+                ->help('The email name alias used to send course emails')
+                ->rules('required'),
+
+            Text::make('Email address', 'from_email')
+                ->help('The email address used to send course emails')
+                ->rules('required'),
+
             Text::make('Provider namespace', 'provider_namespace')
                 ->help('E.g.: MasteringNova\MasteringNovaServiceProvider')
-                ->rules('required'),
+                ->rules('required')
+                ->hideFromIndex(),
 
             Boolean::make('Is Active?', 'is_active'),
 
