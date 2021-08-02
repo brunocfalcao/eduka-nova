@@ -51,13 +51,13 @@ class Course extends EdukaResource
             ID::make()
               ->onlyOnDetail(),
 
+            Text::make('Name', 'name')
+                ->rules('required'),
+
             Text::make('Canonical', 'canonical')
                 ->help('The unique canonical name. Used in some parts of the framework to directly query this course by the hardcoded canonical')
                 ->creationRules('required', 'unique:courses,canonical')
                 ->updateRules('required', 'unique:courses,canonical,{{resourceId}}'),
-
-            Text::make('Name', 'name')
-                ->rules('required'),
 
             Text::make('Postmark Token', 'postmark_token')
                 ->help('The postmark API token')
