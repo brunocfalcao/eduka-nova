@@ -8,8 +8,8 @@ use Eduka\Nova\Metrics\User\NewUsers;
 use Eduka\Nova\Metrics\User\UsersPerDay;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Datetime;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
@@ -62,11 +62,18 @@ class User extends EdukaResource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
 
-            Date::make('Registered on', 'created_at')
-                ->readonly()
-                ->onlyOnIndex(),
+            Boolean::make('Is admin?', 'is_admin')
+                   ->help('If admin then it can log in into Nova, and use Horizon'),
 
-            Datetime::make('Registered on', 'created_at')
+            DateTime::make('Registered on', 'created_at')
+                ->readonly()
+                ->onlyOnDetail(),
+
+            DateTime::make('Last update', 'updated_at')
+                ->readonly()
+                ->onlyOnDetail(),
+
+            DateTime::make('Email verified at', 'email_verified_at')
                 ->readonly()
                 ->onlyOnDetail(),
 
@@ -74,6 +81,10 @@ class User extends EdukaResource
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
+
+            Text::make('Remember Token', 'remember_token')
+                ->readonly()
+                ->onlyOnDetail(),
 
             BelongsTo::make('Subscriber', 'subscriber', Subscriber::class)
                      ->hideFromIndex()

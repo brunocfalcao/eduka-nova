@@ -3,11 +3,9 @@
 namespace Eduka\Nova\Resources;
 
 use Eduka\Abstracts\EdukaResource;
-use Eduka\Nova\Actions\Subscription\ResendSubscriptionEmail;
 use Eduka\Nova\Metrics\Subscriber\NewSubscribers;
 use Eduka\Nova\Metrics\Subscriber\SubscribersPerDay;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
@@ -54,6 +52,7 @@ class Subscriber extends EdukaResource
 
             Text::make('Name')
                 ->sortable()
+                ->hideFromIndex()
                 ->rules('required', 'max:255'),
 
             Text::make('Email')
@@ -62,7 +61,7 @@ class Subscriber extends EdukaResource
                 ->creationRules('unique:subscribers,email')
                 ->updateRules('unique:subscribers,email,{{resourceId}}'),
 
-            Date::make('Subscribed on', 'created_at')
+            DateTime::make('Subscribed on', 'created_at')
                 ->readonly()
                 ->onlyOnIndex(),
 
@@ -118,9 +117,6 @@ class Subscriber extends EdukaResource
      */
     public function actions(Request $request)
     {
-        return [
-            (new ResendSubscriptionEmail())->showOnTableRow()
-                                           ->withoutConfirmation(),
-        ];
+        return [];
     }
 }

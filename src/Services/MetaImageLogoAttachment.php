@@ -22,7 +22,7 @@ class MetaImageLogoAttachment
         $filename = $request->{$attribute}->getClientOriginalName();
 
         return [
-            'meta_image' => $request->{$attribute}->storePubliclyAs('/' . $model->canonical . '/meta', $filename, 'public'),
+            'meta_image' => $request->{$attribute}->storePubliclyAs('/'.$model->canonical.'/meta', $filename, 'public'),
         ];
     }
 }
