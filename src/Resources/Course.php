@@ -4,6 +4,7 @@ namespace Eduka\Nova\Resources;
 
 use Eduka\Abstracts\EdukaResource;
 use Eduka\Cube\Models\Course as CourseModel;
+use Eduka\Nova\Actions\CourseLaunch;
 use Eduka\Nova\Services\MetaImageLogoAttachment;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
@@ -146,6 +147,14 @@ class Course extends EdukaResource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+
+            (new CourseLaunch())->canSee(function ($request) {
+                if ($this->model()->launched_at == null) {
+                    return true;
+                }
+            })->showOnTableRow(),
+
+        ];
     }
 }
