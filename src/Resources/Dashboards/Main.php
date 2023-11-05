@@ -1,6 +1,6 @@
 <?php
 
-namespace Eduka\Nova\Nova\Dashboards;
+namespace Eduka\Nova\Resources\Dashboards;
 
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Dashboards\Main as Dashboard;

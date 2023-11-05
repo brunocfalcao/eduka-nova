@@ -1,6 +1,6 @@
 <?php
 
-namespace Eduka\Nova\Nova;
+namespace Eduka\Nova\Resources;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;

@@ -18,7 +18,7 @@
         "php": "^8.0",
         "brunocfalcao/eduka-abstracts": "dev-master",
         "illuminate/contracts": "^10.0",
-        "laravel/nova": "4.22.2"
+        "laravel/nova": "4.29.2"
     },
     "autoload": {
         "psr-4": {
@@ -39,11 +39,5 @@
     },
 
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": {
-        "nova": {
-            "type": "composer",
-            "url": "https://nova.laravel.com"
-        }
-    }
+    "prefer-stable": true
 }

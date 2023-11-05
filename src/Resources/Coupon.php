@@ -1,28 +1,29 @@
 <?php
 
-namespace Eduka\Nova\Nova;
+namespace Eduka\Nova\Resources;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Series extends Resource
+class Coupon extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
+     * @var class-string<\App\Coupon>
      */
-    public static $model = \Eduka\Cube\Models\Series::class;
+    public static $model = \Eduka\Cube\Models\Coupon::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'code';
 
     /**
      * The columns that should be searched.
@@ -30,8 +31,12 @@ class Series extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name'
+        'id', 'code',
     ];
+
+    public static function indexQuery(NovaRequest $request, $query) {
+        return $query->orderBy('country_iso_code');
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -44,11 +49,13 @@ class Series extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Name')->sortable(),
+            Text::make('Code')->sortable(),
 
-            BelongsTo::make('Course', 'courses', Course::class),
+            Number::make('Discount')->displayUsing(function($value, $coupon){
+                return sprintf('%s %s', $coupon->discount_amount, $coupon->is_flat_discount ? config('eduka.currency') : '%');
+            }),
 
-            Text::make('Details')->hideFromIndex(),
+            Select::make('Country', 'country_iso_code')->sortable(),
         ];
     }
 

@@ -2,6 +2,12 @@
 
 namespace Eduka\Nova;
 
+use Eduka\Nova\Resources\Coupon;
+use Eduka\Nova\Resources\Course;
+use Eduka\Nova\Resources\Domain;
+use Eduka\Nova\Resources\Series;
+use Eduka\Nova\Resources\User;
+use Eduka\Nova\Resources\Video;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
@@ -55,7 +61,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function dashboards()
     {
         return [
-            new \App\Nova\Dashboards\Main,
+            new \Eduka\Nova\Resources\Dashboards\Main,
         ];
     }
 
@@ -77,5 +83,19 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function register()
     {
         //
+    }
+
+    protected function resources()
+    {
+        Nova::resourcesIn(__DIR__.'/Resources');
+
+        Nova::resources([
+            User::class,
+            Course::class,
+            Domain::class,
+            Series::class,
+            Video::class,
+            Coupon::class,
+        ]);
     }
 }

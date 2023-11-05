@@ -1,22 +1,27 @@
 <?php
 
-namespace Eduka\Nova\Nova;
+namespace Eduka\Nova\Resources;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Stack;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\HasMany;
 
-class Video extends Resource
+class Course extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Video>
      */
-    public static $model = \Eduka\Cube\Models\Video::class;
+    public static $model = \Eduka\Cube\Models\Course::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -34,6 +39,10 @@ class Video extends Resource
         'id', 'name',
     ];
 
+    public static function indexQuery(NovaRequest $request, $query) {
+        return $query->withCount('users');
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -47,26 +56,34 @@ class Video extends Resource
 
             Text::make('Name')->sortable(),
 
-            Text::make('Vimeo', 'vimeo_id'),
 
-            Number::make('Duration')->displayUsing(function($value) {
-                if(! $value) {
-                    return '';
+            Stack::make('Admin', [
+                Text::make('Name','admin_name'),
+                Text::make('Email','admin_email'),
+            ]),
+            Boolean::make('Is Decommissioned'),
+
+            Boolean::make('Launched', 'launched_at')->displayUsing(function($launchedAt){
+                if (!$launchedAt) {
+                    return false;
                 }
 
-                if ($value < 60) {
-                    return $value . ' min';
-                }
+                $launchedAt = Carbon::parse($launchedAt);
 
-                $hours = (int) ($value / 60);
-                $mins = $value % 60;
-
-                return sprintf("%s hour %s mins",$hours, $mins);
+                return now()->gte($launchedAt);
             }),
 
-            Boolean::make('Is Visible')->sortable(),
-            Boolean::make('Is Active')->sortable(),
-            Boolean::make('Is Free')->sortable(),
+            Currency::make('Price', 'course_price')->currency(config('eduka.currency')),
+
+            HasMany::make('Domains','domains', Domain::class),
+
+            BelongsToMany::make('Users','users', User::class),
+
+            Number::make('Registered users', 'users_count')
+                ->onlyOnIndex()
+                ->sortable(),
+
+            Boolean::make('PPP Enabled', 'enable_purchase_power_parity'),
         ];
     }
 

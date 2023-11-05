@@ -1,29 +1,31 @@
 <?php
 
-namespace Eduka\Nova\Nova;
+namespace Eduka\Nova\Resources;
 
+use Eduka\Cube\Models\User as UserModel;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Coupon extends Resource
+class User extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Coupon>
+     * @var class-string<\App\User>
      */
-    public static $model = \Eduka\Cube\Models\Coupon::class;
+    public static $model = UserModel::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'code';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -31,12 +33,8 @@ class Coupon extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'code',
+        'id', 'name', 'email',
     ];
-
-    public static function indexQuery(NovaRequest $request, $query) {
-        return $query->orderBy('country_iso_code');
-    }
 
     /**
      * Get the fields displayed by the resource.
@@ -49,13 +47,22 @@ class Coupon extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Code')->sortable(),
+            Gravatar::make()->maxWidth(50),
 
-            Number::make('Discount')->displayUsing(function($value, $coupon){
-                return sprintf('%s %s', $coupon->discount_amount, $coupon->is_flat_discount ? config('eduka.currency') : '%');
-            }),
+            Text::make('Name')
+                ->sortable()
+                ->rules('required', 'max:255'),
 
-            Select::make('Country', 'country_iso_code')->sortable(),
+            Text::make('Email')
+                ->sortable()
+                ->rules('required', 'email', 'max:254')
+                ->creationRules('unique:users,email')
+                ->updateRules('unique:users,email,{{resourceId}}'),
+
+            Password::make('Password')
+                ->onlyOnForms()
+                ->creationRules('required', Rules\Password::defaults())
+                ->updateRules('nullable', Rules\Password::defaults()),
         ];
     }
 
