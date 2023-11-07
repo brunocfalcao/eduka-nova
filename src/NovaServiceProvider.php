@@ -2,15 +2,23 @@
 
 namespace Eduka\Nova;
 
+use Eduka\Nova\Resources\Chapter;
 use Eduka\Nova\Resources\Coupon;
 use Eduka\Nova\Resources\Course;
+use Eduka\Nova\Resources\Dashboards\Main;
 use Eduka\Nova\Resources\Domain;
+use Eduka\Nova\Resources\Order;
 use Eduka\Nova\Resources\Series;
 use Eduka\Nova\Resources\User;
 use Eduka\Nova\Resources\Video;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Menu\MenuItem;
+use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Illuminate\Support\Str;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -22,6 +30,40 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Nova::mainMenu(function(Request $request) {
+            return [
+                MenuSection::dashboard(Main::class)->icon('chart-bar'),
+
+                MenuSection::make('Students', [
+                    MenuItem::resource(User::class),
+                ])->icon('user'),
+
+                MenuSection::make('Learning', [
+                    MenuItem::resource(Course::class),
+                    MenuItem::resource(Series::class),
+                    MenuItem::resource(Chapter::class),
+                    MenuItem::resource(Video::class),
+                ])->icon('document-text'),
+
+
+                MenuSection::make('Store', [
+                    MenuItem::resource(Order::class),
+                    MenuItem::resource(Coupon::class),
+                ]),
+
+                MenuSection::make('Others', [
+                    MenuItem::resource(Domain::class),
+                ]),
+
+            ];
+        });
+
+        Field::macro('capitalizeFirst', function () {
+            return $this->displayUsing(function ($value) {
+                return Str::ucfirst($value);
+            });
+        });
     }
 
     /**
@@ -96,6 +138,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Series::class,
             Video::class,
             Coupon::class,
+            Chapter::class,
+            Order::class,
         ]);
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Eduka\Nova\Resources;
 
-use Eduka\Cube\Models\Chapter;
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
@@ -12,13 +10,13 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Series extends Resource
+class Chapter extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      */
-    public static $model = \Eduka\Cube\Models\Series::class;
+    public static $model = \Eduka\Cube\Models\Chapter::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -36,17 +34,6 @@ class Series extends Resource
         'id', 'name'
     ];
 
-
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query->withCount('videos');
-    }
-
-    public static function detailQuery(NovaRequest $request, $query)
-    {
-        return $query->withCount('videos');
-    }
-
     /**
      * Get the fields displayed by the resource.
      *
@@ -58,17 +45,26 @@ class Series extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Name')->sortable(),
+            Text::make('Name')
+                ->rules('required', 'max:200'),
 
+            Textarea::make('Details')
+                ->rules('nullable', 'max:1000'),
 
-            Textarea::make('Details')->hideFromIndex(),
-
-            Number::make('Number of videos', 'videos_count')
-                ->exceptOnForms()
+            Number::make('Index')
+                ->rules('required', 'numeric')
                 ->sortable(),
 
-            BelongsTo::make('Course', 'courses', Course::class),
 
+            BelongsTo::make('Course', 'course', Course::class),
+
+            BelongsToMany::make('Videos', 'videos', Video::class)
+                ->searchable()
+                ->fields(function ($request, $relatedModel) {
+                    return [
+                        Number::make('Index'),
+                    ];
+                }),
         ];
     }
 

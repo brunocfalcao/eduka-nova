@@ -2,7 +2,8 @@
 
 namespace Eduka\Nova\Resources;
 
-use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -49,8 +50,8 @@ class Video extends Resource
 
             Text::make('Vimeo', 'vimeo_id'),
 
-            Number::make('Duration')->displayUsing(function($value) {
-                if(! $value) {
+            Number::make('Duration')->displayUsing(function ($value) {
+                if (!$value) {
                     return '';
                 }
 
@@ -61,12 +62,21 @@ class Video extends Resource
                 $hours = (int) ($value / 60);
                 $mins = $value % 60;
 
-                return sprintf("%s hour %s mins",$hours, $mins);
+                return sprintf("%s hour %s mins", $hours, $mins);
             }),
 
             Boolean::make('Is Visible')->sortable(),
             Boolean::make('Is Active')->sortable(),
             Boolean::make('Is Free')->sortable(),
+
+            BelongsToMany::make('Chapters', 'chapters', Chapter::class)
+                ->fields(function ($request, $relatedModel) {
+                    return [
+                        Number::make('Index'),
+                    ];
+                })
+                ->searchable()
+                ->showCreateRelationButton(),
         ];
     }
 

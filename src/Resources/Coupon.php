@@ -2,7 +2,9 @@
 
 namespace Eduka\Nova\Resources;
 
-use Illuminate\Http\Request;
+use Eduka\Cube\Util\Country;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
@@ -34,7 +36,8 @@ class Coupon extends Resource
         'id', 'code',
     ];
 
-    public static function indexQuery(NovaRequest $request, $query) {
+    public static function indexQuery(NovaRequest $request, $query)
+    {
         return $query->orderBy('country_iso_code');
     }
 
@@ -49,14 +52,46 @@ class Coupon extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Code')->sortable(),
+            Text::make('Code')
+                ->rules('required', 'alpha_dash')
+                ->sortable(),
 
-            Number::make('Discount')->displayUsing(function($value, $coupon){
-                return sprintf('%s %s', $coupon->discount_amount, $coupon->is_flat_discount ? config('eduka.currency') : '%');
-            }),
+            Number::make('Discount', 'discount_amount')
+                ->displayUsing(function ($value, $coupon) {
+                    return sprintf('%s %s', $coupon->discount_amount, $coupon->is_flat_discount ? config('eduka.currency') : '%');
+                })
+                ->rules('required', 'numeric'),
 
-            Select::make('Country', 'country_iso_code')->sortable(),
+            Boolean::make('Flat discount', 'is_flat_discount')
+                ->rules('boolean')
+                ->hideFromIndex(),
+
+            Select::make('Country', 'country_iso_code')
+                ->options(Country::list()) // the country code should be UPPER case
+                ->rules('nullable', 'in:' . implode(',', array_keys(Country::list())))
+                ->sortable(),
+
+            Text::make('Ref', 'remote_reference_id')
+                ->hideFromIndex()
+                ->placeholder('Should be created automatically by the application when a new coupon is created on 3rd party payment provider')
+                ->help("Ref ('remote_reference_id' in the database is the id is provided by the 3rd party payment provider. If the coupon was already created in 3rd party (eg: lemon squeezy)"),
+
+            BelongsTo::make('Course', 'course', Course::class),
         ];
+    }
+
+    /**
+     * Handle any post-validation processing.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    protected static function afterValidation(NovaRequest $request, $validator)
+    {
+        if ((bool) $request->is_flat_discount === false && ((float) $request->discount_amount > 100 )) {
+            $validator->errors()->add('discount_amount', 'Creating a discount coupon with more than 100%.');
+        }
     }
 
     /**

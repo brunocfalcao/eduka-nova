@@ -2,18 +2,16 @@
 
 namespace Eduka\Nova\Resources;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Panel;
 
 class Course extends Resource
 {
@@ -39,8 +37,9 @@ class Course extends Resource
         'id', 'name',
     ];
 
-    public static function indexQuery(NovaRequest $request, $query) {
-        return $query->withCount('users');
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->withCount('users', 'chapters');
     }
 
     /**
@@ -54,36 +53,83 @@ class Course extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Name')->sortable(),
+            // form fields
+            Panel::make('Basic info', [
+                Text::make('Name')
+                    ->rules('required', 'max:250')
+                    ->sortable(),
 
+                Currency::make('Price', 'course_price')
+                    ->rules('required', 'numeric', 'min:0')
+                    ->currency(config('eduka.currency')),
 
-            Stack::make('Admin', [
-                Text::make('Name','admin_name'),
-                Text::make('Email','admin_email'),
+                DateTime::make('Launched', 'launched_at')
+                    ->rules('nullable', 'datetime'),
+
+                Boolean::make('Enable PPP', 'enable_purchase_power_parity')
+                    ->rules('boolean'),
+
+                Boolean::make('Dicommissioned', 'is_dicommissioned')
+                    ->rules('boolean'),
+
+                Text::make('Provider namespace')
+                    ->hideFromIndex()
+                    ->rules('required', 'max:250')
+
             ]),
-            Boolean::make('Is Decommissioned'),
 
-            Boolean::make('Launched', 'launched_at')->displayUsing(function($launchedAt){
-                if (!$launchedAt) {
-                    return false;
-                }
+            Panel::make('Educator', [
+                Text::make('Name', 'admin_name')
+                    ->rules('nullable', 'max:250'),
 
-                $launchedAt = Carbon::parse($launchedAt);
+                Text::make('Email', 'admin_email')
+                    ->rules('nullable', 'max:250', 'email'),
+            ]),
 
-                return now()->gte($launchedAt);
-            }),
+            Panel::make('Metadata & Social', [
+                Text::make('Title', 'meta_title')
+                    ->rules('nullable', 'max:250')
+                    ->hideFromIndex()
+                    ->sortable(),
 
-            Currency::make('Price', 'course_price')->currency(config('eduka.currency')),
+                Text::make('Description', 'meta_description')
+                    ->hideFromIndex()
+                    ->rules('nullable', 'max:250')
+                    ->sortable(),
 
-            HasMany::make('Domains','domains', Domain::class),
 
-            BelongsToMany::make('Users','users', User::class),
+                Text::make('Twitter handle', 'meta_twitter_handle')
+                    ->hideFromIndex()
+                    ->rules('nullable', 'max:250')
+                    ->sortable(),
+            ]),
+
+
+            Panel::make('Payment provider details', [
+                Text::make('Store ID', 'payment_provider_store_id')
+                    ->rules('nullable', 'string')
+                    ->hideFromIndex(),
+
+                Text::make('Product ID', 'payment_provider_product_id')
+                    ->placeholder('for lemon squeezy, it is the variant id')
+                    ->rules('nullable', 'string')
+                    ->hideFromIndex(),
+            ]),
+
+            // Relations
+            HasMany::make('Domains', 'domains', Domain::class),
+
+            HasMany::make('Chapters', 'chapters', Chapter::class),
+
+            BelongsToMany::make('Users', 'users', User::class),
 
             Number::make('Registered users', 'users_count')
                 ->onlyOnIndex()
                 ->sortable(),
 
-            Boolean::make('PPP Enabled', 'enable_purchase_power_parity'),
+            Number::make('Chapters', 'chapters_count')
+                ->onlyOnIndex()
+                ->sortable(),
         ];
     }
 

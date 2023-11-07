@@ -3,6 +3,7 @@
 namespace Eduka\Nova\Resources;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -43,6 +44,8 @@ class Domain extends Resource
             ID::make()->sortable(),
 
             Text::make('Suffix'),
+
+            BelongsTo::make('Course','course', Course::class),
         ];
     }
 

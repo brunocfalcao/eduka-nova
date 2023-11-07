@@ -2,6 +2,10 @@
 
 namespace Eduka\Nova\Resources\Dashboards;
 
+use Eduka\Nova\Resources\Metrics\OrdersCount;
+use Eduka\Nova\Resources\Metrics\OrdersTotal;
+use Eduka\Nova\Resources\Metrics\OrdersTotalToday;
+use Eduka\Nova\Resources\Metrics\UsersCount;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Dashboards\Main as Dashboard;
 
@@ -15,7 +19,15 @@ class Main extends Dashboard
     public function cards()
     {
         return [
-            new Help,
+            new UsersCount,
+            new OrdersTotal,
+            new OrdersCount,
+            new OrdersTotalToday,
         ];
+    }
+
+    public function name()
+    {
+        return 'Dashboard';
     }
 }
