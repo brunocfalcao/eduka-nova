@@ -9,6 +9,7 @@ use Eduka\Nova\Resources\Dashboards\Main;
 use Eduka\Nova\Resources\Domain;
 use Eduka\Nova\Resources\Order;
 use Eduka\Nova\Resources\Series;
+use Eduka\Nova\Resources\Subscriber;
 use Eduka\Nova\Resources\User;
 use Eduka\Nova\Resources\Video;
 use Illuminate\Http\Request;
@@ -54,6 +55,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuSection::make('Others', [
                     MenuItem::resource(Domain::class),
+                    MenuItem::resource(Subscriber::class),
                 ]),
 
             ];
@@ -140,6 +142,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Coupon::class,
             Chapter::class,
             Order::class,
+            Subscriber::class,
         ]);
     }
 }
