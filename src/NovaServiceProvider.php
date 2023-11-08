@@ -12,6 +12,7 @@ use Eduka\Nova\Resources\Series;
 use Eduka\Nova\Resources\Subscriber;
 use Eduka\Nova\Resources\User;
 use Eduka\Nova\Resources\Video;
+use Eduka\Nova\Resources\Visit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Fields\Field;
@@ -56,6 +57,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuSection::make('Others', [
                     MenuItem::resource(Domain::class),
                     MenuItem::resource(Subscriber::class),
+                    MenuItem::resource(Visit::class),
                 ]),
 
             ];
@@ -143,6 +145,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Chapter::class,
             Order::class,
             Subscriber::class,
+            Visit::class,
         ]);
     }
 }
