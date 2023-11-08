@@ -89,21 +89,17 @@ class Course extends Resource
             Panel::make('Metadata & Social', [
                 Text::make('Title', 'meta_title')
                     ->rules('nullable', 'max:250')
-                    ->hideFromIndex()
-                    ->sortable(),
+                    ->hideFromIndex(),
 
                 Text::make('Description', 'meta_description')
                     ->hideFromIndex()
-                    ->rules('nullable', 'max:250')
-                    ->sortable(),
+                    ->rules('nullable', 'max:250'),
 
 
                 Text::make('Twitter handle', 'meta_twitter_handle')
                     ->hideFromIndex()
-                    ->rules('nullable', 'max:250')
-                    ->sortable(),
+                    ->rules('nullable', 'max:250'),
             ]),
-
 
             Panel::make('Payment provider details', [
                 Text::make('Store ID', 'payment_provider_store_id')

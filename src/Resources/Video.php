@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
 class Video extends Resource
 {
@@ -68,6 +69,21 @@ class Video extends Resource
             Boolean::make('Is Visible')->sortable(),
             Boolean::make('Is Active')->sortable(),
             Boolean::make('Is Free')->sortable(),
+
+            Panel::make('Metadata & Social', [
+                Text::make('Title', 'meta_title')
+                    ->rules('nullable', 'max:250')
+                    ->hideFromIndex(),
+
+                Text::make('Description', 'meta_description')
+                    ->hideFromIndex()
+                    ->rules('nullable', 'max:250'),
+
+
+                Text::make('Canonical URL', 'meta_canonical_url')
+                    ->hideFromIndex()
+                    ->rules('nullable', 'max:250', 'url'),
+            ]),
 
             BelongsToMany::make('Chapters', 'chapters', Chapter::class)
                 ->fields(function ($request, $relatedModel) {
