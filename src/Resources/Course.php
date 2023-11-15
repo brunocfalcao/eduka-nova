@@ -106,7 +106,7 @@ class Course extends Resource
                     ->rules('nullable', 'string')
                     ->hideFromIndex(),
 
-                Text::make('Product ID', 'payment_provider_product_id')
+                Text::make('Product ID', 'payment_provider_variant_id')
                     ->placeholder('for lemon squeezy, it is the variant id')
                     ->rules('nullable', 'string')
                     ->hideFromIndex(),
