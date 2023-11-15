@@ -1,43 +1,48 @@
 {
-    "name": "brunocfalcao/eduka-nova",
-    "description": "Mastering Nova - Laravel Nova official course",
-    "keywords": [
-        "brunocfalcao"
-    ],
-    "homepage": "https://github.com/brunocfalcao/eduka-nova",
-    "license": "MIT",
-    "type": "library",
-    "authors": [
-        {
-            "name": "Bruno Falcão",
-            "email": "bruno.c.falcao@brunofalcao.me",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": "^8.0",
-        "brunocfalcao/eduka-abstracts": "dev-master",
-        "illuminate/contracts": "^10.0",
-        "laravel/nova": "4.29.2"
-    },
-    "autoload": {
-        "psr-4": {
-            "Eduka\\Nova\\": "src/"
-        }
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-eduka-novas": true
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Eduka\\Nova\\NovaServiceProvider"
-            ]
-        }
-    },
-
-    "minimum-stability": "dev",
-    "prefer-stable": true
+  "name": "brunocfalcao/eduka-nova",
+  "description": "Mastering Nova - Laravel Nova official course",
+  "keywords": [
+    "brunocfalcao"
+  ],
+  "homepage": "https://github.com/brunocfalcao/eduka-nova",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Bruno Falcão",
+      "email": "bruno.c.falcao@brunofalcao.me",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "brunocfalcao/eduka-abstracts": "dev-master",
+    "illuminate/contracts": "^10.0",
+    "laravel/nova": "4.29.2",
+    "league/flysystem": "^3.19",
+    "gliterd/backblaze-b2": ">=1.5.0",
+    "psr/http-message-implementation": "*",
+    "mikey179/vfsstream": "*",
+    "league/flysystem-aws-s3-v3" : "*",
+    "vimeo/vimeo-api": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Eduka\\Nova\\": "src/"
+    }
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-eduka-novas": true
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Eduka\\Nova\\NovaServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

@@ -2,23 +2,22 @@
 
 namespace Eduka\Nova\Resources;
 
-use Eduka\Cube\Models\Chapter;
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
-class Series extends Resource
+class Tag extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      */
-    public static $model = \Eduka\Cube\Models\Series::class;
+    public static $model = \Eduka\Cube\Models\Tag::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -33,19 +32,9 @@ class Series extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name'
+        'id', 'name',
     ];
 
-
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query->withCount('videos');
-    }
-
-    public static function detailQuery(NovaRequest $request, $query)
-    {
-        return $query->withCount('videos');
-    }
 
     /**
      * Get the fields displayed by the resource.
@@ -58,19 +47,13 @@ class Series extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Name')->sortable(),
+            Text::make('Name')
+                ->sortable()
+                ->rules('required', 'max:100'),
 
+            BelongsTo::make('Course','course',Course::class),
 
-            Textarea::make('Details')->hideFromIndex(),
-
-            Number::make('Number of videos', 'videos_count')
-                ->exceptOnForms()
-                ->sortable(),
-
-            BelongsTo::make('Course', 'courses', Course::class),
-
-            BelongsToMany::make('Videos','videos', Video::class),
-
+            DateTime::make('Created at'),
         ];
     }
 

@@ -2,9 +2,11 @@
 
 namespace Eduka\Nova;
 
+use Eduka\Nova\Resources\Tag;
 use Eduka\Nova\Resources\Chapter;
 use Eduka\Nova\Resources\Coupon;
 use Eduka\Nova\Resources\Course;
+use Eduka\Nova\Resources\CustomLink;
 use Eduka\Nova\Resources\Dashboards\Main;
 use Eduka\Nova\Resources\Domain;
 use Eduka\Nova\Resources\Order;
@@ -55,9 +57,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ]),
 
                 MenuSection::make('Others', [
+                    MenuItem::resource(Tag::class),
+                    MenuItem::resource(CustomLink::class),
                     MenuItem::resource(Domain::class),
-                    MenuItem::resource(Subscriber::class),
                     MenuItem::resource(Visit::class),
+                    MenuItem::resource(Subscriber::class),
                 ]),
 
             ];
@@ -146,6 +150,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Order::class,
             Subscriber::class,
             Visit::class,
+            Tag::class,
+            CustomLink::class,
         ]);
     }
 }

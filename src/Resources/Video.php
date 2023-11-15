@@ -2,7 +2,13 @@
 
 namespace Eduka\Nova\Resources;
 
-use Laravel\Nova\Fields\BelongsTo;
+use Eduka\Nova\Resources\Actions\MakeActive;
+use Eduka\Nova\Resources\Actions\MakeFree;
+use Eduka\Nova\Resources\Actions\MakeInactive;
+use Eduka\Nova\Resources\Actions\MakeInvisible;
+use Eduka\Nova\Resources\Actions\MakePaid;
+use Eduka\Nova\Resources\Actions\MakeVisible;
+use Eduka\Nova\Resources\Actions\UploadVideo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
@@ -15,8 +21,6 @@ class Video extends Resource
 {
     /**
      * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Video>
      */
     public static $model = \Eduka\Cube\Models\Video::class;
 
@@ -137,6 +141,22 @@ class Video extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new UploadVideo)
+                ->showInline()
+                ->sole()
+                ->confirmText('Upload video file'),
+
+            (new MakeVisible)->showInline(),
+            (new MakeFree)->showInline(),
+            (new MakeActive)->showInline(),
+
+            (new MakeInvisible),
+            (new MakePaid),
+            (new MakeInactive),
+
+
+
+        ];
     }
 }
