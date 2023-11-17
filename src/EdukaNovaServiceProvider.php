@@ -2,22 +2,19 @@
 
 namespace Eduka\Nova;
 
-use Aws\S3\S3Client;
-use Eduka\Abstracts\Classes\EdukaServiceProvider;
-use Exception;
-use Illuminate\Support\Facades\Storage;
 use BackblazeB2\Client;
+use Eduka\Abstracts\Classes\EdukaServiceProvider;
 use Eduka\Nova\Backblaze\BackblazeAdapter;
-use League\Flysystem\Filesystem;
+use Exception;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\Filesystem;
 
 class EdukaNovaServiceProvider extends EdukaServiceProvider
 {
     public function boot()
     {
         parent::boot();
-
-       
 
         // Storage::extend('b2', function ($app, $config) {
         //     // check if all required configuration keys are given.

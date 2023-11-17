@@ -2,7 +2,6 @@
 
 namespace Eduka\Nova\Resources;
 
-use Eduka\Cube\Models\Chapter;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -16,7 +15,6 @@ class Series extends Resource
 {
     /**
      * The model the resource corresponds to.
-     *
      */
     public static $model = \Eduka\Cube\Models\Series::class;
 
@@ -33,9 +31,8 @@ class Series extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name'
+        'id', 'name',
     ];
-
 
     public static function indexQuery(NovaRequest $request, $query)
     {
@@ -50,7 +47,6 @@ class Series extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -60,7 +56,6 @@ class Series extends Resource
 
             Text::make('Name')->sortable(),
 
-
             Textarea::make('Details')->hideFromIndex(),
 
             Number::make('Number of videos', 'videos_count')
@@ -69,7 +64,7 @@ class Series extends Resource
 
             BelongsTo::make('Course', 'courses', Course::class),
 
-            BelongsToMany::make('Videos','videos', Video::class),
+            BelongsToMany::make('Videos', 'videos', Video::class),
 
         ];
     }
@@ -77,7 +72,6 @@ class Series extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -88,7 +82,6 @@ class Series extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -99,7 +92,6 @@ class Series extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -110,7 +102,6 @@ class Series extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

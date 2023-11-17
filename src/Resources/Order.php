@@ -2,29 +2,20 @@
 
 namespace Eduka\Nova\Resources;
 
-use Eduka\Cube\Models\Chapter;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Currency;
-use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\KeyValue;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Order extends Resource
 {
     /**
      * The model the resource corresponds to.
-     *
      */
     public static $model = \Eduka\Cube\Models\Order::class;
 
@@ -44,11 +35,9 @@ class Order extends Resource
         'id',
     ];
 
-
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -78,11 +67,10 @@ class Order extends Resource
             })->currency(config('eduka.currency'))
                 ->hideFromIndex(),
 
-
             DateTime::make('Datetime', 'created_at'),
 
             Boolean::make('Payment status', 'remote_reference_payment_status')
-            ->resolveUsing(function($remoteReferencePaymentStatus) {
+            ->resolveUsing(function ($remoteReferencePaymentStatus) {
                 return $remoteReferencePaymentStatus == 'paid';
             })
             ->onlyOnIndex(),
@@ -101,7 +89,6 @@ class Order extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -112,7 +99,6 @@ class Order extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -123,7 +109,6 @@ class Order extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -134,7 +119,6 @@ class Order extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

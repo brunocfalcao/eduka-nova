@@ -12,7 +12,6 @@ class CustomLink extends Resource
 {
     /**
      * The model the resource corresponds to.
-     *
      */
     public static $model = \Eduka\Cube\Models\Link::class;
 
@@ -32,11 +31,9 @@ class CustomLink extends Resource
         'id', 'name',
     ];
 
-
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -52,7 +49,7 @@ class CustomLink extends Resource
                 ->sortable()
                 ->rules('required', 'url'),
 
-            BelongsTo::make('Video','video',Video::class),
+            BelongsTo::make('Video', 'video', Video::class),
 
             DateTime::make('Created at'),
         ];
@@ -61,7 +58,6 @@ class CustomLink extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -72,7 +68,6 @@ class CustomLink extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -83,7 +78,6 @@ class CustomLink extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -94,7 +88,6 @@ class CustomLink extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)
@@ -104,6 +97,6 @@ class CustomLink extends Resource
 
     public static function label()
     {
-        return "Links";
+        return 'Links';
     }
 }

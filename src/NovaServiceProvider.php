@@ -2,7 +2,6 @@
 
 namespace Eduka\Nova;
 
-use Eduka\Nova\Resources\Tag;
 use Eduka\Nova\Resources\Chapter;
 use Eduka\Nova\Resources\Coupon;
 use Eduka\Nova\Resources\Course;
@@ -12,17 +11,18 @@ use Eduka\Nova\Resources\Domain;
 use Eduka\Nova\Resources\Order;
 use Eduka\Nova\Resources\Series;
 use Eduka\Nova\Resources\Subscriber;
+use Eduka\Nova\Resources\Tag;
 use Eduka\Nova\Resources\User;
 use Eduka\Nova\Resources\Video;
 use Eduka\Nova\Resources\Visit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
-use Illuminate\Support\Str;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -35,7 +35,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
 
-        Nova::mainMenu(function(Request $request) {
+        Nova::mainMenu(function (Request $request) {
             return [
                 MenuSection::dashboard(Main::class)->icon('chart-bar'),
 
@@ -49,7 +49,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(Chapter::class),
                     MenuItem::resource(Video::class),
                 ])->icon('document-text'),
-
 
                 MenuSection::make('Store', [
                     MenuItem::resource(Order::class),
@@ -72,6 +71,26 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 return Str::ucfirst($value);
             });
         });
+    }
+
+    /**
+     * Get the tools that should be listed in the Nova sidebar.
+     *
+     * @return array
+     */
+    public function tools()
+    {
+        return [];
+    }
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
     }
 
     /**
@@ -113,26 +132,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         return [
             new \Eduka\Nova\Resources\Dashboards\Main,
         ];
-    }
-
-    /**
-     * Get the tools that should be listed in the Nova sidebar.
-     *
-     * @return array
-     */
-    public function tools()
-    {
-        return [];
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
     }
 
     protected function resources()

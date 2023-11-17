@@ -12,8 +12,8 @@ use Eduka\Nova\Resources\Actions\UploadVideo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
@@ -43,7 +43,6 @@ class Video extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -56,18 +55,18 @@ class Video extends Resource
             Text::make('Vimeo', 'vimeo_id'),
 
             Number::make('Duration')->displayUsing(function ($value) {
-                if (!$value) {
+                if (! $value) {
                     return '';
                 }
 
                 if ($value < 60) {
-                    return $value . ' min';
+                    return $value.' min';
                 }
 
                 $hours = (int) ($value / 60);
                 $mins = $value % 60;
 
-                return sprintf("%s hour %s mins", $hours, $mins);
+                return sprintf('%s hour %s mins', $hours, $mins);
             }),
 
             Boolean::make('Is Visible')->sortable(),
@@ -82,7 +81,6 @@ class Video extends Resource
                 Text::make('Description', 'meta_description')
                     ->hideFromIndex()
                     ->rules('nullable', 'max:250'),
-
 
                 Text::make('Canonical URL', 'meta_canonical_url')
                     ->hideFromIndex()
@@ -103,7 +101,6 @@ class Video extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -114,7 +111,6 @@ class Video extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -125,7 +121,6 @@ class Video extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -136,7 +131,6 @@ class Video extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)
@@ -154,8 +148,6 @@ class Video extends Resource
             (new MakeInvisible),
             (new MakePaid),
             (new MakeInactive),
-
-
 
         ];
     }

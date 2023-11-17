@@ -4,7 +4,6 @@ namespace Eduka\Nova\Resources\Actions;
 
 use Eduka\Cube\Models\Video;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 
@@ -20,5 +19,4 @@ class MakeVisible extends Action
 
         return Action::message('Video status changed.');
     }
-
 }

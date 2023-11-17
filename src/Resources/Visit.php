@@ -14,7 +14,6 @@ class Visit extends Resource
 {
     /**
      * The model the resource corresponds to.
-     *
      */
     public static $model = \Eduka\Cube\Models\Visit::class;
 
@@ -31,14 +30,12 @@ class Visit extends Resource
      * @var array
      */
     public static $search = [
-        'id'
+        'id',
     ];
-
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -69,17 +66,16 @@ class Visit extends Resource
             ]),
 
             Boolean::make('Bot', 'is_bot')
-                ->displayUsing(fn($isBot) => !$isBot)
+                ->displayUsing(fn ($isBot) => ! $isBot)
                 ->sortable(),
-
 
             Panel::make('Region', [
                 Text::make('Continent')->sortable(),
-                Text::make('Continent code', 'continentCode' )->sortable(),
+                Text::make('Continent code', 'continentCode')->sortable(),
                 Text::make('Country')->sortable(),
                 Text::make('Country code', 'countryCode')->sortable(),
-                Text::make('Region','region')->sortable(),
-                Text::make('Region name','regionName')->sortable(),
+                Text::make('Region', 'region')->sortable(),
+                Text::make('Region name', 'regionName')->sortable(),
                 Text::make('City')->sortable(),
                 Text::make('District')->sortable(),
                 Text::make('Zip')->sortable(),
@@ -96,7 +92,6 @@ class Visit extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -107,7 +102,6 @@ class Visit extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -118,7 +112,6 @@ class Visit extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -129,7 +122,6 @@ class Visit extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

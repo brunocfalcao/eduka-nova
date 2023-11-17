@@ -44,7 +44,6 @@ class Coupon extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -68,7 +67,7 @@ class Coupon extends Resource
 
             Select::make('Country', 'country_iso_code')
                 ->options(Country::list()) // the country code should be UPPER case
-                ->rules('nullable', 'in:' . implode(',', array_keys(Country::list())))
+                ->rules('nullable', 'in:'.implode(',', array_keys(Country::list())))
                 ->sortable(),
 
             Text::make('Ref', 'remote_reference_id')
@@ -81,23 +80,8 @@ class Coupon extends Resource
     }
 
     /**
-     * Handle any post-validation processing.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    protected static function afterValidation(NovaRequest $request, $validator)
-    {
-        if ((bool) $request->is_flat_discount === false && ((float) $request->discount_amount > 100 )) {
-            $validator->errors()->add('discount_amount', 'Creating a discount coupon with more than 100%.');
-        }
-    }
-
-    /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -108,7 +92,6 @@ class Coupon extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -119,7 +102,6 @@ class Coupon extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -130,11 +112,23 @@ class Coupon extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)
     {
         return [];
+    }
+
+    /**
+     * Handle any post-validation processing.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    protected static function afterValidation(NovaRequest $request, $validator)
+    {
+        if ((bool) $request->is_flat_discount === false && ((float) $request->discount_amount > 100)) {
+            $validator->errors()->add('discount_amount', 'Creating a discount coupon with more than 100%.');
+        }
     }
 }

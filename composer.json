@@ -18,7 +18,7 @@
     "php": "^8.0",
     "brunocfalcao/eduka-abstracts": "dev-master",
     "illuminate/contracts": "^10.0",
-    "laravel/nova": "4.29.2",
+    "laravel/nova": "^4.0",
     "league/flysystem": "^3.19",
     "gliterd/backblaze-b2": ">=1.5.0",
     "psr/http-message-implementation": "*",

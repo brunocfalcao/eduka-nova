@@ -8,7 +8,6 @@ use Eduka\Nova\Actions\NotifyAdmin;
 use Eduka\Nova\Actions\UploadToVimeo;
 use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -31,20 +30,20 @@ class HandleVimeoUpload implements ShouldQueue
         $notifier = new NotifyAdmin;
         $notificationRecipients = [env('ADMIN_EMAIL')];
 
-        if (!Storage::disk('local')->exists($this->videoPath)) {
+        if (! Storage::disk('local')->exists($this->videoPath)) {
             $message = sprintf("tried to upload non existant video. video path='%s' video id='%s'", $this->videoPath, $this->videoId);
 
-            $notifier->notify($notificationRecipients, 'error', $message );
+            $notifier->notify($notificationRecipients, 'error', $message);
 
             throw new \Exception($message);
         }
 
         $video = Video::select('id', 'name', 'meta_description', 'vimeo_id')->where('id', $this->videoId)->first();
 
-        if (!$video) {
-            $message = sprintf("could not find video with id %s ", $this->videoId);
+        if (! $video) {
+            $message = sprintf('could not find video with id %s ', $this->videoId);
 
-            $notifier->notify($notificationRecipients, 'error', $message );
+            $notifier->notify($notificationRecipients, 'error', $message);
 
             throw new \Exception($message);
         }
@@ -59,7 +58,7 @@ class HandleVimeoUpload implements ShouldQueue
             (new HandlePostVimeoUploadTask)->handle($video, $vimeoId, $this->videoPath);
 
         } catch (Exception $e) {
-            $notifier->notify($notificationRecipients, 'error', $e->getMessage() );
+            $notifier->notify($notificationRecipients, 'error', $e->getMessage());
 
             throw $e;
         }

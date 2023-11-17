@@ -1,6 +1,7 @@
 <?php
 
 namespace Eduka\Nova\Actions;
+
 use Vimeo\Vimeo;
 
 class UploadToVimeo
@@ -12,4 +13,3 @@ class UploadToVimeo
         return $client->upload($storagePath, $metadata);
     }
 }
-

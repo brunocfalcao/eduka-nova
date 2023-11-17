@@ -2,10 +2,8 @@
 
 namespace Eduka\Nova\Actions;
 
-use Eduka\Cube\Models\User;
 use Eduka\Cube\Models\Video;
 use Eduka\Cube\Models\VideoStorage;
-use Laravel\Nova\Notifications\NovaNotification;
 
 class HandlePostVimeoUploadTask
 {
@@ -16,7 +14,7 @@ class HandlePostVimeoUploadTask
         $videoStorage = VideoStorage::where('video_id', $video->id)
             ->first();
 
-        if($videoStorage) {
+        if ($videoStorage) {
             $videoStorage->update([
                 'vimeo_id' => $vimeoId,
             ]);
@@ -29,4 +27,3 @@ class HandlePostVimeoUploadTask
         }
     }
 }
-

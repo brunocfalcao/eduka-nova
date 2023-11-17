@@ -7,11 +7,11 @@ use Laravel\Nova\Notifications\NovaNotification;
 
 class NotifyAdmin
 {
-    public function notify(array $recipientEmails = [], string $type, string $message, )
+    public function notify(array $recipientEmails, string $type, string $message)
     {
         $users = User::whereIn('email', $recipientEmails)->get();
 
-        foreach($users as $user) {
+        foreach ($users as $user) {
             $user->notify(
                 NovaNotification::make()
                     ->message($message)
@@ -21,4 +21,3 @@ class NotifyAdmin
 
     }
 }
-
