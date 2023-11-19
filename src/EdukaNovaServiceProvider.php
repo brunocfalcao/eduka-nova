@@ -4,6 +4,7 @@ namespace Eduka\Nova;
 
 use Aws\S3\S3Client;
 use Eduka\Abstracts\Classes\EdukaServiceProvider;
+use Eduka\Nova\Commands\DiskFileCleanup;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Filesystem;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
@@ -12,7 +13,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
 {
     public function boot()
     {
-        parent::boot();
+        $this->registerCommands();
 
         $this->mergeConfigFrom(
             __DIR__ . '/../config/eduka_nova.php',
@@ -37,10 +38,19 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
 
             return new Filesystem($adapter);
         });
+
+        parent::boot();
     }
 
     public function register()
     {
         $this->app->register(NovaServiceProvider::class);
+    }
+
+    protected function registerCommands()
+    {
+        $this->commands([
+            DiskFileCleanup::class,
+        ]);
     }
 }
