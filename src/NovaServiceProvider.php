@@ -13,6 +13,7 @@ use Eduka\Nova\Resources\Series;
 use Eduka\Nova\Resources\Subscriber;
 use Eduka\Nova\Resources\Tag;
 use Eduka\Nova\Resources\User;
+use Eduka\Nova\Resources\Variant;
 use Eduka\Nova\Resources\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -44,6 +45,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuSection::make('Learning', [
                     MenuItem::resource(Course::class),
+                    MenuItem::resource(Variant::class),
                     MenuItem::resource(Series::class),
                     MenuItem::resource(Chapter::class),
                     MenuItem::resource(Video::class),
@@ -148,6 +150,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Subscriber::class,
             Tag::class,
             CustomLink::class,
+            Variant::class,
         ]);
     }
 }

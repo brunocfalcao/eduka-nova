@@ -85,7 +85,7 @@ class Course extends Resource
                     ->hideFromIndex(),
 
                 Text::make('Canonical', 'canonical')
-                    ->rules('nullable', 'max:250','url')
+                    ->rules('nullable', 'max:250')
                     ->hideFromIndex(),
 
                 Textarea::make('Description', 'meta_description')
@@ -115,6 +115,8 @@ class Course extends Resource
 
             // Relations
             HasMany::make('Domains', 'domains', Domain::class),
+
+            HasMany::make('Variants', 'variants', Variant::class),
 
             HasMany::make('Chapters', 'chapters', Chapter::class),
 
