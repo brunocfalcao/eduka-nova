@@ -4,12 +4,12 @@ namespace Eduka\Nova\Resources;
 
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
@@ -58,12 +58,12 @@ class Course extends Resource
                     ->sortable(),
 
                 DateTime::make('Launched', 'launched_at')
-                    ->rules('nullable', 'datetime'),
+                    ->rules('nullable', 'date'),
 
                 Boolean::make('Enable PPP', 'enable_purchase_power_parity')
                     ->rules('boolean'),
 
-                Boolean::make('Dicommissioned', 'is_dicommissioned')
+                Boolean::make('Dicommissioned', 'is_decommissioned')
                     ->rules('boolean'),
 
                 Text::make('Provider namespace')
@@ -88,7 +88,7 @@ class Course extends Resource
                     ->rules('nullable', 'max:250','url')
                     ->hideFromIndex(),
 
-                Text::make('Description', 'meta_description')
+                Textarea::make('Description', 'meta_description')
                     ->hideFromIndex()
                     ->rules('nullable', 'max:250'),
 
@@ -103,6 +103,12 @@ class Course extends Resource
 
             Panel::make('Lemon Squeezy', [
                 Text::make('Store ID', 'lemonsqueezy_store_id')
+                    ->rules('nullable', 'string')
+                    ->hideFromIndex(),
+            ]),
+
+            Panel::make('Vimeo', [
+                Text::make('Vimeo Project ID', 'vimeo_project_id')
                     ->rules('nullable', 'string')
                     ->hideFromIndex(),
             ]),
