@@ -54,9 +54,13 @@ class Series extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Name')->sortable(),
+            Text::make('Name')
+                ->rules('required', 'max:250')
+                ->sortable(),
 
-            Textarea::make('Details')->hideFromIndex(),
+            Textarea::make('Details')
+                ->rules('nullable','max:255')
+                ->hideFromIndex(),
 
             Number::make('Number of videos', 'videos_count')
                 ->exceptOnForms()
