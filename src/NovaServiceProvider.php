@@ -14,7 +14,6 @@ use Eduka\Nova\Resources\Subscriber;
 use Eduka\Nova\Resources\Tag;
 use Eduka\Nova\Resources\User;
 use Eduka\Nova\Resources\Video;
-use Eduka\Nova\Resources\Visit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
@@ -59,7 +58,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(Tag::class),
                     MenuItem::resource(CustomLink::class),
                     MenuItem::resource(Domain::class),
-                    MenuItem::resource(Visit::class),
                     MenuItem::resource(Subscriber::class),
                 ]),
 
@@ -148,7 +146,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Chapter::class,
             Order::class,
             Subscriber::class,
-            Visit::class,
             Tag::class,
             CustomLink::class,
         ]);
