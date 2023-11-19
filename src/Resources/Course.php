@@ -57,10 +57,6 @@ class Course extends Resource
                     ->rules('required', 'max:250')
                     ->sortable(),
 
-                Currency::make('Price', 'course_price')
-                    ->rules('required', 'numeric', 'min:0')
-                    ->currency(config('eduka.currency')),
-
                 DateTime::make('Launched', 'launched_at')
                     ->rules('nullable', 'datetime'),
 
@@ -73,7 +69,6 @@ class Course extends Resource
                 Text::make('Provider namespace')
                     ->hideFromIndex()
                     ->rules('required', 'max:250'),
-
             ]),
 
             Panel::make('Educator', [
@@ -89,22 +84,25 @@ class Course extends Resource
                     ->rules('nullable', 'max:250')
                     ->hideFromIndex(),
 
+                Text::make('Canonical', 'canonical')
+                    ->rules('nullable', 'max:250','url')
+                    ->hideFromIndex(),
+
                 Text::make('Description', 'meta_description')
                     ->hideFromIndex()
                     ->rules('nullable', 'max:250'),
 
-                Text::make('Twitter handle', 'meta_twitter_handle')
+                Text::make('Meta twitter alias', 'meta_twitter_alias')
+                    ->hideFromIndex()
+                    ->rules('nullable', 'max:250'),
+
+                Text::make('Twitter handle', 'twitter_handle')
                     ->hideFromIndex()
                     ->rules('nullable', 'max:250'),
             ]),
 
-            Panel::make('Payment provider details', [
-                Text::make('Store ID', 'payment_provider_store_id')
-                    ->rules('nullable', 'string')
-                    ->hideFromIndex(),
-
-                Text::make('Product ID', 'payment_provider_variant_id')
-                    ->placeholder('for lemon squeezy, it is the variant id')
+            Panel::make('Lemon Squeezy', [
+                Text::make('Store ID', 'lemonsqueezy_store_id')
                     ->rules('nullable', 'string')
                     ->hideFromIndex(),
             ]),
