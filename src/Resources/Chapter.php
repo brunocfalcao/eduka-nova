@@ -44,7 +44,7 @@ class Chapter extends Resource
             ID::make()->sortable(),
 
             Text::make('Name')
-                ->rules('required', 'max:200'),
+                ->rules('required', 'max:250'),
 
             Textarea::make('Details')
                 ->rules('nullable', 'max:1000'),

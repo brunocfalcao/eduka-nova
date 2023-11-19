@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
@@ -52,7 +53,8 @@ class Video extends Resource
 
             Text::make('Name')->sortable(),
 
-            Text::make('Vimeo', 'vimeo_id'),
+            Text::make('Vimeo Id', 'vimeo_id')
+                ->hideWhenCreating(),
 
             Number::make('Duration')->displayUsing(function ($value) {
                 if (! $value) {
@@ -78,7 +80,7 @@ class Video extends Resource
                     ->rules('nullable', 'max:250')
                     ->hideFromIndex(),
 
-                Text::make('Description', 'meta_description')
+                Textarea::make('Description', 'meta_description')
                     ->hideFromIndex()
                     ->rules('nullable', 'max:250'),
 
