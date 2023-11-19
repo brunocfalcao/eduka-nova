@@ -20,7 +20,7 @@ class Domain extends Resource
      *
      * @var string
      */
-    public static $title = 'suffix';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -28,7 +28,7 @@ class Domain extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'suffix',
+        'id', 'name',
     ];
 
     /**
@@ -41,7 +41,7 @@ class Domain extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Suffix'),
+            Text::make('Name'),
 
             BelongsTo::make('Course', 'course', Course::class),
         ];
