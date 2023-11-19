@@ -19,7 +19,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
             'eduka_nova'
         );
 
-        // Register the Backblaze B2 disk
+        // Register the Backblaze disk
         Storage::extend('backblaze', function ($app, $config) {
             $config = $config['backblaze'];
 

@@ -2,7 +2,8 @@
 
 namespace Eduka\Nova\Resources\Actions;
 
-use Eduka\Nova\Jobs\HandleVimeoUpload;
+use Eduka\Cube\Models\VideoStorage;
+use Eduka\Nova\Jobs\UploadToVimeoJob;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
@@ -26,7 +27,14 @@ class UploadVideo extends Action
 
         $path = Storage::disk('local')->putFile('videos', $fields->video);
 
-        HandleVimeoUpload::dispatch($models->first()->id, $path);
+        $video = $models->first()->id;
+
+        $videoStorage = VideoStorage::create([
+            'video_id' => $video->id,
+            'path_on_disk' => $path,
+        ]);
+
+        UploadToVimeoJob::dispatch($video->id);
 
         return Action::message('Video upload started . ', $path);
     }
