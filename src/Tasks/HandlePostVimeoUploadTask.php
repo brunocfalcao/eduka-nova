@@ -1,6 +1,6 @@
 <?php
 
-namespace Eduka\Nova\Actions;
+namespace Eduka\Nova\Tasks;
 
 use Eduka\Cube\Models\Video;
 use Eduka\Cube\Models\VideoStorage;

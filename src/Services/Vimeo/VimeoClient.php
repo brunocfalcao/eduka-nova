@@ -1,12 +1,11 @@
 <?php
 
-namespace Eduka\Nova\Actions;
+namespace Eduka\Nova\Services\Vimeo;
 
 use Eduka\Cube\Models\Course;
-use Eduka\Cube\Models\Video;
 use Vimeo\Vimeo;
 
-class VimeoHandler
+class VimeoClient
 {
     private Vimeo $client;
 

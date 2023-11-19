@@ -1,11 +1,11 @@
 <?php
 
-namespace Eduka\Nova\Actions;
+namespace Eduka\Nova\Tasks;
 
 use Eduka\Cube\Models\User;
 use Laravel\Nova\Notifications\NovaNotification;
 
-class NotifyAdmin
+class NotifyAdminTask
 {
     public function notify(array $recipientEmails, string $type, string $message)
     {

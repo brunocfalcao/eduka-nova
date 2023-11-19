@@ -3,6 +3,7 @@
 namespace Eduka\Nova\Resources\Actions;
 
 use Eduka\Cube\Models\VideoStorage;
+use Eduka\Nova\Jobs\UploadToBackblazeJob;
 use Eduka\Nova\Jobs\UploadToVimeoJob;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -25,16 +26,21 @@ class UploadVideo extends Action
             return Action::danger('Please run this on only one video resource.');
         }
 
-        $path = Storage::disk('local')->putFile('videos', $fields->video);
+        $path = Storage::putFile('videos', $fields->video);
 
-        $video = $models->first()->id;
+        $video = $models->first();
 
-        $videoStorage = VideoStorage::create([
-            'video_id' => $video->id,
-            'path_on_disk' => $path,
-        ]);
+        $videoStorage = VideoStorage::where('video_id', $video->id)->first();
+
+        if (!$videoStorage) {
+            $videoStorage = VideoStorage::create([
+                'video_id' => $video->id,
+                'path_on_disk' => $path,
+            ]);
+        }
 
         UploadToVimeoJob::dispatch($video->id);
+        UploadToBackblazeJob::dispatch($videoStorage->id);
 
         return Action::message('Video upload started . ', $path);
     }
