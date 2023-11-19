@@ -2,13 +2,11 @@
 
 namespace Eduka\Nova;
 
-use BackblazeB2\Client;
+use Aws\S3\S3Client;
 use Eduka\Abstracts\Classes\EdukaServiceProvider;
-use Eduka\Nova\Backblaze\BackblazeAdapter;
-use Exception;
-use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Filesystem;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 
 class EdukaNovaServiceProvider extends EdukaServiceProvider
 {
@@ -16,29 +14,29 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
     {
         parent::boot();
 
-        // Storage::extend('b2', function ($app, $config) {
-        //     // check if all required configuration keys are given.
-        //     if (
-        //         !isset($config['accountId']) ||
-        //         !isset($config['applicationKey']) ||
-        //         !isset($config['bucketName'])
-        //     ) {
-        //         throw new Exception('Please set the "accountId", "applicationKey" and "bucketName" configuration keys.');
-        //     }
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/eduka_nova.php',
+            'eduka_nova'
+        );
 
-        //     // create a client
-        //     $client = new Client($config['accountId'], $config['applicationKey']);
+        // Register the Backblaze B2 disk
+        Storage::extend('backblaze', function ($app, $config) {
+            $config = $config['backblaze'];
 
-        //     // create an new adapter
-        //     $adapter = new BackblazeAdapter($client, $config['bucketName']);
+            $client = new S3Client([
+                'version' => 'latest',
+                'region' => $config['region'],
+                'endpoint' => $config['url'],
+                'credentials' => [
+                    'key'    => $config['key'],
+                    'secret' => $config['secret'],
+                ],
+            ]);
 
-        //     // and return the file system.
-        //     return new FilesystemAdapter(
-        //         new Filesystem($adapter, $config),
-        //         $adapter,
-        //         $config
-        //     );
-        // });
+            $adapter = new AwsS3V3Adapter($client, $config['bucket']);
+
+            return new Filesystem($adapter);
+        });
     }
 
     public function register()

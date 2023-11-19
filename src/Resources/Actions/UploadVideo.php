@@ -6,10 +6,12 @@ use Eduka\Nova\Jobs\HandleVimeoUpload;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class UploadVideo extends Action
@@ -33,6 +35,8 @@ class UploadVideo extends Action
     {
         return [
             File::make('Video'),
+
+            Select::make('Course'),
         ];
     }
 }

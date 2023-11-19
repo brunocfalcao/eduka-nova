@@ -20,11 +20,11 @@
     "illuminate/contracts": "^10.0",
     "laravel/nova": "^4.0",
     "league/flysystem": "^3.19",
-    "gliterd/backblaze-b2": ">=1.5.0",
     "psr/http-message-implementation": "*",
     "mikey179/vfsstream": "*",
     "league/flysystem-aws-s3-v3" : "*",
-    "vimeo/vimeo-api": "^3.0"
+    "vimeo/vimeo-api": "^3.0",
+    "aws/aws-sdk-php": "^3.286"
   },
   "autoload": {
     "psr-4": {

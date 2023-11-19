@@ -5,7 +5,7 @@ namespace Eduka\Nova\Jobs;
 use Eduka\Cube\Models\Video;
 use Eduka\Nova\Actions\HandlePostVimeoUploadTask;
 use Eduka\Nova\Actions\NotifyAdmin;
-use Eduka\Nova\Actions\UploadToVimeo;
+use Eduka\Nova\Actions\VimeoHandler;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -51,7 +51,7 @@ class HandleVimeoUpload implements ShouldQueue
         $path = Storage::disk('local')->path($this->videoPath);
 
         try {
-            $vimeoUrl = (new UploadToVimeo)->upload($path, $video->vimeoMetadata());
+            $vimeoUrl = (new VimeoHandler)->upload($path, $video->vimeoMetadata());
 
             $vimeoId = preg_replace('/[^0-9]/', '', $vimeoUrl);
 
