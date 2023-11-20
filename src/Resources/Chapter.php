@@ -12,6 +12,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Chapter extends Resource
 {
+    
     /**
      * The model the resource corresponds to.
      */

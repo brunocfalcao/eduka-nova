@@ -2,6 +2,7 @@
 
 namespace Eduka\Nova\Resources;
 
+use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Hidden;
@@ -52,9 +53,7 @@ class Variant extends Resource
 
             // form fields
             Panel::make('Basic info', [
-                Text::make('Canonical')
-                    ->rules('required', 'max:250')
-                    ->sortable(),
+                Canonical::make(),
 
                 Boolean::make('Default', 'is_default')
                     ->rules('boolean'),
