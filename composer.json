@@ -24,7 +24,8 @@
     "mikey179/vfsstream": "*",
     "league/flysystem-aws-s3-v3" : "*",
     "vimeo/vimeo-api": "^3.0",
-    "aws/aws-sdk-php": "^3.286"
+    "aws/aws-sdk-php": "^3.286",
+    "brunocfalcao/laravel-nova-helpers": "dev-master"
   },
   "autoload": {
     "psr-4": {
