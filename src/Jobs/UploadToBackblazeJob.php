@@ -24,6 +24,6 @@ class UploadToBackblazeJob implements ShouldQueue
     {
         $notificationRecipients = [env('ADMIN_EMAIL')];
 
-        (new HandleBackblazeUploadTask)->handle($this->storageId, $notificationRecipients, env('BACKBLAZE_BUCKET_NAME') );
+        (new HandleBackblazeUploadTask)->handle($this->storageId, $notificationRecipients, env('BACKBLAZE_BUCKET_NAME'));
     }
 }

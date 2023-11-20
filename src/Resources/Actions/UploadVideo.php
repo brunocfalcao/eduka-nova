@@ -8,7 +8,6 @@ use Eduka\Nova\Jobs\UploadToVimeoJob;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
@@ -32,7 +31,7 @@ class UploadVideo extends Action
 
         $videoStorage = VideoStorage::where('video_id', $video->id)->first();
 
-        if (!$videoStorage) {
+        if (! $videoStorage) {
             $videoStorage = VideoStorage::create([
                 'video_id' => $video->id,
                 'path_on_disk' => $path,

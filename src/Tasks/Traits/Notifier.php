@@ -21,19 +21,19 @@ trait Notifier
         $notifier->notify($notificationRecipients, 'error', $message);
     }
 
-    private function notifyVideoUploadedSuccessfully(NotifyAdminTask $notifier,array $notificationRecipients, string $name, string $driver)
+    private function notifyVideoUploadedSuccessfully(NotifyAdminTask $notifier, array $notificationRecipients, string $name, string $driver)
     {
         $notifier->notify($notificationRecipients, 'info', sprintf("Video file for '%s' has been uploaded to %s.", $name, $driver));
     }
 
-    private function notifyFileDoesNotExist(NotifyAdminTask $notifier,array $notificationRecipients, string $videoPath , int $videoId)
+    private function notifyFileDoesNotExist(NotifyAdminTask $notifier, array $notificationRecipients, string $videoPath, int $videoId)
     {
         $message = sprintf("Tried to upload non existant video. video path='%s' video id='%s'", $videoPath, $videoId);
 
         $notifier->notify($notificationRecipients, 'error', $message);
     }
 
-    private function notifyException(NotifyAdminTask $notifier,array $notificationRecipients, Exception $e)
+    private function notifyException(NotifyAdminTask $notifier, array $notificationRecipients, Exception $e)
     {
         $notifier->notify($notificationRecipients, 'error', $e->getMessage());
     }

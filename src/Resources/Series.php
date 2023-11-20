@@ -59,7 +59,7 @@ class Series extends Resource
                 ->sortable(),
 
             Textarea::make('Details')
-                ->rules('nullable','max:255')
+                ->rules('nullable', 'max:255')
                 ->hideFromIndex(),
 
             Number::make('Number of videos', 'videos_count')

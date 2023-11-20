@@ -2,13 +2,14 @@
 
 namespace Eduka\Nova\Services\Backblaze;
 
-use Aws\S3\S3Client;
 use Aws\Credentials\Credentials;
+use Aws\S3\S3Client;
 use Illuminate\Support\Facades\Storage;
 
 class BackblazeClient
 {
     private S3Client $client;
+
     private string $rootPath;
 
     public function __construct(string $rootPathInBucket = 'videos')
@@ -22,7 +23,7 @@ class BackblazeClient
         $this->client = new S3Client([
             'version' => 'latest',
             'region' => $region,
-            'endpoint' => 'https://s3.' . $region . '.backblazeb2.com',
+            'endpoint' => 'https://s3.'.$region.'.backblazeb2.com',
             'credentials' => $credentials,
         ]);
 
@@ -51,12 +52,12 @@ class BackblazeClient
 
         $extension = Storage::mimeType($filePath);
 
-        $pathOnBackblaze = $this->rootPath . '/' . $saveAs . '.' . str($extension)->afterLast('/')->toString();
+        $pathOnBackblaze = $this->rootPath.'/'.$saveAs.'.'.str($extension)->afterLast('/')->toString();
 
         return $this->client->putObject([
             'Bucket' => $bucket,
-            'Key'    => $pathOnBackblaze,
-            'Body'   => $fileContents,
+            'Key' => $pathOnBackblaze,
+            'Body' => $fileContents,
         ]);
     }
 }

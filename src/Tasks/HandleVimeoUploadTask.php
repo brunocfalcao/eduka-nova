@@ -2,11 +2,11 @@
 
 namespace Eduka\Nova\Tasks;
 
-use Exception;
 use Eduka\Cube\Models\Video;
-use Illuminate\Support\Facades\Storage;
 use Eduka\Nova\Services\Vimeo\VimeoClient;
 use Eduka\Nova\Tasks\Traits\Notifier;
+use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class HandleVimeoUploadTask
 {
@@ -21,15 +21,17 @@ class HandleVimeoUploadTask
             ->where('id', $videoId)
             ->first();
 
-        if (!$video) {
+        if (! $video) {
             $this->notifyVideoNotFound($notifier, $notificationRecipients, $videoId);
+
             return;
         }
 
         $videoPath = $video->videoStorage->path_on_disk;
 
-        if (!Storage::exists($videoPath)) {
+        if (! Storage::exists($videoPath)) {
             $this->notifyFileDoesNotExist($notifier, $notificationRecipients, $videoPath, $videoId);
+
             return;
         }
 

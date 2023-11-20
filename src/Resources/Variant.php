@@ -3,6 +3,7 @@
 namespace Eduka\Nova\Resources;
 
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Hidden;
@@ -12,7 +13,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Illuminate\Support\Str;
 
 class Variant extends Resource
 {

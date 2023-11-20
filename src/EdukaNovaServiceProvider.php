@@ -6,8 +6,8 @@ use Aws\S3\S3Client;
 use Eduka\Abstracts\Classes\EdukaServiceProvider;
 use Eduka\Nova\Commands\DiskFileCleanup;
 use Illuminate\Support\Facades\Storage;
-use League\Flysystem\Filesystem;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
+use League\Flysystem\Filesystem;
 
 class EdukaNovaServiceProvider extends EdukaServiceProvider
 {
@@ -16,7 +16,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
         $this->registerCommands();
 
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/eduka_nova.php',
+            __DIR__.'/../config/eduka_nova.php',
             'eduka_nova'
         );
 
@@ -29,7 +29,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
                 'region' => $config['region'],
                 'endpoint' => $config['url'],
                 'credentials' => [
-                    'key'    => $config['key'],
+                    'key' => $config['key'],
                     'secret' => $config['secret'],
                 ],
             ]);

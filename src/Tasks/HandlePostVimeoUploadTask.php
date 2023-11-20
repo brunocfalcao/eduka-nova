@@ -15,7 +15,7 @@ class HandlePostVimeoUploadTask
         $videoStorage = VideoStorage::where('video_id', $video->id)
             ->first();
 
-        if (!$videoStorage) {
+        if (! $videoStorage) {
             throw new Exception('video storage not found');
         }
 
