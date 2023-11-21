@@ -2,11 +2,20 @@
 
 namespace Eduka\Nova\Tasks;
 
+<<<<<<< HEAD
 use Eduka\Cube\Models\Video;
 use Eduka\Nova\Services\Vimeo\VimeoClient;
 use Eduka\Nova\Tasks\Traits\Notifier;
 use Exception;
 use Illuminate\Support\Facades\Storage;
+=======
+use Eduka\Cube\Actions\Variant\UpdateVimeoProjectId;
+use Eduka\Cube\Actions\Video\SaveVimeoId;
+use Exception;
+use Eduka\Cube\Shared\Processor\VimeoUploaderValidator;
+use Eduka\Nova\Tasks\Traits\Notifier;
+use Eduka\Services\External\Vimeo\VimeoClient;
+>>>>>>> c302ee3 (Refactoring)
 
 class HandleVimeoUploadTask
 {
@@ -16,11 +25,9 @@ class HandleVimeoUploadTask
     {
         $notifier = new NotifyAdminTask;
 
-        $video = Video::select('id', 'name', 'meta_description', 'vimeo_id')
-            ->with('videoStorage')
-            ->where('id', $videoId)
-            ->first();
+        $validator = VimeoUploaderValidator::findUsingVideoId($videoId);
 
+<<<<<<< HEAD
         if (! $video) {
             $this->notifyVideoNotFound($notifier, $notificationRecipients, $videoId);
 
@@ -36,13 +43,31 @@ class HandleVimeoUploadTask
         }
 
         $path = Storage::path($videoPath);
+=======
+        $vimeoClient = new VimeoClient;
+>>>>>>> c302ee3 (Refactoring)
 
         try {
-            $vimeoUrl = (new VimeoClient)->upload($path, $video->vimeoMetadata());
 
-            $vimeoId = preg_replace('/[^0-9]/', '', $vimeoUrl);
+            $validator
+                ->ensureDataExistsInDatabase()
+                ->ensureVideoExistsOnDisk();
 
-            (new HandlePostVimeoUploadTask)->handle($video, $vimeoId);
+            if(! $validator->getVimeoProjectId()) {
+                $newVimeoProjectId = $vimeoClient->ensureProjectExists(null, $validator->getCourseName());
+                UpdateVimeoProjectId::update($validator->getVariant() , $newVimeoProjectId);
+            }
+
+            $vimeoUrl = $vimeoClient->upload($validator->getVideoFilePathFromDisk(), $validator->getVideoMetadata());
+
+            $vimeoId = $vimeoClient->getIdFromResponse($vimeoUrl);
+
+            SaveVimeoId::save(
+                $validator->getVideo(),
+                $validator->getVideoStorage(),
+                $vimeoId
+            );
+
         } catch (Exception $e) {
 
             $this->notifyException($notifier, $notificationRecipients, $e);
@@ -50,6 +75,6 @@ class HandleVimeoUploadTask
             throw $e;
         }
 
-        $this->notifyVideoUploadedSuccessfully($notifier, $notificationRecipients, $video->name, 'vimeo');
+        $this->notifyVideoUploadedSuccessfully($notifier, $notificationRecipients, $validator->getVideoName(), $validator->getNotificationChannelName());
     }
 }

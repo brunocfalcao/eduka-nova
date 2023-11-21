@@ -3,10 +3,9 @@
 namespace Eduka\Nova\Tasks;
 
 use Eduka\Cube\Models\VideoStorage;
-use Eduka\Nova\Services\Backblaze\BackblazeClient;
 use Eduka\Nova\Tasks\Traits\Notifier;
+use Eduka\Services\External\Backblaze\BackblazeClient;
 use Exception;
-use Illuminate\Support\Facades\Log;
 
 class HandleBackblazeUploadTask
 {
@@ -14,10 +13,6 @@ class HandleBackblazeUploadTask
 
     public function handle(int $storageId, array $notificationRecipients, string $bucket)
     {
-        Log::info('bucket_info', [
-            'name' => $bucket,
-        ]);
-
         $notifier = new NotifyAdminTask;
         $videoStorage = VideoStorage::find($storageId);
 
