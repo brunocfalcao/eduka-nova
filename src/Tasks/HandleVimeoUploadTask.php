@@ -27,9 +27,12 @@ class HandleVimeoUploadTask
                 ->ensureDataExistsInDatabase()
                 ->ensureVideoExistsOnDisk();
 
-            if(! $validator->getVimeoProjectId()) {
-                $newVimeoProjectId = $vimeoClient->ensureProjectExists(null, $validator->getCourseName());
-                UpdateVimeoProjectId::update($validator->getVariant() , $newVimeoProjectId);
+            $newVimeoProjectId = $vimeoClient->ensureProjectExists($validator->getVimeoProjectId(), $validator->getCourseName());
+
+            if ($newVimeoProjectId !== $validator->getVimeoProjectId()) {
+                UpdateVimeoProjectId::update($validator->getVariant(), $newVimeoProjectId);
+
+                $validator = $validator->refreshVariant();
             }
 
             $vimeoUrl = $vimeoClient->upload($validator->getVideoFilePathFromDisk(), $validator->getVideoMetadata());
@@ -42,6 +45,7 @@ class HandleVimeoUploadTask
                 $vimeoId
             );
 
+            $vimeoClient->moveVideoToFolder($validator->getVimeoProjectId(), $vimeoId);
         } catch (Exception $e) {
 
             $this->notifyException($notifier, $notificationRecipients, $e);

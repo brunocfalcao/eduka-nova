@@ -5,7 +5,9 @@ namespace Eduka\Nova\Resources;
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
@@ -59,7 +61,7 @@ class Variant extends Resource
                     ->rules('boolean'),
 
                 Textarea::make('Description', 'description')
-                    ->rules('nullable', 'max:250'),
+                    ->rules('required', 'max:250'),
             ]),
 
             Panel::make('Lemon Squeezy', [
@@ -72,8 +74,9 @@ class Variant extends Resource
             ]),
 
             // Relations
-
             BelongsTo::make('Course', 'course', Course::class),
+
+            HasMany::make('Chapters', 'chapters', Chapter::class)
 
         ];
     }

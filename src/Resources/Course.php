@@ -85,7 +85,11 @@ class Course extends Resource
                     ->rules('nullable', 'max:250')
                     ->hideFromIndex(),
 
-                Canonical::make(),
+                Text::make('Canonical',)
+                    ->creationRules('nullable', 'max:250', 'unique:courses,canonical')
+                    ->updateRules('nullable', 'max:250', 'unique:courses,canonical,{{resourceId}}')
+                    ->hideFromIndex(),
+
 
                 Textarea::make('Description', 'meta_description')
                     ->hideFromIndex()

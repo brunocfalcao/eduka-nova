@@ -3,7 +3,7 @@
 namespace Eduka\Nova\Resources;
 
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
@@ -53,13 +53,9 @@ class Chapter extends Resource
                 ->rules('required', 'numeric')
                 ->sortable(),
 
-            BelongsToMany::make('Videos', 'videos', Video::class)
-                ->searchable()
-                ->fields(function ($request, $relatedModel) {
-                    return [
-                        Number::make('Index'),
-                    ];
-                }),
+            HasMany::make('Videos', 'videos', Video::class),
+
+            BelongsTo::make('Variant','variant',Variant::class),
         ];
     }
 

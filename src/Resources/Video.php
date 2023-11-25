@@ -9,7 +9,7 @@ use Eduka\Nova\Resources\Actions\MakeInvisible;
 use Eduka\Nova\Resources\Actions\MakePaid;
 use Eduka\Nova\Resources\Actions\MakeVisible;
 use Eduka\Nova\Resources\Actions\UploadVideo;
-use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
@@ -89,12 +89,7 @@ class Video extends Resource
                     ->rules('nullable', 'max:250', 'url'),
             ]),
 
-            BelongsToMany::make('Chapters', 'chapters', Chapter::class)
-                ->fields(function ($request, $relatedModel) {
-                    return [
-                        Number::make('Index'),
-                    ];
-                })
+            BelongsTo::make('Chapter', 'chapter', Chapter::class)
                 ->searchable()
                 ->showCreateRelationButton(),
         ];
