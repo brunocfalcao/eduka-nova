@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\File;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class UploadVideo extends Action
@@ -41,15 +40,13 @@ class UploadVideo extends Action
         UploadToVimeoJob::dispatch($video->id);
         UploadToBackblazeJob::dispatch($videoStorage->id);
 
-        return Action::message('Video upload started . ', $path);
+        return Action::message('Video upload started in the background.');
     }
 
     public function fields(NovaRequest $request)
     {
         return [
             File::make('Video'),
-
-            Select::make('Course'),
         ];
     }
 }

@@ -53,8 +53,6 @@ class Chapter extends Resource
                 ->rules('required', 'numeric')
                 ->sortable(),
 
-            BelongsTo::make('Course', 'course', Course::class),
-
             BelongsToMany::make('Videos', 'videos', Video::class)
                 ->searchable()
                 ->fields(function ($request, $relatedModel) {

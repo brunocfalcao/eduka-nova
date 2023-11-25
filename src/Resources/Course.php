@@ -39,7 +39,7 @@ class Course extends Resource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->withCount('users', 'chapters');
+        return $query->withCount('users');
     }
 
     /**
@@ -117,15 +117,9 @@ class Course extends Resource
 
             HasMany::make('Variants', 'variants', Variant::class),
 
-            HasMany::make('Chapters', 'chapters', Chapter::class),
-
             BelongsToMany::make('Users', 'users', User::class),
 
             Number::make('Registered users', 'users_count')
-                ->onlyOnIndex()
-                ->sortable(),
-
-            Number::make('Chapters', 'chapters_count')
                 ->onlyOnIndex()
                 ->sortable(),
         ];

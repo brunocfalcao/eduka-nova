@@ -13,7 +13,7 @@ class UploadToBackblazeJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(private int $storageId)
+    public function __construct(private int $videoStorageId)
     {
     }
 
@@ -24,6 +24,6 @@ class UploadToBackblazeJob implements ShouldQueue
     {
         $notificationRecipients = [env('ADMIN_EMAIL')];
 
-        (new HandleBackblazeUploadTask)->handle($this->storageId, $notificationRecipients, env('BACKBLAZE_BUCKET_NAME'));
+        (new HandleBackblazeUploadTask)->handle($this->videoStorageId, $notificationRecipients);
     }
 }
