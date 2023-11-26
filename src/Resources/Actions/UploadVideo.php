@@ -37,7 +37,7 @@ class UploadVideo extends Action
 
         $path = Storage::putFile('videos', $fields->video);
 
-        if (!$videoStorage) {
+        if (! $videoStorage) {
             $videoStorage = VideoStorage::create([
                 'video_id' => $video->id,
                 'path_on_disk' => $path,
@@ -60,7 +60,7 @@ class UploadVideo extends Action
 
         if ($video) {
             foreach ($video->chapter->variants as $variant) {
-                $variantOptions[(string) $variant->id ] = $variant->canonical;
+                $variantOptions[(string) $variant->id] = $variant->canonical;
             }
         }
 

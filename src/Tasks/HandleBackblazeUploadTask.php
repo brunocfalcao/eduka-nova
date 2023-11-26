@@ -3,7 +3,6 @@
 namespace Eduka\Nova\Tasks;
 
 use Eduka\Cube\Actions\Video\FindVariantById;
-use Eduka\Cube\Actions\Video\GetVariantFromVideo;
 use Eduka\Cube\Actions\Video\UpdateVariantBucket;
 use Eduka\Cube\Actions\VideoStorage\FindVideoStorageForBackblazeUpload;
 use Eduka\Cube\Actions\VideoStorage\UpdateBackblazeId;
@@ -50,14 +49,14 @@ class HandleBackblazeUploadTask
             // create a new one
             $bucket = $bbClient->ensureBucketExists($existingBucket, $newBucketToBe);
 
-            if($existingBucket !== $bucket) {
+            if ($existingBucket !== $bucket) {
                 // a new bucket was created, update database
                 UpdateVariantBucket::update($variant, $bucket);
             }
 
             $bbClient->uploadTo($videoStorage->path_on_disk, $bucket, $videoStorage->video->name);
 
-            UpdateBackblazeId::handle($videoStorage,'video uploaded; attention: could not parse response');
+            UpdateBackblazeId::handle($videoStorage, 'video uploaded; attention: could not parse response');
 
             $this->notifyVideoUploadedSuccessfully($notifier, $notificationRecipients, $videoStorage->video->name, 'backblaze');
 

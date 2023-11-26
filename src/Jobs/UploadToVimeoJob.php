@@ -24,6 +24,6 @@ class UploadToVimeoJob implements ShouldQueue
     {
         $notificationRecipients = [env('ADMIN_EMAIL')];
 
-        (new HandleVimeoUploadTask)->handle($this->videoId, $this->variantId , $notificationRecipients);
+        (new HandleVimeoUploadTask)->handle($this->videoId, $this->variantId, $notificationRecipients);
     }
 }

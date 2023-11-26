@@ -2,7 +2,6 @@
 
 namespace Eduka\Nova\Resources;
 
-use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -85,11 +84,10 @@ class Course extends Resource
                     ->rules('nullable', 'max:250')
                     ->hideFromIndex(),
 
-                Text::make('Canonical',)
+                Text::make('Canonical')
                     ->creationRules('nullable', 'max:250', 'unique:courses,canonical')
                     ->updateRules('nullable', 'max:250', 'unique:courses,canonical,{{resourceId}}')
                     ->hideFromIndex(),
-
 
                 Textarea::make('Description', 'meta_description')
                     ->hideFromIndex()

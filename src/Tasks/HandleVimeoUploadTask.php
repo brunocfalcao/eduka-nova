@@ -4,10 +4,10 @@ namespace Eduka\Nova\Tasks;
 
 use Eduka\Cube\Actions\Variant\UpdateVimeoProjectId;
 use Eduka\Cube\Actions\Video\SaveVimeoId;
-use Exception;
 use Eduka\Cube\Shared\Processor\VimeoUploaderValidator;
 use Eduka\Nova\Tasks\Traits\Notifier;
 use Eduka\Services\External\Vimeo\VimeoClient;
+use Exception;
 
 class HandleVimeoUploadTask
 {

@@ -28,7 +28,6 @@ trait Notifier
         $notifier->notify($notificationRecipients, 'error', $message);
     }
 
-
     private function notifyVideoUploadedSuccessfully(NotifyAdminTask $notifier, array $notificationRecipients, string $name, string $driver)
     {
         $notifier->notify($notificationRecipients, 'info', sprintf("Video file for '%s' has been uploaded to %s.", $name, $driver));
