@@ -76,7 +76,14 @@ class Variant extends Resource
             // Relations
             BelongsTo::make('Course', 'course', Course::class),
 
-            HasMany::make('Chapters', 'chapters', Chapter::class)
+            // HasMany::make('Chapters', 'chapters', Chapter::class),
+
+            BelongsToMany::make('Chapters', 'chapters', Chapter::class)
+                ->fields(function () {
+                    return [
+                        Number::make('Index'),
+                    ];
+                }),
 
         ];
     }

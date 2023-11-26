@@ -13,11 +13,11 @@ class HandleVimeoUploadTask
 {
     use Notifier;
 
-    public function handle(int $videoId, array $notificationRecipients = [])
+    public function handle(int $videoId, int $variantId, array $notificationRecipients = [])
     {
         $notifier = new NotifyAdminTask;
 
-        $validator = VimeoUploaderValidator::findUsingVideoId($videoId);
+        $validator = VimeoUploaderValidator::findUsingVideoId($videoId, $variantId);
 
         $vimeoClient = new VimeoClient;
 

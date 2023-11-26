@@ -134,7 +134,6 @@ class Video extends Resource
     {
         return [
             (new UploadVideo)
-                ->showInline()
                 // ->sole() // Important, allows this action to be ran on a single instance
                 ->confirmText('Upload video file'),
 

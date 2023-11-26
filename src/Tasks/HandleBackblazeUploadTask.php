@@ -2,6 +2,7 @@
 
 namespace Eduka\Nova\Tasks;
 
+use Eduka\Cube\Actions\Video\FindVariantById;
 use Eduka\Cube\Actions\Video\GetVariantFromVideo;
 use Eduka\Cube\Actions\Video\UpdateVariantBucket;
 use Eduka\Cube\Actions\VideoStorage\FindVideoStorageForBackblazeUpload;
@@ -14,7 +15,7 @@ class HandleBackblazeUploadTask
 {
     use Notifier;
 
-    public function handle(int $storageId, array $notificationRecipients)
+    public function handle(int $storageId, int $variantId, array $notificationRecipients)
     {
         $notifier = new NotifyAdminTask;
 
@@ -28,7 +29,7 @@ class HandleBackblazeUploadTask
             return;
         }
 
-        $variant = GetVariantFromVideo::get($videoStorage->video);
+        $variant = FindVariantById::find($variantId);
 
         if (! $variant) {
             $this->notifyVideoStorageVariantNotFound($notifier, $notificationRecipients, $storageId);
