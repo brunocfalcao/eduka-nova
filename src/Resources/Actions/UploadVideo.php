@@ -9,8 +9,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -24,13 +26,17 @@ class UploadVideo extends Action
             return Action::danger('Please run this on only one video resource.');
         }
 
-        $path = Storage::putFile('videos', $fields->video);
-
         $video = $models->first();
+
+        if ($video->hasVimeoId() && $fields->override === false) {
+            return Action::danger('A video file on vimeo already exists, select override to upload and replace');
+        }
 
         $videoStorage = VideoStorage::where('video_id', $video->id)->first();
 
-        if (! $videoStorage) {
+        $path = Storage::putFile('videos', $fields->video);
+
+        if (!$videoStorage) {
             $videoStorage = VideoStorage::create([
                 'video_id' => $video->id,
                 'path_on_disk' => $path,
@@ -46,7 +52,9 @@ class UploadVideo extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            File::make('Video'),
+            File::make('Video')->rules('required', 'file', 'mimes:video/mp4,video/avi,video/wmv,video/quicktime', 'max:20480'),
+
+            Boolean::make('Override existing video?', 'override'),
         ];
     }
 }
