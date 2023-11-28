@@ -2,7 +2,6 @@
 
 namespace Eduka\Nova\Resources\Actions;
 
-use Eduka\Cube\Models\Video;
 use Eduka\Cube\Models\VideoStorage;
 use Eduka\Nova\Jobs\UploadToBackblazeJob;
 use Eduka\Nova\Jobs\UploadToVimeoJob;
@@ -12,9 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\File;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class UploadVideo extends Action
@@ -29,8 +26,8 @@ class UploadVideo extends Action
 
         $video = $models->first();
 
-        if ($video->hasVimeoId() && $fields->override === false) {
-            return Action::danger('A video file on vimeo already exists, select override to upload and replace');
+        if (count($video->variants) === 0) {
+            return Action::danger('Video does not have any relation with variants.');
         }
 
         $videoStorage = VideoStorage::where('video_id', $video->id)->first();
@@ -44,36 +41,19 @@ class UploadVideo extends Action
             ]);
         }
 
-        UploadToVimeoJob::dispatch($video->id, $fields->variant);
-        UploadToBackblazeJob::dispatch($videoStorage->id, $fields->variant);
+        $courseId = $video->variants->first()->course_id;
+
+        UploadToVimeoJob::dispatch($video->id, $courseId);
+        UploadToBackblazeJob::dispatch($videoStorage->id, $courseId);
 
         return Action::message('Video upload started in the background.');
     }
 
     public function fields(NovaRequest $request)
     {
-        $id = $request->get('resourceId'); // id (video id)
-
-        $video = Video::with('chapter.variants')->where('id', $id)->first();
-
-        $variantOptions = [];
-
-        if ($video) {
-            foreach ($video->chapter->variants as $variant) {
-                $variantOptions[(string) $variant->id] = $variant->canonical;
-            }
-        }
-
         return [
             File::make('Video')
                 ->rules('required', 'file', 'mimetypes:video/avi,video/mp4,video/mpeg,video/quicktime', 'max:20480'),
-
-            Select::make('Variant')
-                ->options($variantOptions)
-                ->rules('required', 'numeric'),
-
-            Boolean::make('Override existing video?', 'override')
-                ->help('This should be ticked if you want to override the existing video.'),
         ];
     }
 }

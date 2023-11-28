@@ -13,7 +13,7 @@ class UploadToVimeoJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(private int $videoId, private int $variantId)
+    public function __construct(private int $videoId, private int $courseId)
     {
     }
 
@@ -24,6 +24,6 @@ class UploadToVimeoJob implements ShouldQueue
     {
         $notificationRecipients = [env('ADMIN_EMAIL')];
 
-        (new HandleVimeoUploadTask)->handle($this->videoId, $this->variantId, $notificationRecipients);
+        (new HandleVimeoUploadTask)->handle($this->videoId, $this->courseId , $notificationRecipients);
     }
 }

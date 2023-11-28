@@ -2,7 +2,7 @@
 
 namespace Eduka\Nova\Tasks;
 
-use Eduka\Cube\Actions\Variant\UpdateVimeoProjectId;
+use Eduka\Cube\Actions\UpdateVimeoProjectId;
 use Eduka\Cube\Actions\Video\SaveVimeoId;
 use Eduka\Cube\Shared\Processor\VimeoUploaderValidator;
 use Eduka\Nova\Tasks\Traits\Notifier;
@@ -13,11 +13,11 @@ class HandleVimeoUploadTask
 {
     use Notifier;
 
-    public function handle(int $videoId, int $variantId, array $notificationRecipients = [])
+    public function handle(int $videoId, int $courseId, array $notificationRecipients = [])
     {
         $notifier = new NotifyAdminTask;
 
-        $validator = VimeoUploaderValidator::findUsingVideoId($videoId, $variantId);
+        $validator = VimeoUploaderValidator::findUsingVideoId($videoId, $courseId);
 
         $vimeoClient = new VimeoClient;
 
@@ -30,9 +30,9 @@ class HandleVimeoUploadTask
             $newVimeoProjectId = $vimeoClient->ensureProjectExists($validator->getVimeoProjectId(), $validator->getCourseName());
 
             if ($newVimeoProjectId !== $validator->getVimeoProjectId()) {
-                UpdateVimeoProjectId::update($validator->getVariant(), $newVimeoProjectId);
+                UpdateVimeoProjectId::update($validator->getCourse(), $newVimeoProjectId);
 
-                $validator = $validator->refreshVariant();
+                $validator = $validator->refreshCourse();
             }
 
             $vimeoUrl = $vimeoClient->upload($validator->getVideoFilePathFromDisk(), $validator->getVideoMetadata());

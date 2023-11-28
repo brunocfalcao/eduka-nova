@@ -2,8 +2,8 @@
 
 namespace Eduka\Nova\Tasks;
 
-use Eduka\Cube\Actions\Video\FindVariantById;
-use Eduka\Cube\Actions\Video\UpdateVariantBucket;
+use Eduka\Cube\Actions\FindCourseById;
+use Eduka\Cube\Actions\Video\UpdateBackblazeBucketName;
 use Eduka\Cube\Actions\VideoStorage\FindVideoStorageForBackblazeUpload;
 use Eduka\Cube\Actions\VideoStorage\UpdateBackblazeId;
 use Eduka\Nova\Tasks\Traits\Notifier;
@@ -14,12 +14,11 @@ class HandleBackblazeUploadTask
 {
     use Notifier;
 
-    public function handle(int $storageId, int $variantId, array $notificationRecipients)
+    public function handle(int $storageId, int $courseId, array $notificationRecipients)
     {
         $notifier = new NotifyAdminTask;
 
         // @todo select only necessary columns
-        // what we need: video, variant & course
         $videoStorage = FindVideoStorageForBackblazeUpload::find($storageId);
 
         if (! $videoStorage) {
@@ -28,20 +27,20 @@ class HandleBackblazeUploadTask
             return;
         }
 
-        $variant = FindVariantById::find($variantId);
+        $course = FindCourseById::find($courseId);
 
-        if (! $variant) {
-            $this->notifyVideoStorageVariantNotFound($notifier, $notificationRecipients, $storageId);
+        if (! $course) {
+            $this->notifyCourseNotFound($notifier, $notificationRecipients, $storageId);
 
             return;
         }
 
         $bbClient = new BackblazeClient;
 
-        $existingBucket = $variant->getBucketName();
+        $existingBucket = $course->getBucketName();
 
         // New bucket if a bucket with the name $bucketName does not exists
-        $newBucketToBe = $variant->createBucketNameUsing();
+        $newBucketToBe = $course->createBucketNameUsing();
 
         try {
             // check if the bucket exists or not
@@ -51,7 +50,7 @@ class HandleBackblazeUploadTask
 
             if ($existingBucket !== $bucket) {
                 // a new bucket was created, update database
-                UpdateVariantBucket::update($variant, $bucket);
+                UpdateBackblazeBucketName::update($course, $bucket);
             }
 
             $bbClient->uploadTo($videoStorage->path_on_disk, $bucket, $videoStorage->video->name);

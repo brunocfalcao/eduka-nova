@@ -21,9 +21,9 @@ trait Notifier
         $notifier->notify($notificationRecipients, 'error', $message);
     }
 
-    private function notifyVideoStorageVariantNotFound(NotifyAdminTask $notifier, array $notificationRecipients, int $storageId)
+    private function notifyCourseNotFound(NotifyAdminTask $notifier, array $notificationRecipients, int $storageId)
     {
-        $message = sprintf('Could not find variant from video storage with id %s ', $storageId);
+        $message = sprintf('Could not find course from video storage with id %s ', $storageId);
 
         $notifier->notify($notificationRecipients, 'error', $message);
     }

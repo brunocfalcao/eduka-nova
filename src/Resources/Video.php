@@ -2,14 +2,9 @@
 
 namespace Eduka\Nova\Resources;
 
-use Eduka\Nova\Resources\Actions\MakeActive;
-use Eduka\Nova\Resources\Actions\MakeFree;
-use Eduka\Nova\Resources\Actions\MakeInactive;
-use Eduka\Nova\Resources\Actions\MakeInvisible;
-use Eduka\Nova\Resources\Actions\MakePaid;
-use Eduka\Nova\Resources\Actions\MakeVisible;
 use Eduka\Nova\Resources\Actions\UploadVideo;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
@@ -57,12 +52,12 @@ class Video extends Resource
                 ->hideWhenCreating(),
 
             Number::make('Duration')->displayUsing(function ($value) {
-                if (! $value) {
+                if (!$value) {
                     return '';
                 }
 
                 if ($value < 60) {
-                    return $value.' min';
+                    return $value . ' min';
                 }
 
                 $hours = (int) ($value / 60);
@@ -92,6 +87,13 @@ class Video extends Resource
             BelongsTo::make('Chapter', 'chapter', Chapter::class)
                 ->searchable()
                 ->showCreateRelationButton(),
+
+            BelongsToMany::make('Variants', 'variants', Variant::class)
+                ->fields(function () {
+                    return [
+                        Number::make('Index'),
+                    ];
+                }),
         ];
     }
 
@@ -133,18 +135,7 @@ class Video extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new UploadVideo)
-                // ->sole() // Important, allows this action to be ran on a single instance
-                ->confirmText('Upload video file'),
-
-            (new MakeVisible)->showInline(),
-            (new MakeFree)->showInline(),
-            (new MakeActive)->showInline(),
-
-            (new MakeInvisible),
-            (new MakePaid),
-            (new MakeInactive),
-
+            new UploadVideo
         ];
     }
 }

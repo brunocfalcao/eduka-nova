@@ -51,15 +51,6 @@ class Chapter extends Resource
                 ->rules('nullable', 'max:1000'),
 
             HasMany::make('Videos', 'videos', Video::class),
-
-            // BelongsTo::make('Variant','variant',Variant::class),
-
-            BelongsToMany::make('Variants', 'variants', Variant::class)
-                ->fields(function () {
-                    return [
-                        Number::make('Index'),
-                    ];
-                }),
         ];
     }
 

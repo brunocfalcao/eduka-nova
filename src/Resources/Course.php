@@ -108,8 +108,12 @@ class Course extends Resource
                     ->hideFromIndex(),
             ]),
 
-            Panel::make('Vimeo', [
+            Panel::make('Vimeo & BackBlaze', [
                 Text::make('Vimeo Project ID', 'vimeo_project_id')
+                    ->rules('nullable', 'string')
+                    ->hideFromIndex(),
+
+                Text::make('Backblaze Bucket', 'backblaze_bucket_name')
                     ->rules('nullable', 'string')
                     ->hideFromIndex(),
             ]),
