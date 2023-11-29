@@ -52,12 +52,12 @@ class Video extends Resource
                 ->hideWhenCreating(),
 
             Number::make('Duration')->displayUsing(function ($value) {
-                if (!$value) {
+                if (! $value) {
                     return '';
                 }
 
                 if ($value < 60) {
-                    return $value . ' min';
+                    return $value.' min';
                 }
 
                 $hours = (int) ($value / 60);
@@ -135,7 +135,7 @@ class Video extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            new UploadVideo
+            new UploadVideo,
         ];
     }
 }
