@@ -58,7 +58,7 @@ class Series extends Resource
                 ->rules('required', 'max:250')
                 ->sortable(),
 
-            Textarea::make('Details')
+            Textarea::make('description')
                 ->rules('nullable', 'max:255')
                 ->hideFromIndex(),
 

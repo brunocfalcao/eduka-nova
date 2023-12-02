@@ -41,7 +41,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Eduka\\Nova\\NovaServiceProvider"
+        "Eduka\\Nova\\EdukaNovaServiceProvider"
       ]
     }
   },
