@@ -4,11 +4,9 @@ namespace Eduka\Nova\Resources;
 
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Eduka\Nova\Abstracts\EdukaResource;
-use Laravel\Nova\Fields\BelongsToMany;
+use Eduka\Nova\Resources\Fields\EdID;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
@@ -33,7 +31,7 @@ class Course extends EdukaResource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            EdID::make(),
 
             Panel::make('Basic information', [
                 Text::make('Name'),
@@ -87,58 +85,11 @@ class Course extends EdukaResource
                     ->hideFromIndex(),
             ]),
 
-            // Relations
-            HasMany::make('Domains', 'domains', Domain::class),
-
-            HasMany::make('Variants', 'variants', Variant::class),
-
-            BelongsToMany::make('Users', 'users', User::class),
-
             Number::make('Registered users', 'users_count')
                 ->onlyOnIndex()
                 ->sortable(),
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];
-    }
-
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
-    {
-        return [];
     }
 }
