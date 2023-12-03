@@ -62,7 +62,6 @@ class Order extends EdukaResource
                     ->hideFromIndex(),
 
             KeyValue::make('API Response', 'response_body')
-                    ->json()
                     ->onlyOnDetail(),
 
             Panel::make('Timestamps', $this->timestamps($request)),
