@@ -2,13 +2,15 @@
 
 namespace Eduka\Nova\Resources;
 
+use Eduka\Nova\Abstracts\EdukaResource;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Email;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
-class Subscriber extends Resource
+class Subscriber extends EdukaResource
 {
     /**
      * The model the resource corresponds to.
@@ -43,9 +45,7 @@ class Subscriber extends Resource
 
             Email::make('Email')->sortable(),
 
-            BelongsTo::make('Course', 'course', Course::class),
-
-            DateTime::make('Created', 'created_at')->sortable(),
+            Panel::make('Timestamps', $this->timestamps($request)),
         ];
     }
 

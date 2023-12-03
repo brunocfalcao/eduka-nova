@@ -2,6 +2,7 @@
 
 namespace Eduka\Nova\Resources;
 
+use Eduka\Nova\Abstracts\EdukaResource;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -10,8 +11,9 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
-class Series extends Resource
+class Series extends EdukaResource
 {
     /**
      * The model the resource corresponds to.
@@ -66,10 +68,7 @@ class Series extends Resource
                 ->exceptOnForms()
                 ->sortable(),
 
-            BelongsTo::make('Course', 'courses', Course::class),
-
-            BelongsToMany::make('Videos', 'videos', Video::class),
-
+            Panel::make('Timestamps', $this->timestamps($request)),
         ];
     }
 

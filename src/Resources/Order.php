@@ -2,6 +2,7 @@
 
 namespace Eduka\Nova\Resources;
 
+use Eduka\Nova\Abstracts\EdukaResource;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
@@ -9,10 +10,12 @@ use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
-class Order extends Resource
+class Order extends EdukaResource
 {
     /**
      * The model the resource corresponds to.
@@ -44,9 +47,6 @@ class Order extends Resource
     {
         return [
             ID::make()->sortable(),
-
-            BelongsTo::make('User', 'user', User::class),
-            BelongsTo::make('Course', 'course', Course::class),
 
             Currency::make('Total', function () {
                 return $this->total / 100;
@@ -81,8 +81,9 @@ class Order extends Resource
 
             DateTime::make('Refunded', 'refunded_at')->hideFromIndex(),
 
-            Code::make('API Response', 'response_body')->json()->onlyOnDetail(),
+            KeyValue::make('API Response', 'response_body')->json()->onlyOnDetail(),
 
+            Panel::make('Timestamps', $this->timestamps($request)),
         ];
     }
 

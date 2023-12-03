@@ -6,9 +6,9 @@ use Eduka\Abstracts\Classes\EdukaServiceProvider;
 use Eduka\Nova\Resources\Chapter;
 use Eduka\Nova\Resources\Coupon;
 use Eduka\Nova\Resources\Course;
-use Eduka\Nova\Resources\CustomLink;
 use Eduka\Nova\Resources\Dashboards\Main;
 use Eduka\Nova\Resources\Domain;
+use Eduka\Nova\Resources\Link;
 use Eduka\Nova\Resources\Order;
 use Eduka\Nova\Resources\Series;
 use Eduka\Nova\Resources\Subscriber;
@@ -54,7 +54,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
 
                 MenuSection::make('Others', [
                     MenuItem::resource(Tag::class),
-                    MenuItem::resource(CustomLink::class),
+                    MenuItem::resource(Link::class),
                     MenuItem::resource(Domain::class),
                     MenuItem::resource(Subscriber::class),
                 ]),
@@ -79,7 +79,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
             Order::class,
             Subscriber::class,
             Tag::class,
-            CustomLink::class,
+            Link::class,
             Variant::class,
         ]);
     }

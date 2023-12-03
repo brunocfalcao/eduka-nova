@@ -25,6 +25,7 @@
     "league/flysystem-aws-s3-v3" : "*",
     "vimeo/vimeo-api": "^3.0",
     "aws/aws-sdk-php": "^3.286",
+    "titasgailius/search-relations": "^2.0",
     "brunocfalcao/laravel-nova-helpers": "dev-master",
     "brunocfalcao/eduka-services": "dev-master"
   },

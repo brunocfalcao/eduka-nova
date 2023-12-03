@@ -2,6 +2,8 @@
 
 namespace Eduka\Nova\Resources;
 
+use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Eduka\Nova\Abstracts\EdukaResource;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -13,27 +15,14 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
-class Course extends Resource
+class Course extends EdukaResource
 {
-    /**
-     * The model the resource corresponds to.
-     */
     public static $model = \Eduka\Cube\Models\Course::class;
 
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
     public static $title = 'name';
 
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
     public static $search = [
-        'id', 'name',
+        'name',
     ];
 
     public static function indexQuery(NovaRequest $request, $query)
@@ -41,69 +30,49 @@ class Course extends Resource
         return $query->withCount('users');
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
     public function fields(NovaRequest $request)
     {
         return [
             ID::make()->sortable(),
 
-            // form fields
-            Panel::make('Basic info', [
-                Text::make('Name')
-                    ->rules('required', 'max:250')
-                    ->sortable(),
+            Panel::make('Basic information', [
+                Text::make('Name'),
 
-                DateTime::make('Launched', 'launched_at')
-                    ->rules('nullable', 'date'),
+                DateTime::make('Launched', 'launched_at'),
 
-                Boolean::make('Enable PPP', 'enable_purchase_power_parity')
-                    ->rules('boolean'),
+                Boolean::make('Enable PPP', 'enable_purchase_power_parity'),
 
-                Boolean::make('Dicommissioned', 'is_decommissioned')
-                    ->rules('boolean'),
+                Boolean::make('Decommissioned', 'is_decommissioned'),
 
                 Text::make('Provider namespace')
-                    ->hideFromIndex()
-                    ->rules('required', 'max:250'),
+                    ->hideFromIndex(),
             ]),
 
             Panel::make('Educator', [
-                Text::make('Name', 'admin_name')
-                    ->rules('nullable', 'max:250'),
+                Text::make('Name', 'admin_name'),
 
-                Text::make('Email', 'admin_email')
-                    ->rules('nullable', 'max:250', 'email'),
+                Text::make('Email', 'admin_email'),
             ]),
 
             Panel::make('Metadata & Social', [
                 Text::make('Title', 'meta_title')
-                    ->rules('nullable', 'max:250')
                     ->hideFromIndex(),
 
-                Text::make('Canonical')
-                    ->creationRules('nullable', 'max:250', 'unique:courses,canonical')
-                    ->updateRules('nullable', 'max:250', 'unique:courses,canonical,{{resourceId}}')
-                    ->hideFromIndex(),
+                Canonical::make(),
 
                 Textarea::make('Description', 'meta_description')
                     ->hideFromIndex()
                     ->rules('nullable', 'max:250'),
 
-                Text::make('Meta twitter alias', 'meta_twitter_alias')
-                    ->hideFromIndex()
-                    ->rules('nullable', 'max:250'),
+                Text::make('Twitter alias', 'meta_twitter_alias')
+                    ->hideFromIndex(),
 
                 Text::make('Twitter handle', 'twitter_handle')
-                    ->hideFromIndex()
-                    ->rules('nullable', 'max:250'),
+                    ->hideFromIndex(),
             ]),
 
             Panel::make('Lemon Squeezy', [
-                Text::make('Store ID', 'lemonsqueezy_store_id')
+                Text::make('Store ID', 'lemon_squeezy_store_id')
                     ->rules('nullable', 'string')
                     ->hideFromIndex(),
             ]),
@@ -128,6 +97,8 @@ class Course extends Resource
             Number::make('Registered users', 'users_count')
                 ->onlyOnIndex()
                 ->sortable(),
+
+            Panel::make('Timestamps', $this->timestamps($request)),
         ];
     }
 

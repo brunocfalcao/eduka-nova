@@ -2,6 +2,7 @@
 
 namespace Eduka\Nova\Resources;
 
+use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Actions\UploadVideo;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -13,7 +14,7 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
-class Video extends Resource
+class Video extends EdukaResource
 {
     /**
      * The model the resource corresponds to.
@@ -84,16 +85,7 @@ class Video extends Resource
                     ->rules('nullable', 'max:250', 'url'),
             ]),
 
-            BelongsTo::make('Chapter', 'chapter', Chapter::class)
-                ->searchable()
-                ->showCreateRelationButton(),
-
-            BelongsToMany::make('Variants', 'variants', Variant::class)
-                ->fields(function () {
-                    return [
-                        Number::make('Index'),
-                    ];
-                }),
+            Panel::make('Timestamps', $this->timestamps($request)),
         ];
     }
 

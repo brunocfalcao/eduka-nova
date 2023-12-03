@@ -3,6 +3,8 @@
 namespace Eduka\Nova\Resources;
 
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdID;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -15,7 +17,7 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
-class Variant extends Resource
+class Variant extends EdukaResource
 {
     /**
      * The model the resource corresponds to.
@@ -46,7 +48,7 @@ class Variant extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            EdID::make(),
 
             Hidden::make('Uuid')->default(function ($request) {
                 return Str::orderedUuid();
@@ -64,24 +66,15 @@ class Variant extends Resource
             ]),
 
             Panel::make('Lemon Squeezy', [
-                Text::make('Variant ID', 'lemonsqueezy_variant_id')
+                Text::make('Variant ID', 'lemon_squeezy_variant_id')
                     ->rules('required', 'string')
                     ->hideFromIndex(),
 
-                Number::make('Price override', 'lemonsqueezy_price_override')
+                Number::make('Price override', 'lemon_squeezy_price_override')
                     ->rules('nullable', 'numeric'),
             ]),
 
-            // Relations
-            BelongsTo::make('Course', 'course', Course::class),
-
-            BelongsToMany::make('Videos', 'videos', Video::class)
-                ->fields(function () {
-                    return [
-                        Number::make('Index'),
-                    ];
-                }),
-
+            Panel::make('Timestamps', $this->timestamps($request)),
         ];
     }
 

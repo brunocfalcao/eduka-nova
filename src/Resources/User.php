@@ -3,6 +3,7 @@
 namespace Eduka\Nova\Resources;
 
 use Eduka\Cube\Models\User as UserModel;
+use Eduka\Nova\Abstracts\EdukaResource;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -11,8 +12,9 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
-class User extends Resource
+class User extends EdukaResource
 {
     /**
      * The model the resource corresponds to.
@@ -64,9 +66,7 @@ class User extends Resource
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
 
-            BelongsToMany::make('Courses', 'courses', Course::class),
-
-            BelongsToMany::make('Completed Videos', 'videosCompleted', Video::class),
+            Panel::make('Timestamps', $this->timestamps($request)),
         ];
     }
 

@@ -2,13 +2,15 @@
 
 namespace Eduka\Nova\Resources;
 
+use Eduka\Nova\Abstracts\EdukaResource;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
-class Domain extends Resource
+class Domain extends EdukaResource
 {
     /**
      * The model the resource corresponds to.
@@ -43,7 +45,7 @@ class Domain extends Resource
 
             Text::make('Name'),
 
-            BelongsTo::make('Course', 'course', Course::class),
+            Panel::make('Timestamps', $this->timestamps($request)),
         ];
     }
 
