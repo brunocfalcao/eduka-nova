@@ -5,6 +5,7 @@ namespace Eduka\Nova\Resources;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Actions\UploadVideo;
 use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Fields\EdTextarea;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
@@ -56,7 +57,7 @@ class Video extends EdukaResource
                     ->rules('nullable', 'max:250')
                     ->hideFromIndex(),
 
-                Textarea::make('Description', 'meta_description')
+                EdTextarea::make('Description', 'meta_description')
                     ->hideFromIndex()
                     ->rules('nullable', 'max:250'),
 

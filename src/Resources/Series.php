@@ -4,6 +4,7 @@ namespace Eduka\Nova\Resources;
 
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Fields\EdTextarea;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
@@ -39,7 +40,7 @@ class Series extends EdukaResource
                 ->rules('required', 'max:250')
                 ->sortable(),
 
-            Textarea::make('description')
+            EdTextarea::make('description')
                 ->rules('nullable', 'max:255')
                 ->hideFromIndex(),
 

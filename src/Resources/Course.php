@@ -4,7 +4,9 @@ namespace Eduka\Nova\Resources;
 
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdDateTime;
 use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Fields\EdTextarea;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Number;
@@ -23,11 +25,6 @@ class Course extends EdukaResource
         'name',
     ];
 
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query->withCount('users');
-    }
-
     public function fields(NovaRequest $request)
     {
         return [
@@ -36,7 +33,7 @@ class Course extends EdukaResource
             Panel::make('Basic information', [
                 Text::make('Name'),
 
-                DateTime::make('Launched', 'launched_at'),
+                EdDateTime::make('Launched', 'launched_at'),
 
                 Boolean::make('Enable PPP', 'enable_purchase_power_parity'),
 
@@ -48,7 +45,6 @@ class Course extends EdukaResource
 
             Panel::make('Educator', [
                 Text::make('Name', 'admin_name'),
-
                 Text::make('Email', 'admin_email'),
             ]),
 
@@ -58,7 +54,7 @@ class Course extends EdukaResource
 
                 Canonical::make(),
 
-                Textarea::make('Description', 'meta_description')
+                EdTextarea::make('Description', 'meta_description')
                     ->hideFromIndex()
                     ->rules('nullable', 'max:250'),
 
@@ -84,10 +80,6 @@ class Course extends EdukaResource
                     ->rules('nullable', 'string')
                     ->hideFromIndex(),
             ]),
-
-            Number::make('Registered users', 'users_count')
-                ->onlyOnIndex()
-                ->sortable(),
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];

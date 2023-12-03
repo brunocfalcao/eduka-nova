@@ -5,6 +5,7 @@ namespace Eduka\Nova\Resources;
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Fields\EdTextarea;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Hidden;
@@ -39,7 +40,7 @@ class Variant extends EdukaResource
                 Boolean::make('Default', 'is_default')
                     ->rules('boolean'),
 
-                Textarea::make('Description', 'description')
+                EdTextarea::make('Description', 'description')
                     ->rules('required', 'max:250'),
             ]),
 
