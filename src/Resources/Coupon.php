@@ -2,80 +2,38 @@
 
 namespace Eduka\Nova\Resources;
 
-use Eduka\Cube\Util\Country;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\ID;
+use Eduka\Nova\Resources\Fields\EdID;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Coupon extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Coupon>
-     */
     public static $model = \Eduka\Cube\Models\Coupon::class;
 
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'code';
+    public static $title = 'description';
 
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
     public static $search = [
-        'id', 'code',
+        'code',
     ];
 
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query->orderBy('country_iso_code');
-    }
-
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            EdID::make(),
 
             Text::make('Code')
-                ->rules('required', 'alpha_dash')
-                ->sortable(),
+                ->rules('required'),
 
-            Number::make('Discount', 'discount_amount')
-                ->displayUsing(function ($value, $coupon) {
-                    return sprintf('%s %s', $coupon->discount_amount, $coupon->is_flat_discount ? config('eduka.currency') : '%');
-                })
-                ->rules('required', 'numeric'),
+            Textarea::make('Description')
+                    ->rules('required'),
 
-            Boolean::make('Flat discount', 'is_flat_discount')
-                ->rules('boolean')
-                ->hideFromIndex(),
+            Number::make('Discount amount', 'discount_amount')
+                  ->rules('numeric'),
 
-            Select::make('Country', 'country_iso_code')
-                ->options(Country::list()) // the country code should be UPPER case
-                ->rules('nullable', 'in:'.implode(',', array_keys(Country::list())))
-                ->sortable(),
-
-            Text::make('Ref', 'remote_reference_id')
-                ->hideFromIndex()
-                ->placeholder('Should be created automatically by the application when a new coupon is created on 3rd party payment provider')
-                ->help("Ref ('remote_reference_id' in the database is the id is provided by the 3rd party payment provider. If the coupon was already created in 3rd party (eg: lemon squeezy)"),
-
-            BelongsTo::make('Course', 'course', Course::class),
+            Number::make('Discount percentage', 'discount_percentage')
+                  ->rules('numeric'),
         ];
     }
 

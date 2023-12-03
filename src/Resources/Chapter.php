@@ -3,8 +3,6 @@
 namespace Eduka\Nova\Resources;
 
 use Eduka\Nova\Resources\Fields\EdID;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -25,15 +23,9 @@ class Chapter extends Resource
             EdID::make(),
 
             Text::make('Name')
-                ->rules('required', 'max:250'),
+                ->rules('required'),
 
-            Textarea::make('description')
-                    ->rules('nullable', 'max:1000'),
-
-            Number::make('Index')
-                  ->rules('required', 'numeric'),
-
-            HasMany::make('Videos', 'videos', Video::class),
+            Textarea::make('description'),
         ];
     }
 }
