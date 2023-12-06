@@ -83,7 +83,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
             Tag::class,
             Link::class,
             Variant::class,
-            VideoStorage::class
+            VideoStorage::class,
         ]);
     }
 
