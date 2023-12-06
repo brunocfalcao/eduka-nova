@@ -16,6 +16,7 @@ use Eduka\Nova\Resources\Tag;
 use Eduka\Nova\Resources\User;
 use Eduka\Nova\Resources\Variant;
 use Eduka\Nova\Resources\Video;
+use Eduka\Nova\Resources\VideoStorage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Field;
@@ -57,6 +58,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
                     MenuItem::resource(Link::class),
                     MenuItem::resource(Domain::class),
                     MenuItem::resource(Subscriber::class),
+                    MenuItem::resource(VideoStorage::class),
                 ]),
 
             ];
@@ -81,6 +83,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
             Tag::class,
             Link::class,
             Variant::class,
+            VideoStorage::class
         ]);
     }
 

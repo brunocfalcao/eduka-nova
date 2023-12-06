@@ -22,6 +22,21 @@ class Course extends EdukaResource
         'name',
     ];
 
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        // Return the courses that this user is part of.
+        $courses = $request->user()
+                   ->variants
+                   ->map(function ($variant) {
+                       return $variant->course->id;
+                   })
+                   ->unique()
+                   ->values()
+                   ->all();
+
+        return $query->whereIn('id', $courses);
+    }
+
     public function fields(NovaRequest $request)
     {
         return [

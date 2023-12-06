@@ -5,7 +5,6 @@ namespace Eduka\Nova\Resources;
 use Eduka\Cube\Models\User as UserModel;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdID;
-use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\Password;
@@ -22,6 +21,21 @@ class User extends EdukaResource
     public static $search = [
         'name', 'email',
     ];
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        // Return distinct users that are part of this course logged user variant.
+        $courses = $request->user()->courses;
+
+        $query->distinct()
+              ->join('user_variant', 'users.id', 'user_variant.user_id')
+              ->join('variants', 'user_variant.variant_id', 'variants.id')
+              ->join('courses', 'variants.course_id', 'courses.id')
+              ->whereIn('courses.id', $courses->pluck('id'))
+              ->select('users.*');
+
+        return $query;
+    }
 
     public function fields(NovaRequest $request)
     {
@@ -47,45 +61,5 @@ class User extends EdukaResource
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];
-    }
-
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
-    {
-        return [];
     }
 }

@@ -5,10 +5,9 @@ namespace Eduka\Nova\Resources;
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Resources\Fields\EdTextarea;
-use Illuminate\Support\Str;
+use Eduka\Nova\Resources\Fields\EdUUID;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -21,17 +20,22 @@ class Variant extends EdukaResource
     public static $title = 'canonical';
 
     public static $search = [
-        'canonical',
+        'canonical', 'description',
     ];
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        // Return variants from the allowed user variants.
+        return $query->whereIn('id', $request->user()->variants->pluck('id'));
+    }
 
     public function fields(NovaRequest $request)
     {
         return [
             EdID::make(),
 
-            Hidden::make('Uuid')->default(function ($request) {
-                return Str::orderedUuid();
-            }),
+            EdUUID::make('UUid')
+                ->readonly(),
 
             Panel::make('Basic info', [
                 Canonical::make(),
@@ -39,7 +43,7 @@ class Variant extends EdukaResource
                 Boolean::make('Default', 'is_default')
                     ->rules('boolean'),
 
-                EdTextarea::make('Description', 'description')
+                Text::make('Description', 'description')
                     ->rules('required', 'max:250'),
             ]),
 
@@ -53,6 +57,8 @@ class Variant extends EdukaResource
             ]),
 
             Panel::make('Timestamps', $this->timestamps($request)),
+
+            BelongsToMany::make('Chapters', 'chapters', Chapter::class),
         ];
     }
 }
