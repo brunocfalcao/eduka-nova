@@ -24,11 +24,9 @@ class Link extends EdukaResource
             EdID::make(),
 
             Text::make('Name')
-                ->sortable()
                 ->rules('required', 'max:100'),
 
             Text::make('Url')
-                ->sortable()
                 ->rules('required', 'url'),
 
             Panel::make('Timestamps', $this->timestamps($request)),

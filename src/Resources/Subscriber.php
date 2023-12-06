@@ -23,7 +23,7 @@ class Subscriber extends EdukaResource
         return [
             EdID::make(),
 
-            Email::make('Email')->sortable(),
+            Email::make('Email'),
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];

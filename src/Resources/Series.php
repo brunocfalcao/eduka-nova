@@ -35,17 +35,13 @@ class Series extends EdukaResource
         return [
             EdID::make(),
 
-            Text::make('Name')
-                ->rules('required', 'max:250')
-                ->sortable(),
+            Text::make('Name'),
 
             EdTextarea::make('description')
-                ->rules('nullable', 'max:255')
                 ->hideFromIndex(),
 
             Number::make('Number of videos', 'videos_count')
-                ->exceptOnForms()
-                ->sortable(),
+                ->exceptOnForms(),
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];

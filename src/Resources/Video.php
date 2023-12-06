@@ -33,7 +33,7 @@ class Video extends EdukaResource
         return [
             EdID::make(),
 
-            Text::make('Name')->sortable(),
+            Text::make('Name'),
 
             Text::make('Vimeo Id', 'vimeo_id')
                 ->hideWhenCreating(),
@@ -53,9 +53,9 @@ class Video extends EdukaResource
                 return sprintf('%s hour %s mins', $hours, $mins);
             }),
 
-            Boolean::make('Is Visible')->sortable(),
-            Boolean::make('Is Active')->sortable(),
-            Boolean::make('Is Free')->sortable(),
+            Boolean::make('Is Visible'),
+            Boolean::make('Is Active'),
+            Boolean::make('Is Free'),
 
             Panel::make('Metadata & Social', [
                 Text::make('Title', 'meta_title')

@@ -23,9 +23,7 @@ class Tag extends EdukaResource
         return [
             EdID::make(),
 
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:100'),
+            Text::make('Name'),
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];
