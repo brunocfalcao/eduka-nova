@@ -24,7 +24,6 @@ class Video extends EdukaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        // Return videos only created by this user, that is the course admin.
         return $query->where('created_by', '=', $request->user()->id);
     }
 

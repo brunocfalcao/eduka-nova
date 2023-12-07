@@ -15,6 +15,16 @@ class VideoStorage extends EdukaResource
 
     public static $title = 'video_id';
 
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->upTo('videos')
+                     ->bring('chapter_video')
+                     ->bring('chapters', 'chapter_video.chapter_id', 'chapters.id')
+                     ->bring('chapter_variant', 'chapters.id', 'chapter_variant.chapter_id')
+                     ->bring('variants', 'chapter_variant.variant_id', 'variants.id')
+                     ->upTo('courses');
+    }
+
     public function fields(NovaRequest $request)
     {
         return [

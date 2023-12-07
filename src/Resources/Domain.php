@@ -18,6 +18,11 @@ class Domain extends EdukaResource
         'name',
     ];
 
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query;
+    }
+
     public function fields(NovaRequest $request)
     {
         return [

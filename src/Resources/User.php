@@ -24,7 +24,6 @@ class User extends EdukaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        // Return distinct users that are part of this course logged user variant.
         $courses = $request->user()->courses;
 
         $query->distinct()

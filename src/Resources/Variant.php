@@ -25,8 +25,12 @@ class Variant extends EdukaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        // Return variants from the allowed user variants.
-        return $query->whereIn('id', $request->user()->variants->pluck('id'));
+        return $query->whereIn(
+            'id',
+            $request->user()
+                    ->variants
+                    ->pluck('id')
+        );
     }
 
     public function fields(NovaRequest $request)
