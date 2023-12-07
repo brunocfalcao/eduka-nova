@@ -20,7 +20,9 @@ class Link extends EdukaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query;
+        return $query
+                ->upTo('videos')
+                ->where('videos.created_by', $request->user()->id);
     }
 
     public function fields(NovaRequest $request)

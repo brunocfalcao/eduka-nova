@@ -20,7 +20,12 @@ class Domain extends EdukaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query;
+        return $query->whereIn(
+            'course_id',
+            $request->user()
+                    ->courses
+                    ->pluck('id')
+        );
     }
 
     public function fields(NovaRequest $request)

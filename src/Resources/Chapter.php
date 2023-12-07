@@ -22,19 +22,12 @@ class Chapter extends EdukaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        /**
-         * Return all the chapters that are part of variants of this course.
-         */
-        $course = $request->user()->courses();
-
-        $query->distinct()
-              ->join('user_variant', 'users.id', 'user_variant.user_id')
-              ->whereIn('user_variant.variant_id', $course->variants->pluck('id'))
-              ->select('users.*');
-
-        return $query;
-
-        return $query;
+        return $query->whereIn(
+            'course_id',
+            $request->user()
+                    ->courses
+                    ->pluck('id')
+        );
     }
 
     public function fields(NovaRequest $request)
