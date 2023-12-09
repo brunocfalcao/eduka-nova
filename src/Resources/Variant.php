@@ -52,11 +52,11 @@ class Variant extends EdukaResource
             ]),
 
             Panel::make('Lemon Squeezy', [
-                Text::make('Variant ID', 'lemon_squeezy_variant_id')
+                Text::make('Variant ID', 'lemonsqueezy_variant_id')
                     ->rules('required', 'string')
                     ->hideFromIndex(),
 
-                Number::make('Price override', 'lemon_squeezy_price_override')
+                Number::make('Price override', 'lemonsqueezy_price_override')
                     ->rules('nullable', 'numeric'),
             ]),
 

@@ -73,7 +73,7 @@ class Course extends EdukaResource
             ]),
 
             Panel::make('Lemon Squeezy', [
-                Text::make('Store ID', 'lemon_squeezy_store_id')
+                Text::make('Store ID', 'lemonsqueezy_store_id')
                     ->rules('nullable', 'string')
                     ->hideFromIndex(),
             ]),
