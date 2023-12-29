@@ -2,9 +2,9 @@
 
 namespace Eduka\Nova\Resources\Dashboards;
 
-use Eduka\Cube\Models\User;
 use Hapheus\NovaSingleValueCard\NovaSingleValueCard;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Dashboards\Main as Dashboard;
 
 class Main extends Dashboard
@@ -16,18 +16,18 @@ class Main extends Dashboard
      */
     public function cards()
     {
-        info('---');
-        info(Auth::user()->courses->pluck('id'));
-        info(User::fromCourses(Auth::user()->courses)->get()->count());
-        info('---');
+        $courseIds = Auth::user()->courses->pluck('id');
 
         return [
             new NovaSingleValueCard(
                 'Users Total',
-                /**
-                 * Count all the users that have access to a specific course.
-                 */
-                User::fromCourses(Auth::user()->courses)->count()
+                DB::table('users')
+                  ->select('users.*')
+                  ->distinct()
+                  ->join('user_variant', 'users.id', 'user_variant.user_id')
+                  ->join('variants', 'user_variant.variant_id', 'variants.id')
+                  ->join('courses', 'variants.course_id', 'courses.id')
+                  ->whereIn('courses.id', $courseIds)->count()
             ),
         ];
     }

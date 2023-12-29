@@ -2,6 +2,7 @@
 
 namespace Eduka\Nova\Resources;
 
+use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Actions\UploadVideo;
 use Eduka\Nova\Resources\Fields\EdID;
@@ -34,22 +35,34 @@ class Video extends EdukaResource
 
             Text::make('Name'),
 
+            Canonical::make(),
+
             Text::make('Vimeo Id', 'vimeo_id')
                 ->hideWhenCreating(),
 
-            Number::make('Duration')->displayUsing(function ($value) {
-                if (! $value) {
-                    return '';
+            Number::make('Duration (in secs)', 'duration')->displayUsing(function ($value) {
+                if ($value <= 0) {
+                    return '0 seconds';
                 }
 
-                if ($value < 60) {
-                    return $value.' min';
+                $hours = intdiv($value, 3600);
+                $minutes = intdiv($value % 3600, 60);
+                $seconds = $value % 60;
+
+                $pluralize = fn ($num, $word) => $num.' '.$word.($num === 1 ? '' : 's');
+                $timeComponents = [];
+
+                if ($hours > 0) {
+                    $timeComponents[] = $pluralize($hours, 'hour');
+                }
+                if ($minutes > 0 || $hours > 0) {
+                    $timeComponents[] = $pluralize($minutes, 'minute');
+                }
+                if ($seconds > 0 || $minutes > 0 || $hours > 0) {
+                    $timeComponents[] = $pluralize($seconds, 'second');
                 }
 
-                $hours = (int) ($value / 60);
-                $mins = $value % 60;
-
-                return sprintf('%s hour %s mins', $hours, $mins);
+                return implode(' ', $timeComponents);
             }),
 
             Boolean::make('Is Visible'),
@@ -64,10 +77,6 @@ class Video extends EdukaResource
                 EdTextarea::make('Description', 'meta_description')
                     ->hideFromIndex()
                     ->rules('nullable', 'max:250'),
-
-                Text::make('Canonical URL', 'meta_canonical_url')
-                    ->hideFromIndex()
-                    ->rules('nullable', 'max:250', 'url'),
             ]),
 
             Panel::make('Timestamps', $this->timestamps($request)),
@@ -77,7 +86,7 @@ class Video extends EdukaResource
     public function actions(NovaRequest $request)
     {
         return [
-            new UploadVideo(),
+            UploadVideo::make()->sole(),
         ];
     }
 }

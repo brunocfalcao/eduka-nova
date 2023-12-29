@@ -8,6 +8,7 @@ use Eduka\Nova\Jobs\UploadToVimeoJob;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
@@ -20,33 +21,35 @@ class UploadVideo extends Action
 
     public function handle(ActionFields $fields, Collection $models)
     {
-        if ($models->count() > 1) {
-            return Action::danger('Please run this on only one video resource.');
+        try {
+            $video = $models->first();
+
+            $videoStorage = VideoStorage::firstWhere('video_id', $video->id);
+
+            $path = Storage::putFile('videos', $fields->video);
+
+            if ($videoStorage) {
+                Storage::delete($videoStorage->path_on_disk);
+                $videoStorage->update([
+                    'path_on_disk' => $path,
+                ]);
+            } else {
+                $videoStorage = VideoStorage::create([
+                    'video_id' => $video->id,
+                    'path_on_disk' => $path,
+                ]);
+            }
+
+            // This is an admin user. So it belongs to 1 course only.
+            $course = Auth::user()->courses->first();
+
+            UploadToVimeoJob::dispatch($video->id, $course->id, Auth::id());
+            //UploadToBackblazeJob::dispatch($videoStorage->id, $course->id);
+
+            return Action::message('Video upload to Youtube/Vimeo/Backblaze started in the background. You will be notified when it finishes');
+        } catch (\Exception $e) {
+            return Action::message($e->getMessage());
         }
-
-        $video = $models->first();
-
-        if (count($video->variants) === 0) {
-            return Action::danger('Video does not have any relation with variants.');
-        }
-
-        $videoStorage = VideoStorage::where('video_id', $video->id)->first();
-
-        $path = Storage::putFile('videos', $fields->video);
-
-        if (! $videoStorage) {
-            $videoStorage = VideoStorage::create([
-                'video_id' => $video->id,
-                'path_on_disk' => $path,
-            ]);
-        }
-
-        $courseId = $video->variants->first()->course_id;
-
-        UploadToVimeoJob::dispatch($video->id, $courseId);
-        UploadToBackblazeJob::dispatch($videoStorage->id, $courseId);
-
-        return Action::message('Video upload started in the background.');
     }
 
     public function fields(NovaRequest $request)

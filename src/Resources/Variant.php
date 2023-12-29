@@ -26,7 +26,7 @@ class Variant extends EdukaResource
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query->whereIn(
-            'id',
+            'variants.id',
             $request->user()
                     ->variants
                     ->pluck('id')
@@ -44,20 +44,16 @@ class Variant extends EdukaResource
             Panel::make('Basic info', [
                 Canonical::make(),
 
-                Boolean::make('Default', 'is_default')
-                    ->rules('boolean'),
+                Boolean::make('Default', 'is_default'),
 
-                Text::make('Description', 'description')
-                    ->rules('required', 'max:250'),
+                Text::make('Description', 'description'),
             ]),
 
             Panel::make('Lemon Squeezy', [
                 Text::make('Variant ID', 'lemonsqueezy_variant_id')
-                    ->rules('required', 'string')
                     ->hideFromIndex(),
 
-                Number::make('Price override', 'lemonsqueezy_price_override')
-                    ->rules('nullable', 'numeric'),
+                Number::make('Price override', 'lemonsqueezy_price_override'),
             ]),
 
             Panel::make('Timestamps', $this->timestamps($request)),
