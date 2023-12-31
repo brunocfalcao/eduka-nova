@@ -35,7 +35,9 @@ class Video extends EdukaResource
 
             Text::make('Name'),
 
-            Canonical::make(),
+            Canonical::make()
+                     ->readonly()
+                     ->onlyOnDetail(),
 
             Text::make('Vimeo Id', 'vimeo_id')
                 ->hideWhenCreating(),

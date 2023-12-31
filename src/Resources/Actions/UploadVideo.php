@@ -3,8 +3,8 @@
 namespace Eduka\Nova\Resources\Actions;
 
 use Eduka\Cube\Models\VideoStorage;
-use Eduka\Nova\Jobs\UploadToBackblazeJob;
-use Eduka\Nova\Jobs\UploadToVimeoJob;
+use Eduka\Nova\Services\UploadToBackblazeJob;
+use Eduka\Nova\Services\UploadToVimeoJob;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;

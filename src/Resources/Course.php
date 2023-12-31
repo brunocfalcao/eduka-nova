@@ -79,7 +79,7 @@ class Course extends EdukaResource
             ]),
 
             Panel::make('Vimeo & BackBlaze', [
-                Text::make('Vimeo Project ID', 'vimeo_project_id')
+                Text::make('Vimeo Collection ID', 'vimeo_project_id')
                     ->rules('nullable', 'string')
                     ->hideFromIndex(),
 
