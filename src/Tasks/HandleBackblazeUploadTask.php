@@ -37,10 +37,10 @@ class HandleBackblazeUploadTask
 
         $bbClient = new BackblazeClient;
 
-        $existingBucket = $course->getBucketName();
+        $existingBucket = $course->backblaze_bucket_name;
 
         // New bucket if a bucket with the name $bucketName does not exists
-        $newBucketToBe = $course->createBucketNameUsing();
+        $newBucketToBe = $course->canonical;
 
         try {
             // check if the bucket exists or not
@@ -58,7 +58,6 @@ class HandleBackblazeUploadTask
             UpdateBackblazeId::handle($videoStorage, 'video uploaded; attention: could not parse response');
 
             $this->notifyVideoUploadedSuccessfully($notifier, $notificationRecipients, $videoStorage->video->name, 'backblaze');
-
         } catch (Exception $e) {
             $this->notifyException($notifier, $notificationRecipients, $e);
         }
