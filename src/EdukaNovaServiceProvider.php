@@ -4,10 +4,8 @@ namespace Eduka\Nova;
 
 use Eduka\Abstracts\Classes\EdukaServiceProvider;
 use Eduka\Nova\Resources\Chapter;
-use Eduka\Nova\Resources\Coupon;
 use Eduka\Nova\Resources\Course;
 use Eduka\Nova\Resources\Dashboards\Main;
-use Eduka\Nova\Resources\Domain;
 use Eduka\Nova\Resources\Link;
 use Eduka\Nova\Resources\Order;
 use Eduka\Nova\Resources\Series;
@@ -16,7 +14,6 @@ use Eduka\Nova\Resources\Tag;
 use Eduka\Nova\Resources\User;
 use Eduka\Nova\Resources\Variant;
 use Eduka\Nova\Resources\Video;
-use Eduka\Nova\Resources\VideoStorage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Field;
@@ -50,15 +47,12 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
 
                 MenuSection::make('Store', [
                     MenuItem::resource(Order::class),
-                    MenuItem::resource(Coupon::class),
                 ]),
 
                 MenuSection::make('Others', [
                     MenuItem::resource(Tag::class),
                     MenuItem::resource(Link::class),
-                    MenuItem::resource(Domain::class),
                     MenuItem::resource(Subscriber::class),
-                    MenuItem::resource(VideoStorage::class),
                 ]),
 
             ];
@@ -71,19 +65,16 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
         });
 
         Nova::resources([
-            User::class,
-            Course::class,
-            Domain::class,
-            Series::class,
-            Video::class,
-            Coupon::class,
             Chapter::class,
+            Course::class,
+            Link::class,
             Order::class,
+            Series::class,
             Subscriber::class,
             Tag::class,
-            Link::class,
+            User::class,
             Variant::class,
-            VideoStorage::class,
+            Video::class,
         ]);
     }
 
