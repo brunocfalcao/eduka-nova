@@ -11,15 +11,15 @@ class EdDateTime extends Text
         parent::__construct($name, $attribute, $resolveCallback);
 
         $this->readonly()
-             ->hideFromIndex()
-             ->hideWhenCreating()
-             ->resolveUsing(function ($value) {
-                 return $value ? \Carbon\Carbon::parse($value)->diffForHumans() : null;
-             })
-             ->canSee(function ($request) {
-                 if (! via_resource()) {
-                     return true;
-                 }
-             });
+            ->hideFromIndex()
+            ->hideWhenCreating()
+            ->resolveUsing(function ($value) {
+                return $value ? \Carbon\Carbon::parse($value)->diffForHumans() : null;
+            })
+            ->canSee(function ($request) {
+                if (! via_resource()) {
+                    return true;
+                }
+            });
     }
 }

@@ -27,8 +27,8 @@ class Order extends EdukaResource
         return $query->whereIn(
             'variant_id',
             $request->user()
-                    ->variants
-                    ->pluck('id')
+                ->variants
+                ->pluck('id')
         );
     }
 
@@ -59,20 +59,20 @@ class Order extends EdukaResource
             DateTime::make('Datetime', 'created_at'),
 
             Boolean::make('Payment status', 'remote_reference_payment_status')
-                    ->resolveUsing(function ($remoteReferencePaymentStatus) {
-                        return $remoteReferencePaymentStatus == 'paid';
-                    })
-                    ->onlyOnIndex(),
+                ->resolveUsing(function ($remoteReferencePaymentStatus) {
+                    return $remoteReferencePaymentStatus == 'paid';
+                })
+                ->onlyOnIndex(),
 
             Text::make('Payment status', 'remote_reference_payment_status')
                 ->capitalizeFirst()
                 ->hideFromIndex(),
 
             DateTime::make('Refunded', 'refunded_at')
-                    ->hideFromIndex(),
+                ->hideFromIndex(),
 
             KeyValue::make('API Response', 'response_body')
-                    ->onlyOnDetail(),
+                ->onlyOnDetail(),
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];

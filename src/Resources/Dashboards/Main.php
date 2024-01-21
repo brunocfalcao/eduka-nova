@@ -22,12 +22,12 @@ class Main extends Dashboard
             new NovaSingleValueCard(
                 'Users Total',
                 DB::table('users')
-                  ->select('users.*')
-                  ->distinct()
-                  ->join('user_variant', 'users.id', 'user_variant.user_id')
-                  ->join('variants', 'user_variant.variant_id', 'variants.id')
-                  ->join('courses', 'variants.course_id', 'courses.id')
-                  ->whereIn('courses.id', $courseIds)->count()
+                    ->select('users.*')
+                    ->distinct()
+                    ->join('user_variant', 'users.id', 'user_variant.user_id')
+                    ->join('variants', 'user_variant.variant_id', 'variants.id')
+                    ->join('courses', 'variants.course_id', 'courses.id')
+                    ->whereIn('courses.id', $courseIds)->count()
             ),
         ];
     }

@@ -23,11 +23,11 @@ class Series extends EdukaResource
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query
-                ->bring(
-                    'series_variant',
-                    'series.id',
-                    'series_variant.series_id'
-                );
+            ->bring(
+                'series_variant',
+                'series.id',
+                'series_variant.series_id'
+            );
     }
 
     public static function detailQuery(NovaRequest $request, $query)

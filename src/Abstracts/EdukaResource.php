@@ -30,7 +30,7 @@ abstract class EdukaResource extends Resource
             EdDateTime::make('Updated At'),
 
             EdDateTime::make('Deleted At')
-                         ->canSee(fn () => ! $request->findModel()->deleted_at == null),
+                ->canSee(fn () => ! $request->findModel()->deleted_at == null),
         ];
     }
 }

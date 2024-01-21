@@ -11,6 +11,6 @@ class EdImage extends Image
         parent::__construct($name, $attribute, $disk, $storageCallback);
 
         $this->disableDownload()
-             ->acceptedTypes('image/*');
+            ->acceptedTypes('image/*');
     }
 }

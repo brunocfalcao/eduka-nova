@@ -25,11 +25,9 @@ class Variant extends EdukaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->whereIn(
-            'variants.id',
-            $request->user()
-                    ->variants
-                    ->pluck('id')
+        return $query->where(
+            'course_id',
+            $request->user()->course_id_as_admin
         );
     }
 

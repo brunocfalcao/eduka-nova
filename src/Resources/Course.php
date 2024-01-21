@@ -6,8 +6,9 @@ use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdDateTime;
 use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Resources\Fields\EdTextarea;
-use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
@@ -19,75 +20,55 @@ class Course extends EdukaResource
     public static $title = 'name';
 
     public static $search = [
-        'name',
+        'name', 'description',
     ];
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->whereIn(
+        return $query->where(
             'id',
-            $request->user()
-                    ->courses
-                    ->pluck('id')
+            $request->user()->course_id_as_admin
         );
     }
 
     public function fields(NovaRequest $request)
     {
         return [
+            // Confirmed.
             EdID::make(),
 
-            Panel::make('Basic information', [
-                Text::make('Name'),
+            // Confirmed.
+            Text::make('Name'),
 
-                EdDateTime::make('Launched', 'launched_at'),
+            // Confirmed.
+            Canonical::make(),
 
-                Boolean::make('Enable PPP', 'enable_purchase_power_parity'),
+            // Confirmed.
+            Text::make('Domain'),
 
-                Boolean::make('Decommissioned', 'is_decommissioned'),
+            // Confirmed.
+            Text::make('Service Provider class', 'provider_namespace'),
 
-                Text::make('Provider namespace')
-                    ->hideFromIndex(),
-            ]),
+            // Confirmed.
+            EdDateTime::make('Prelaunched at'),
 
-            Panel::make('Educator', [
-                Text::make('Name', 'admin_name'),
-                Text::make('Email', 'admin_email'),
-            ]),
+            // Confirmed.
+            EdDateTime::make('Launched at'),
 
-            Panel::make('Metadata & Social', [
-                Text::make('Title', 'meta_title')
-                    ->hideFromIndex(),
+            // Confirmed.
+            EdDateTime::make('Retired at'),
 
-                Canonical::make(),
+            // Confirmed.
+            KeyValue::make('meta'),
 
-                EdTextarea::make('Description', 'meta_description')
-                    ->hideFromIndex()
-                    ->rules('nullable', 'max:250'),
+            // Confirmed.
+            HasOne::make('Admin User', 'adminUser', User::class)
+                ->exceptOnForms(),
 
-                Text::make('Twitter alias', 'meta_twitter_alias')
-                    ->hideFromIndex(),
+            // Confirmed.
+            HasMany::make('Chapters', 'chapters', Chapter::class),
 
-                Text::make('Twitter handle', 'twitter_handle')
-                    ->hideFromIndex(),
-            ]),
-
-            Panel::make('Lemon Squeezy', [
-                Text::make('Store ID', 'lemonsqueezy_store_id')
-                    ->rules('nullable', 'string')
-                    ->hideFromIndex(),
-            ]),
-
-            Panel::make('Vimeo & BackBlaze', [
-                Text::make('Vimeo Collection ID', 'vimeo_project_id')
-                    ->rules('nullable', 'string')
-                    ->hideFromIndex(),
-
-                Text::make('Backblaze Bucket', 'backblaze_bucket_name')
-                    ->rules('nullable', 'string')
-                    ->hideFromIndex(),
-            ]),
-
+            // Confirmed.
             Panel::make('Timestamps', $this->timestamps($request)),
         ];
     }

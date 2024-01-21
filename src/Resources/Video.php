@@ -25,7 +25,7 @@ class Video extends EdukaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->where('created_by', '=', $request->user()->id);
+        return $query->where('course_id', $request->user()->course_id_as_admin);
     }
 
     public function fields(NovaRequest $request)
@@ -36,8 +36,8 @@ class Video extends EdukaResource
             Text::make('Name'),
 
             Canonical::make()
-                     ->readonly()
-                     ->onlyOnDetail(),
+                ->readonly()
+                ->onlyOnDetail(),
 
             Text::make('Vimeo Id', 'vimeo_id')
                 ->hideWhenCreating(),

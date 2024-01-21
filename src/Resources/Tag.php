@@ -23,8 +23,8 @@ class Tag extends EdukaResource
         return $query->whereIn(
             'course_id',
             $request->user()
-                    ->courses
-                    ->pluck('id')
+                ->courses
+                ->pluck('id')
         );
     }
 
