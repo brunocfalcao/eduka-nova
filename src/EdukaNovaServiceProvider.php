@@ -15,8 +15,6 @@ use Eduka\Nova\Resources\User;
 use Eduka\Nova\Resources\Variant;
 use Eduka\Nova\Resources\Video;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
@@ -33,35 +31,20 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
             return [
                 MenuSection::dashboard(Main::class)->icon('chart-bar'),
 
-                MenuSection::make('Students', [
+                MenuSection::make('Entities', [
+                    MenuItem::resource(Course::class)->name('Course (done)'),
+                    MenuItem::resource(Variant::class),
+                    MenuItem::resource(Chapter::class)->name('Chapters (done)'),
+                    MenuItem::resource(Video::class),
+
+                    MenuItem::resource(Link::class)->name('Links (done)'),
+                    MenuItem::resource(Order::class),
+                    MenuItem::resource(Series::class),
+                    MenuItem::resource(Tag::class),
+                    MenuItem::resource(Subscriber::class),
                     MenuItem::resource(User::class),
                 ])->icon('user'),
-
-                MenuSection::make('Learning', [
-                    MenuItem::resource(Course::class),
-                    MenuItem::resource(Variant::class),
-                    MenuItem::resource(Series::class),
-                    MenuItem::resource(Chapter::class),
-                    MenuItem::resource(Video::class),
-                ])->icon('document-text'),
-
-                MenuSection::make('Store', [
-                    MenuItem::resource(Order::class),
-                ]),
-
-                MenuSection::make('Others', [
-                    MenuItem::resource(Tag::class),
-                    MenuItem::resource(Link::class),
-                    MenuItem::resource(Subscriber::class),
-                ]),
-
             ];
-        });
-
-        Field::macro('capitalizeFirst', function () {
-            return $this->displayUsing(function ($value) {
-                return Str::ucfirst($value);
-            });
         });
 
         Nova::resources([

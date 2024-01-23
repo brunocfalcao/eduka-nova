@@ -48,6 +48,7 @@ class Course extends EdukaResource
 
             // Confirmed.
             Canonical::make()
+                ->hideFromIndex()
                 ->rules($this->model()->rule('canonical')),
 
             // Confirmed.
@@ -56,6 +57,7 @@ class Course extends EdukaResource
 
             // Confirmed.
             Text::make('Service Provider class', 'provider_namespace')
+                ->hideFromIndex()
                 ->rules($this->model()->rule('provider_namespace')),
 
             // Confirmed.
@@ -88,22 +90,25 @@ class Course extends EdukaResource
             HasMany::make('Chapters', 'chapters', Chapter::class),
 
             // Confirmed.
-            HasMany::make('Users'),
-
-            // Confirmed
-            HasMany::make('Subscribers'),
-
-            // Confirmed
-            HasMany::make('Tags'),
+            HasMany::make('Users', 'users', User::class),
 
             // Confirmed.
-            HasMany::make('Variants'),
+            HasMany::make('Orders', 'orders', Order::class),
 
             // Confirmed.
-            HasMany::make('Series'),
+            HasMany::make('Subscribers', 'subscribers', Subscriber::class),
 
             // Confirmed.
-            HasMany::make('Videos'),
+            HasMany::make('Tags', 'tags', Tag::class),
+
+            // Confirmed.
+            HasMany::make('Variants', 'variants', Variant::class),
+
+            // Confirmed.
+            HasMany::make('Series', 'series', Series::class),
+
+            // Confirmed.
+            HasMany::make('Videos', 'videos', Video::class),
         ];
     }
 }

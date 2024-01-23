@@ -19,8 +19,6 @@ class Video extends EdukaResource
 {
     public static $model = \Eduka\Cube\Models\Video::class;
 
-    public static $title = 'name';
-
     public function title()
     {
         $video = VideoModel::with('chapter')->find($this->id);
