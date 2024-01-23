@@ -6,10 +6,10 @@ use Brunocfalcao\LaravelNovaHelpers\Traits\DefaultAscPKSorting;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Fields\EdImage;
 use Eduka\Nova\Resources\Fields\EdTextarea;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
@@ -43,21 +43,24 @@ class Chapter extends EdukaResource
             EdID::make(),
 
             // Confirmed.
-            Text::make('Name'),
+            Text::make('Name')
+                ->rules($this->model()->rule('name')),
 
             // Confirmed.
-            EdTextarea::make('description'),
+            EdTextarea::make('description')
+                ->rules($this->model()->rule('description')),
 
             // Confirmed.
-            Number::make('Index'),
+            Number::make('Index')
+                ->rules($this->model()->rule('index')),
 
             // Confirmed.
-            KeyValue::make('meta'),
+            KeyValue::make('meta')
+                ->rules($this->model()->rule('meta')),
 
             // Confirmed.
-            Image::make('SEO Image', 'filename')
-                ->detailWidth(350)
-                ->disableDownload(),
+            EdImage::make('SEO Image', 'filename')
+                ->rules($this->model()->rule('filename')),
 
             // Confirmed.
             Text::make('Vimeo URI', 'vimeo_uri')

@@ -20,12 +20,7 @@ class Tag extends EdukaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->whereIn(
-            'course_id',
-            $request->user()
-                ->courses
-                ->pluck('id')
-        );
+        return $query;
     }
 
     public function fields(NovaRequest $request)

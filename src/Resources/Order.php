@@ -24,12 +24,7 @@ class Order extends EdukaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->whereIn(
-            'variant_id',
-            $request->user()
-                ->variants
-                ->pluck('id')
-        );
+        return $query;
     }
 
     public function fields(NovaRequest $request)

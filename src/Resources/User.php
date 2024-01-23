@@ -26,14 +26,6 @@ class User extends EdukaResource
     {
         $courses = $request->user()->courses;
 
-        $query->select('users.*')
-            ->distinct()
-            ->join('user_variant', 'users.id', 'user_variant.user_id')
-            ->join('variants', 'user_variant.variant_id', 'variants.id')
-            ->join('courses', 'variants.course_id', 'courses.id')
-            ->whereIn('courses.id', $courses->pluck('id'));
-
-        return $query;
     }
 
     public function fields(NovaRequest $request)

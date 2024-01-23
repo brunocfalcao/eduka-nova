@@ -3,8 +3,10 @@
 namespace Eduka\Nova\Resources;
 
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Eduka\Cube\Models\Video as VideoModel;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Actions\UploadVideo;
+use Eduka\Nova\Resources\Fields\EdHasMany;
 use Eduka\Nova\Resources\Fields\EdID;
 use Eduka\Nova\Resources\Fields\EdTextarea;
 use Laravel\Nova\Fields\Boolean;
@@ -19,13 +21,23 @@ class Video extends EdukaResource
 
     public static $title = 'name';
 
+    public function title()
+    {
+        $video = VideoModel::with('chapter')->find($this->id);
+
+        return $this->name.($video->chapter ? " ({$video->chapter->name})" : '');
+    }
+
     public static $search = [
-        'name',
+        'name', 'description',
     ];
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->where('course_id', $request->user()->course_id_as_admin);
+        return $query->where(
+            'course_id',
+            $request->user()->course_id_as_admin
+        );
     }
 
     public function fields(NovaRequest $request)
@@ -80,6 +92,9 @@ class Video extends EdukaResource
                     ->hideFromIndex()
                     ->rules('nullable', 'max:250'),
             ]),
+
+            // Confirmed.
+            EdHasMany::make('Links', 'links', Link::class),
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];

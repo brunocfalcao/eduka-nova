@@ -6,6 +6,8 @@ use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdDateTime;
 use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Fields\EdImage;
+use Eduka\Nova\Resources\Fields\HumanTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\KeyValue;
@@ -38,28 +40,45 @@ class Course extends EdukaResource
             EdID::make(),
 
             // Confirmed.
-            Text::make('Name'),
+            Text::make('Name')
+                ->rules($this->model()->rule('name')),
+
+            EdImage::make('SEO Image', 'filename')
+                ->rules($this->model()->rule('filename')),
 
             // Confirmed.
-            Canonical::make(),
+            Canonical::make()
+                ->rules($this->model()->rule('canonical')),
 
             // Confirmed.
-            Text::make('Domain'),
+            Text::make('Domain')
+                ->rules($this->model()->rule('domain')),
 
             // Confirmed.
-            Text::make('Service Provider class', 'provider_namespace'),
+            Text::make('Service Provider class', 'provider_namespace')
+                ->rules($this->model()->rule('provider_namespace')),
 
             // Confirmed.
-            EdDateTime::make('Prelaunched at'),
+            EdDateTime::make('Prelaunched at')
+                ->rules($this->model()->rule('prelaunched_at')),
+            HumanTime::make('Prelaunched at'),
 
             // Confirmed.
-            EdDateTime::make('Launched at'),
+            EdDateTime::make('Launched at')
+                ->rules($this->model()->rule('launched_at')),
+            HumanTime::make('Launched at'),
 
             // Confirmed.
-            EdDateTime::make('Retired at'),
+            EdDateTime::make('Retired at')
+                ->rules($this->model()->rule('retired_at')),
+            HumanTime::make('Retired at'),
 
             // Confirmed.
-            KeyValue::make('meta'),
+            KeyValue::make('meta')
+                ->rules($this->model()->rule('meta')),
+
+            // Confirmed.
+            Panel::make('Timestamps', $this->timestamps($request)),
 
             // Confirmed.
             HasOne::make('Admin User', 'adminUser', User::class)
@@ -69,7 +88,22 @@ class Course extends EdukaResource
             HasMany::make('Chapters', 'chapters', Chapter::class),
 
             // Confirmed.
-            Panel::make('Timestamps', $this->timestamps($request)),
+            HasMany::make('Users'),
+
+            // Confirmed
+            HasMany::make('Subscribers'),
+
+            // Confirmed
+            HasMany::make('Tags'),
+
+            // Confirmed.
+            HasMany::make('Variants'),
+
+            // Confirmed.
+            HasMany::make('Series'),
+
+            // Confirmed.
+            HasMany::make('Videos'),
         ];
     }
 }
