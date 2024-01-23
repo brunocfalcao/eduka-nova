@@ -4,10 +4,10 @@ namespace Eduka\Nova\Resources;
 
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Fields\EdDateTime;
+use Eduka\Nova\Resources\Fields\EdDate;
 use Eduka\Nova\Resources\Fields\EdID;
 use Eduka\Nova\Resources\Fields\EdImage;
-use Eduka\Nova\Resources\Fields\HumanTime;
+use Eduka\Nova\Resources\Fields\Timestamp;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\KeyValue;
@@ -61,19 +61,19 @@ class Course extends EdukaResource
                 ->rules($this->model()->rule('provider_namespace')),
 
             // Confirmed.
-            EdDateTime::make('Prelaunched at')
+            EdDate::make('Prelaunched at')
                 ->rules($this->model()->rule('prelaunched_at')),
-            HumanTime::make('Prelaunched at'),
+            Timestamp::make('Prelaunched at'),
 
             // Confirmed.
-            EdDateTime::make('Launched at')
+            EdDate::make('Launched at')
                 ->rules($this->model()->rule('launched_at')),
-            HumanTime::make('Launched at'),
+            Timestamp::make('Launched at'),
 
             // Confirmed.
-            EdDateTime::make('Retired at')
+            EdDate::make('Retired at')
                 ->rules($this->model()->rule('retired_at')),
-            HumanTime::make('Retired at'),
+            Timestamp::make('Retired at'),
 
             // Confirmed.
             KeyValue::make('meta')

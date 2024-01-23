@@ -27,12 +27,18 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
             new Main(),
         ]);
 
-        Nova::mainMenu(function (Request $request) {
+        $courseItem = MenuItem::resource(Course::class)
+            ->name('Course (done)')
+            ->withBadge('+5', 'info');
+
+        Nova::mainMenu(function (Request $request) use ($courseItem) {
             return [
                 MenuSection::dashboard(Main::class)->icon('chart-bar'),
 
                 MenuSection::make('Entities', [
-                    MenuItem::resource(Course::class)->name('Course (done)'),
+
+                    $courseItem,
+
                     MenuItem::resource(Variant::class),
                     MenuItem::resource(Chapter::class)->name('Chapters (done)'),
                     MenuItem::resource(Video::class),

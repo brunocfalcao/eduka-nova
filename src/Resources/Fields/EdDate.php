@@ -2,9 +2,9 @@
 
 namespace Eduka\Nova\Resources\Fields;
 
-use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Date;
 
-class EdDateTime extends DateTime
+class EdDate extends Date
 {
     public function __construct($name, $attribute = null, ?callable $resolveCallback = null)
     {

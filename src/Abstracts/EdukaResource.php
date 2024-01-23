@@ -3,7 +3,7 @@
 namespace Eduka\Nova\Abstracts;
 
 use App\Nova\Resource;
-use Eduka\Nova\Resources\Fields\EdDateTime;
+use Eduka\Nova\Resources\Fields\Timestamp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Titasgailius\SearchRelations\SearchesRelations;
@@ -25,11 +25,12 @@ abstract class EdukaResource extends Resource
     protected function timestamps(Request $request)
     {
         return [
-            EdDateTime::make('Created At'),
+            Timestamp::make('Created At'),
 
-            EdDateTime::make('Updated At'),
+            Timestamp::make('Updated At')
+                ->canSee(fn () => ! $request->findModel()->updated_at == null),
 
-            EdDateTime::make('Deleted At')
+            Timestamp::make('Deleted At')
                 ->canSee(fn () => ! $request->findModel()->deleted_at == null),
         ];
     }
