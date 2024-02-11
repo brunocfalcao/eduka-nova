@@ -10,6 +10,8 @@ class EdUUID extends Text
     {
         parent::__construct($name, $attribute, $resolveCallback);
 
+        $this->exceptOnForms();
+        $this->readonly();
         $this->hideFromIndex();
     }
 }

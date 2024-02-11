@@ -4,6 +4,7 @@ namespace Eduka\Nova\Resources;
 
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdDate;
 use Eduka\Nova\Resources\Fields\EdID;
 use Eduka\Nova\Resources\Fields\EdImage;
@@ -27,10 +28,13 @@ class Course extends EdukaResource
 
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->where(
-            'id',
-            $request->user()->course_id_as_admin
-        );
+        // When we are seeing the courses from the organization, show all.
+        if (! via_resource('organizations')) {
+            return $query->where(
+                'id',
+                $request->user()->course_id_as_admin
+            );
+        }
     }
 
     public function fields(NovaRequest $request)
@@ -54,6 +58,10 @@ class Course extends EdukaResource
             // Confirmed.
             Text::make('Domain')
                 ->rules($this->model()->rule('domain')),
+
+            EdBelongsTo::make('Organization', 'organization', Organization::class)
+                ->hideFromIndex()
+                ->rules($this->model()->rule('organization')),
 
             // Confirmed.
             Text::make('Service Provider class', 'provider_namespace')

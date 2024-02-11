@@ -28,7 +28,8 @@ class Order extends EdukaResource
     {
         return $query->where(
             'course_id',
-            $request->user()->course_id_as_admin
+            $request->user()
+                    ->course_id_as_admin
         );
     }
 
