@@ -24,13 +24,6 @@ class Variant extends EdukaResource
         'canonical', 'description',
     ];
 
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        $course = $request->user()->courseAsAdmin;
-
-        return $query->where('course_id', $course->id);
-    }
-
     public function fields(NovaRequest $request)
     {
         return [

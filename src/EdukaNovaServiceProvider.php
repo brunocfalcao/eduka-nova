@@ -6,10 +6,10 @@ use Eduka\Abstracts\Classes\EdukaServiceProvider;
 use Eduka\Nova\Resources\Chapter;
 use Eduka\Nova\Resources\Course;
 use Eduka\Nova\Resources\Dashboards\Main;
-use Eduka\Nova\Resources\EdukaRequestLog;
 use Eduka\Nova\Resources\Link;
 use Eduka\Nova\Resources\Order;
 use Eduka\Nova\Resources\Organization;
+use Eduka\Nova\Resources\RequestLog;
 use Eduka\Nova\Resources\Series;
 use Eduka\Nova\Resources\Subscriber;
 use Eduka\Nova\Resources\Tag;
@@ -48,6 +48,9 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
         $items['link'] = MenuItem::resource(Link::class)
             ->name('Links (done)');
 
+        $items['eduka_request_log'] = MenuItem::resource(RequestLog::class)
+            ->name('Request Logs (done)');
+
         Nova::mainMenu(function (Request $request) use ($items) {
             return [
                 MenuSection::dashboard(Main::class)->icon('chart-bar'),
@@ -68,7 +71,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
                     MenuItem::resource(Tag::class),
                     MenuItem::resource(Subscriber::class),
                     MenuItem::resource(User::class),
-                    MenuItem::resource(EdukaRequestLog::class),
+                    $items['eduka_request_log'],
                 ])->icon('user'),
             ];
         });
@@ -85,7 +88,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
             Variant::class,
             Video::class,
             Organization::class,
-            EdukaRequestLog::class,
+            RequestLog::class,
         ]);
     }
 

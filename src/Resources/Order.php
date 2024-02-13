@@ -24,15 +24,6 @@ class Order extends EdukaResource
         'response_ body', 'event_name', 'order_name',
     ];
 
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query->where(
-            'course_id',
-            $request->user()
-                    ->course_id_as_admin
-        );
-    }
-
     public function fields(NovaRequest $request)
     {
         return [

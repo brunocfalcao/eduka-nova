@@ -4,10 +4,11 @@ namespace Eduka\Nova\Resources;
 
 use Eduka\Cube\Models\User as UserModel;
 use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdID;
-use Illuminate\Validation\Rules;
-use Laravel\Nova\Fields\Gravatar;
-use Laravel\Nova\Fields\Password;
+use Illuminate\Support\Carbon;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
@@ -22,33 +23,39 @@ class User extends EdukaResource
         'name', 'email',
     ];
 
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        $courses = $request->user()->courses;
-
-    }
-
     public function fields(NovaRequest $request)
     {
         return [
             EdID::make(),
 
-            Gravatar::make()->maxWidth(50),
-
             Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
+                ->rules($this->model()->rule('name')),
 
             Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
+                ->rules($this->model()->rule('email')),
 
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults()),
+            Boolean::make('Is course admin?', 'course_id_as_admin')
+                ->onlyOnDetail()
+                ->canSee(function ($request) {
+                    return $this->course_id_as_admin;
+                }),
+
+            EdBelongsTo::make('Course as admin', 'courseAsAdmin', Course::class)
+                ->onlyOnDetail()
+                ->canSee(function ($request) {
+                    return $this->course_id_as_admin;
+                }),
+
+            DateTime::make('Last logged in at', 'last_logged_in_at')
+                ->readonly()
+                ->displayUsing(function ($value) {
+                    $timezone = config('app.timezone');
+
+                    if ($value) {
+                        return (new Carbon($value))->timezone($timezone)
+                            ->format('F d, Y H:i');
+                    }
+                }),
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];

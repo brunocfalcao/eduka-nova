@@ -2,7 +2,6 @@
 
 namespace Eduka\Nova\Resources;
 
-use Eduka\Cube\Models\User;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdHasMany;
 use Eduka\Nova\Resources\Fields\EdID;
@@ -19,18 +18,6 @@ class Organization extends EdukaResource
     public static $search = [
         'name',
     ];
-
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        // Organization that is part of the course where the user is admin.
-        return $query->where(
-            'id',
-            User::firstWhere(
-                'id',
-                $request->user()->id
-            )->courseAsAdmin->organization->id
-        );
-    }
 
     public function fields(NovaRequest $request)
     {

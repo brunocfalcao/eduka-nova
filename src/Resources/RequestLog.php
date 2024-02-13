@@ -11,29 +11,35 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
-class EdukaRequestLog extends EdukaResource
+class RequestLog extends EdukaResource
 {
-    public static $model = \Eduka\Cube\Models\EdukaRequestLog::class;
+    public static $model = \Eduka\Cube\Models\RequestLog::class;
 
-    public static $globallySearchable = false;
+    public static $search = [
+        'referrer', 'url', 'route',
+    ];
 
     public function title()
     {
-        return 'Request made on '.$this->created_at;
-    }
+        return 'Request made on '.
+               $this->created_at
+                   ->timezone(config('app.timezone'))
+                   ->format('F d, Y H:i');
 
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query->where(
-            'course_id',
-            $request->user()->courseAsAdmin->id
-        );
     }
 
     public function fields(NovaRequest $request)
     {
         return [
             EdID::make(),
+
+            EdBelongsTo::make('User', 'user', User::class),
+
+            EdBelongsTo::make('Organization', 'organization', Organization::class)
+                ->hideFromIndex(),
+
+            EdBelongsTo::make('Course', 'course', Course::class)
+                ->hideFromIndex(),
 
             DateTime::make('Created At', 'created_at')
                 ->displayUsing(function ($value) {
@@ -43,9 +49,13 @@ class EdukaRequestLog extends EdukaResource
                         ->format('F d, Y H:i');
                 }),
 
-            Text::make('Referrer'),
+            Text::make('Referrer', 'referrer')
+                ->displayUsing(function ($value) {
+                    return extract_host_from_url($value);
+                }),
 
-            Text::make('url'),
+            Text::make('url')
+                ->hideFromIndex(),
 
             Text::make('Route'),
 
@@ -56,10 +66,6 @@ class EdukaRequestLog extends EdukaResource
             KeyValue::make('Payload', 'payload'),
 
             KeyValue::make('Headers', 'headers'),
-
-            EdBelongsTo::make('Organization', 'organization', Organization::class),
-
-            EdBelongsTo::make('Course', 'course', Course::class),
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];

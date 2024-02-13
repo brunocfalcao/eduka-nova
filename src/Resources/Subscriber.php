@@ -18,11 +18,6 @@ class Subscriber extends EdukaResource
         'email',
     ];
 
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query;
-    }
-
     public function fields(NovaRequest $request)
     {
         return [

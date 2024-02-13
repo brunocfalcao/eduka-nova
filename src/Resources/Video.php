@@ -30,14 +30,6 @@ class Video extends EdukaResource
         'name', 'description',
     ];
 
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        return $query->where(
-            'course_id',
-            $request->user()->course_id_as_admin
-        );
-    }
-
     public function fields(NovaRequest $request)
     {
         return [

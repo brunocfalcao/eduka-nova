@@ -2,7 +2,6 @@
 
 namespace Eduka\Nova\Resources;
 
-use Eduka\Cube\Models\Video;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdID;
@@ -21,18 +20,6 @@ class Link extends EdukaResource
     public static $search = [
         'name', 'url',
     ];
-
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        // Links only for the videos that are part of this course.
-        return $query->whereIn(
-            'video_id',
-            Video::where(
-                'course_id',
-                $request->user()->course_id_as_admin
-            )->pluck('id')
-        );
-    }
 
     public function fields(NovaRequest $request)
     {

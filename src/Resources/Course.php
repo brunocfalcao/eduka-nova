@@ -26,17 +26,6 @@ class Course extends EdukaResource
         'name', 'description',
     ];
 
-    public static function indexQuery(NovaRequest $request, $query)
-    {
-        // When we are seeing the courses from the organization, show all.
-        if (! via_resource('organizations')) {
-            return $query->where(
-                'id',
-                $request->user()->course_id_as_admin
-            );
-        }
-    }
-
     public function fields(NovaRequest $request)
     {
         return [
