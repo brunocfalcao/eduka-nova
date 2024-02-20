@@ -8,6 +8,8 @@ use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdID;
 use Eduka\Nova\Resources\Fields\EdImage;
 use Eduka\Nova\Resources\Fields\EdTextarea;
+use Eduka\Nova\Resources\Filters\ByCourse;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\KeyValue;
@@ -78,6 +80,13 @@ class Chapter extends EdukaResource
 
             // Confirmed.
             HasMany::make('Videos', 'videos', Video::class),
+        ];
+    }
+
+    public function filters(Request $request)
+    {
+        return [
+            new ByCourse(),
         ];
     }
 }

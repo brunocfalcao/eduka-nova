@@ -5,6 +5,8 @@ namespace Eduka\Nova\Resources;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdID;
 use Eduka\Nova\Resources\Fields\EdTextarea;
+use Eduka\Nova\Resources\Filters\ByCourse;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
@@ -30,6 +32,13 @@ class Series extends EdukaResource
                 ->hideFromIndex(),
 
             Panel::make('Timestamps', $this->timestamps($request)),
+        ];
+    }
+
+    public function filters(Request $request)
+    {
+        return [
+            new ByCourse(),
         ];
     }
 }

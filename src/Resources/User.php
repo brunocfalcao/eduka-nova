@@ -6,6 +6,8 @@ use Eduka\Cube\Models\User as UserModel;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Filters\ByUserCourse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -58,6 +60,13 @@ class User extends EdukaResource
                 }),
 
             Panel::make('Timestamps', $this->timestamps($request)),
+        ];
+    }
+
+    public function filters(Request $request)
+    {
+        return [
+            new ByUserCourse(),
         ];
     }
 }

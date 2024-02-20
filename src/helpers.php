@@ -1,5 +1,35 @@
 <?php
 
+if (! function_exists('human_duration')) {
+    function human_duration($value)
+    {
+        if (! $value) {
+            return '00s'; // Return '00s' if the duration is null or 0
+        }
+
+        $hours = floor($value / 3600);
+        $minutes = floor(($value / 60) % 60);
+        $seconds = $value % 60;
+
+        $parts = [];
+
+        // Include hours only if greater than 0, left-pad with zero if single-digit
+        if ($hours > 0) {
+            $parts[] = str_pad($hours, 2, '0', STR_PAD_LEFT).'h';
+        }
+
+        // Include minutes only if hours are present or minutes are greater than 0, left-pad with zero if single-digit
+        if ($hours > 0 || $minutes > 0) {
+            $parts[] = str_pad($minutes, 2, '0', STR_PAD_LEFT).'m';
+        }
+
+        // Always include seconds, left-pad with zero if single-digit
+        $parts[] = str_pad($seconds, 2, '0', STR_PAD_LEFT).'s';
+
+        return implode(' ', $parts);
+    }
+}
+
 if (! function_exists('extract_host_from_url')) {
     /**
      * Extracts host name from a URL.

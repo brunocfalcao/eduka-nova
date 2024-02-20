@@ -7,6 +7,8 @@ use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdID;
 use Eduka\Nova\Resources\Fields\EdUUID;
+use Eduka\Nova\Resources\Filters\ByCourse;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\KeyValue;
@@ -38,7 +40,7 @@ class Variant extends EdukaResource
 
             // Confirmed.
             Canonical::make()
-                ->exceptOnForms(),
+                ->onlyOnDetail(),
 
             // Confirmed.
             Text::make('Description', 'description')
@@ -63,6 +65,13 @@ class Variant extends EdukaResource
             Panel::make('Timestamps', $this->timestamps($request)),
 
             EdBelongsTo::make('Course', 'course', Course::class),
+        ];
+    }
+
+    public function filters(Request $request)
+    {
+        return [
+            new ByCourse(),
         ];
     }
 }

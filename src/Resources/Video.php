@@ -6,10 +6,15 @@ use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Eduka\Cube\Models\Video as VideoModel;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Actions\UploadVideo;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdHasMany;
 use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Resources\Fields\EdTextarea;
+use Eduka\Nova\Resources\Fields\EdImage;
+use Eduka\Nova\Resources\Fields\EdUUID;
+use Eduka\Nova\Resources\Filters\ByCourse;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -18,6 +23,8 @@ use Laravel\Nova\Panel;
 class Video extends EdukaResource
 {
     public static $model = \Eduka\Cube\Models\Video::class;
+
+    public static $with = ['course'];
 
     public function title()
     {
@@ -35,53 +42,50 @@ class Video extends EdukaResource
         return [
             EdID::make(),
 
-            Text::make('Name'),
+            Text::make('Name')
+                ->rules($this->model()->rule('name')),
+
+            Text::make('Description')
+                ->hideFromIndex()
+                ->rules($this->model()->rule('description')),
+
+            EdBelongsTo::make('Course', 'course', Course::class)
+                ->rules($this->model()->rule('course_id'))
+                ->hideFromIndex(),
+
+            EdBelongsTo::make('Chapter', 'chapter', Chapter::class)
+                ->rules($this->model()->rule('chapter_id')),
+
+            Number::make('Index', 'index')
+                ->hideFromIndex()
+                ->rules($this->model()->rule('index')),
+
+            EdUUID::make('UUID'),
 
             Canonical::make()
                 ->readonly()
                 ->onlyOnDetail(),
 
+            EdImage::make('SEO Image', 'filename')
+                ->hideFromIndex()
+                ->rules($this->model()->rule('filename')),
+
             Text::make('Vimeo Id', 'vimeo_id')
+                ->rules($this->model()->rule('vimeo_id'))
+                ->hideFromIndex()
                 ->hideWhenCreating(),
 
             Number::make('Duration (in secs)', 'duration')->displayUsing(function ($value) {
-                if ($value <= 0) {
-                    return '0 seconds';
-                }
-
-                $hours = intdiv($value, 3600);
-                $minutes = intdiv($value % 3600, 60);
-                $seconds = $value % 60;
-
-                $pluralize = fn ($num, $word) => $num.' '.$word.($num === 1 ? '' : 's');
-                $timeComponents = [];
-
-                if ($hours > 0) {
-                    $timeComponents[] = $pluralize($hours, 'hour');
-                }
-                if ($minutes > 0 || $hours > 0) {
-                    $timeComponents[] = $pluralize($minutes, 'minute');
-                }
-                if ($seconds > 0 || $minutes > 0 || $hours > 0) {
-                    $timeComponents[] = $pluralize($seconds, 'second');
-                }
-
-                return implode(' ', $timeComponents);
-            }),
+                return human_duration($value);
+            })
+                ->rules($this->model()->rule('duration')),
 
             Boolean::make('Is Visible'),
             Boolean::make('Is Active'),
             Boolean::make('Is Free'),
 
-            Panel::make('Metadata & Social', [
-                Text::make('Title', 'meta_title')
-                    ->rules('nullable', 'max:250')
-                    ->hideFromIndex(),
-
-                EdTextarea::make('Description', 'meta_description')
-                    ->hideFromIndex()
-                    ->rules('nullable', 'max:250'),
-            ]),
+            KeyValue::make('Meta data', 'meta')
+                ->rules($this->model()->rule('meta')),
 
             // Confirmed.
             EdHasMany::make('Links', 'links', Link::class),
@@ -94,6 +98,13 @@ class Video extends EdukaResource
     {
         return [
             UploadVideo::make()->sole(),
+        ];
+    }
+
+    public function filters(Request $request)
+    {
+        return [
+            new ByCourse(),
         ];
     }
 }

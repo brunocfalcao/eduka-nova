@@ -5,6 +5,8 @@ namespace Eduka\Nova\Resources;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Filters\ByCourse;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Text;
@@ -25,7 +27,6 @@ class RequestLog extends EdukaResource
                $this->created_at
                    ->timezone(config('app.timezone'))
                    ->format('F d, Y H:i');
-
     }
 
     public function fields(NovaRequest $request)
@@ -68,6 +69,13 @@ class RequestLog extends EdukaResource
             KeyValue::make('Headers', 'headers'),
 
             Panel::make('Timestamps', $this->timestamps($request)),
+        ];
+    }
+
+    public function filters(Request $request)
+    {
+        return [
+            new ByCourse(),
         ];
     }
 }

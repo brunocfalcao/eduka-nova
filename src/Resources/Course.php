@@ -36,6 +36,7 @@ class Course extends EdukaResource
             Text::make('Name')
                 ->rules($this->model()->rule('name')),
 
+            // Confirmed.
             EdImage::make('SEO Image', 'filename')
                 ->rules($this->model()->rule('filename')),
 
@@ -48,6 +49,7 @@ class Course extends EdukaResource
             Text::make('Domain')
                 ->rules($this->model()->rule('domain')),
 
+            // Confirmed.
             EdBelongsTo::make('Organization', 'organization', Organization::class)
                 ->hideFromIndex()
                 ->rules($this->model()->rule('organization')),
