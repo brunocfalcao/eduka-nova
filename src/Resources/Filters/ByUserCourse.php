@@ -3,7 +3,6 @@
 namespace Eduka\Nova\Resources\Filters;
 
 use Eduka\Cube\Models\Course;
-use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Filters\Filter;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -27,17 +26,12 @@ class ByUserCourse extends Filter
      */
     public function apply(NovaRequest $request, $query, $value)
     {
-        // Listen to database queries
-        DB::listen(function ($query) {
-            // Combine the query with its bindings
-            $fullQuery = vsprintf(str_replace(['%', '?'], ['%%', "'%s'"], $query->sql), $query->bindings);
-
-            // Log the full query
-            info($fullQuery);
-        });
+        log_queries();
 
         return $query->bring('course_user')
             ->where('course_user.course_id', $value);
+
+        stop_logging_queries();
     }
 
     /**

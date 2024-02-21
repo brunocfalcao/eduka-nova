@@ -2,19 +2,20 @@
 
 namespace Eduka\Nova\Resources;
 
-use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
-use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Fields\EdBelongsTo;
-use Eduka\Nova\Resources\Fields\EdDate;
+use Laravel\Nova\Panel;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\KeyValue;
 use Eduka\Nova\Resources\Fields\EdID;
+use Laravel\Nova\Fields\BelongsToMany;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdDate;
 use Eduka\Nova\Resources\Fields\EdImage;
 use Eduka\Nova\Resources\Fields\Timestamp;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\HasOne;
-use Laravel\Nova\Fields\KeyValue;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 
 class Course extends EdukaResource
 {
@@ -89,7 +90,7 @@ class Course extends EdukaResource
             HasMany::make('Chapters', 'chapters', Chapter::class),
 
             // Confirmed.
-            HasMany::make('Users', 'users', User::class),
+            BelongsToMany::make('Users', 'users', User::class),
 
             // Confirmed.
             HasMany::make('Orders', 'orders', Order::class),

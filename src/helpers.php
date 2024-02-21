@@ -1,5 +1,19 @@
 <?php
 
+use Illuminate\Support\Carbon;
+
+if (! function_exists('human_date')) {
+    function human_date($value)
+    {
+        $timezone = config('app.timezone');
+
+        if ($value) {
+            return (new Carbon($value))->timezone($timezone)
+                ->format('F d, Y H:i');
+        }
+    }
+}
+
 if (! function_exists('human_duration')) {
     function human_duration($value)
     {

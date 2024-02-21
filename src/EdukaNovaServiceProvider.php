@@ -51,6 +51,9 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
         $items['eduka_request_log'] = MenuItem::resource(RequestLog::class)
             ->name('Request Logs (done)');
 
+        $items['user'] = MenuItem::resource(User::class)
+            ->name('Users (done)');
+
         Nova::mainMenu(function (Request $request) use ($items) {
             return [
                 MenuSection::dashboard(Main::class)->icon('chart-bar'),
@@ -61,6 +64,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
                     $items['organization'],
                     $items['variant'],
                     $items['chapter'],
+                    $items['user'],
 
                     MenuItem::resource(Video::class),
 
@@ -70,7 +74,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
                     MenuItem::resource(Series::class),
                     MenuItem::resource(Tag::class),
                     MenuItem::resource(Subscriber::class),
-                    MenuItem::resource(User::class),
+                    $items['user'],
                     $items['eduka_request_log'],
                 ])->icon('user'),
             ];
