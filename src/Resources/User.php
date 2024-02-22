@@ -2,19 +2,20 @@
 
 namespace Eduka\Nova\Resources;
 
-use Laravel\Nova\Panel;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\DateTime;
-use Eduka\Nova\Resources\Fields\EdID;
-use Laravel\Nova\Fields\BelongsToMany;
-use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Cube\Models\User as UserModel;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Actions\ResetUserPassword;
 use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Eduka\Nova\Resources\Fields\EdID;
 use Eduka\Nova\Resources\Filters\ByUserCourse;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
 class User extends EdukaResource
 {
@@ -86,7 +87,14 @@ class User extends EdukaResource
     public function filters(Request $request)
     {
         return [
-            new ByUserCourse(),
+            ByUserCourse::make(),
+        ];
+    }
+
+    public function actions(Request $request)
+    {
+        return [
+            ResetUserPassword::make(),
         ];
     }
 }

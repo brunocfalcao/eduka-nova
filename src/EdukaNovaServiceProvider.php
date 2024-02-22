@@ -64,7 +64,6 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
                     $items['organization'],
                     $items['variant'],
                     $items['chapter'],
-                    $items['user'],
 
                     MenuItem::resource(Video::class),
 

@@ -59,7 +59,7 @@ class Variant extends EdukaResource
             Currency::make('LS price override', 'lemon_squeezy_price_override')
                 ->rules($this->model()->rule('lemon_squeezy_price_override'))
                 ->canSee(function ($request) {
-                    return !via_resource();
+                    return ! via_resource();
                 })
                 ->helpInfo('In case you want to override the price that you have configured for this variant id in Lemon Squeezy'),
 

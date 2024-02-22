@@ -26,12 +26,9 @@ class ByUserCourse extends Filter
      */
     public function apply(NovaRequest $request, $query, $value)
     {
-        log_queries();
-
-        return $query->bring('course_user')
+        return $query->select('users.*')
+            ->bring('course_user')
             ->where('course_user.course_id', $value);
-
-        stop_logging_queries();
     }
 
     /**

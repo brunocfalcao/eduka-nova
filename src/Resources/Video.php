@@ -2,29 +2,30 @@
 
 namespace Eduka\Nova\Resources;
 
-use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
-use Eduka\Cube\Models\Video as VideoModel;
-use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Actions\UploadVideo;
-use Eduka\Nova\Resources\Fields\EdBelongsTo;
-use Eduka\Nova\Resources\Fields\EdHasMany;
-use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Resources\Fields\EdImage;
-use Eduka\Nova\Resources\Fields\EdUUID;
-use Eduka\Nova\Resources\Filters\ByCourse;
+use Laravel\Nova\Panel;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\KeyValue;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Text;
+use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdUUID;
+use Eduka\Nova\Resources\Fields\EdImage;
+use Eduka\Cube\Models\Video as VideoModel;
+use Eduka\Nova\Resources\Fields\EdHasMany;
+use Eduka\Nova\Resources\Filters\ByCourse;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Eduka\Nova\Resources\Actions\UploadVideo;
+use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Brunocfalcao\LaravelNovaHelpers\Traits\DefaultAscPKSorting;
 
 class Video extends EdukaResource
 {
-    public static $model = \Eduka\Cube\Models\Video::class;
+    use DefaultAscPKSorting;
 
-    public static $with = ['course'];
+    public static $model = \Eduka\Cube\Models\Video::class;
 
     public function title()
     {
@@ -40,24 +41,30 @@ class Video extends EdukaResource
     public function fields(NovaRequest $request)
     {
         return [
+            // Confirmed.
             EdID::make(),
 
+            // Confirmed.
             Text::make('Name')
                 ->rules($this->model()->rule('name')),
 
+            // Confirmed.
             Text::make('Description')
                 ->hideFromIndex()
                 ->rules($this->model()->rule('description')),
 
+            // Confirmed.
             EdBelongsTo::make('Course', 'course', Course::class)
                 ->rules($this->model()->rule('course_id'))
                 ->hideFromIndex(),
 
+            // Confirmed.
             EdBelongsTo::make('Chapter', 'chapter', Chapter::class)
+                ->sortable()
                 ->rules($this->model()->rule('chapter_id')),
 
             Number::make('Index', 'index')
-                ->hideFromIndex()
+                ->sortable()
                 ->rules($this->model()->rule('index')),
 
             EdUUID::make('UUID'),
@@ -84,8 +91,11 @@ class Video extends EdukaResource
             Boolean::make('Is Active'),
             Boolean::make('Is Free'),
 
-            KeyValue::make('Meta data', 'meta')
-                ->rules($this->model()->rule('meta')),
+            KeyValue::make('Meta data (name)', 'meta_names')
+                ->rules($this->model()->rule('meta_names')),
+
+            KeyValue::make('Meta data (property)', 'meta_properties')
+                ->rules($this->model()->rule('meta_properties')),
 
             // Confirmed.
             EdHasMany::make('Links', 'links', Link::class),

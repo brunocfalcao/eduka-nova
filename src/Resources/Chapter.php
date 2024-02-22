@@ -49,8 +49,12 @@ class Chapter extends EdukaResource
                 ->rules($this->model()->rule('index')),
 
             // Confirmed.
-            KeyValue::make('meta')
-                ->rules($this->model()->rule('meta')),
+            KeyValue::make('meta_names')
+                ->rules($this->model()->rule('meta_names')),
+
+            // Confirmed.
+            KeyValue::make('meta_properties')
+                ->rules($this->model()->rule('meta_properties')),
 
             // Confirmed.
             EdImage::make('SEO Image', 'filename')

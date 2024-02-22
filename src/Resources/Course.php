@@ -2,20 +2,20 @@
 
 namespace Eduka\Nova\Resources;
 
-use Laravel\Nova\Panel;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasOne;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\KeyValue;
-use Eduka\Nova\Resources\Fields\EdID;
-use Laravel\Nova\Fields\BelongsToMany;
+use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdDate;
+use Eduka\Nova\Resources\Fields\EdID;
 use Eduka\Nova\Resources\Fields\EdImage;
 use Eduka\Nova\Resources\Fields\Timestamp;
+use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\KeyValue;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Eduka\Nova\Resources\Fields\EdBelongsTo;
-use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Laravel\Nova\Panel;
 
 class Course extends EdukaResource
 {
@@ -76,8 +76,11 @@ class Course extends EdukaResource
             Timestamp::make('Retired at'),
 
             // Confirmed.
-            KeyValue::make('meta')
-                ->rules($this->model()->rule('meta')),
+            KeyValue::make('meta_names')
+                ->rules($this->model()->rule('meta_names')),
+
+            KeyValue::make('meta_properties')
+                ->rules($this->model()->rule('meta_properties')),
 
             // Confirmed.
             Panel::make('Timestamps', $this->timestamps($request)),
