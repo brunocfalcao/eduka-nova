@@ -2,30 +2,37 @@
 
 namespace Eduka\Nova\Resources;
 
-use Laravel\Nova\Panel;
+use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Eduka\Cube\Models\Video as VideoModel;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Actions\UploadVideo;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Eduka\Nova\Resources\Fields\EdHasMany;
+use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Fields\EdImage;
+use Eduka\Nova\Resources\Fields\EdUUID;
+use Eduka\Nova\Resources\Filters\ByCourse;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\KeyValue;
-use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Fields\EdUUID;
-use Eduka\Nova\Resources\Fields\EdImage;
-use Eduka\Cube\Models\Video as VideoModel;
-use Eduka\Nova\Resources\Fields\EdHasMany;
-use Eduka\Nova\Resources\Filters\ByCourse;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Eduka\Nova\Resources\Fields\EdBelongsTo;
-use Eduka\Nova\Resources\Actions\UploadVideo;
-use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
-use Brunocfalcao\LaravelNovaHelpers\Traits\DefaultAscPKSorting;
+use Laravel\Nova\Panel;
 
 class Video extends EdukaResource
 {
-    use DefaultAscPKSorting;
-
     public static $model = \Eduka\Cube\Models\Video::class;
+
+    public static function defaultOrderings($query)
+    {
+        // Useful if it's via resource to see the index ASC (E.g. from Chapters).
+        if (via_resource()) {
+            return $query->orderBy('videos.index');
+        }
+
+        return $query;
+    }
 
     public function title()
     {
@@ -63,43 +70,56 @@ class Video extends EdukaResource
                 ->sortable()
                 ->rules($this->model()->rule('chapter_id')),
 
+            // Confirmed.
             Number::make('Index', 'index')
-                ->sortable()
                 ->rules($this->model()->rule('index')),
 
+            // Confirmed.
             EdUUID::make('UUID'),
 
+            // Confirmed.
             Canonical::make()
                 ->readonly()
                 ->onlyOnDetail(),
 
+            // Confirmed.
             EdImage::make('SEO Image', 'filename')
                 ->hideFromIndex()
                 ->rules($this->model()->rule('filename')),
 
+            // Confirmed.
             Text::make('Vimeo Id', 'vimeo_id')
                 ->rules($this->model()->rule('vimeo_id'))
                 ->hideFromIndex()
                 ->hideWhenCreating(),
 
+            // Confirmed.
             Number::make('Duration (in secs)', 'duration')->displayUsing(function ($value) {
                 return human_duration($value);
             })
                 ->rules($this->model()->rule('duration')),
 
+            // Confirmed.
             Boolean::make('Is Visible'),
+
+            // Confirmed.
             Boolean::make('Is Active'),
+
+            // Confirmed.
             Boolean::make('Is Free'),
 
+            // Confirmed.
             KeyValue::make('Meta data (name)', 'meta_names')
                 ->rules($this->model()->rule('meta_names')),
 
+            // Confirmed.
             KeyValue::make('Meta data (property)', 'meta_properties')
                 ->rules($this->model()->rule('meta_properties')),
 
             // Confirmed.
             EdHasMany::make('Links', 'links', Link::class),
 
+            // Confirmed.
             Panel::make('Timestamps', $this->timestamps($request)),
         ];
     }

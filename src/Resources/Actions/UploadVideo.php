@@ -2,13 +2,9 @@
 
 namespace Eduka\Nova\Resources\Actions;
 
-use Eduka\Cube\Models\VideoStorage;
-use Eduka\Nova\Services\UploadToBackblazeJob;
-use Eduka\Nova\Services\UploadToVimeoJob;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
@@ -22,31 +18,30 @@ class UploadVideo extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         try {
-            $video = $models->first();
+            /**
+             * We only upload the video to the server. Then the "updated"
+             * model observer method will trigger the necessary jobs to
+             * upload it to Youtube (if free), Backblaze and Vimeo.
+             */
 
-            $videoStorage = VideoStorage::firstWhere('video_id', $video->id);
+            // Context the selected video instance.
+            $videoModel = $models->first();
 
+            // Context the selected video file.
+            $videoFile = $fields->video;
+
+            // Upload the video to the eduka web server.
             $path = Storage::putFile('videos', $fields->video);
 
-            if ($videoStorage) {
-                Storage::delete($videoStorage->path_on_disk);
-                $videoStorage->update([
-                    'path_on_disk' => $path,
-                ]);
-            } else {
-                $videoStorage = VideoStorage::create([
-                    'video_id' => $video->id,
-                    'path_on_disk' => $path,
-                ]);
-            }
+            /**
+             * Path will be smth like videos/<filename>.mp4. Then we can fetch
+             * the full url using storage_path('app/$path'). Update video.
+             */
+            $videoModel->update([
+                'temp_filename_path' => $path,
+            ]);
 
-            // This is an admin user. So it belongs to 1 course only.
-            $course = Auth::user()->courses->first();
-
-            UploadToVimeoJob::dispatch($video->id, $course->id, Auth::id());
-            //UploadToBackblazeJob::dispatch($videoStorage->id, $course->id);
-
-            return Action::message('Video upload to Youtube/Vimeo/Backblaze started in the background. You will be notified when it finishes');
+            return Action::message('Video uploaded to web server. Actions for further uploads to video platforms are triggered');
         } catch (\Exception $e) {
             return Action::message($e->getMessage());
         }
