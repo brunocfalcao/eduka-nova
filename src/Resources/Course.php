@@ -11,7 +11,6 @@ use Eduka\Nova\Resources\Fields\EdImage;
 use Eduka\Nova\Resources\Fields\Timestamp;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -84,10 +83,6 @@ class Course extends EdukaResource
 
             // Confirmed.
             Panel::make('Timestamps', $this->timestamps($request)),
-
-            // Confirmed.
-            HasOne::make('Admin User', 'adminUser', User::class)
-                ->exceptOnForms(),
 
             // Confirmed.
             HasMany::make('Chapters', 'chapters', Chapter::class),
