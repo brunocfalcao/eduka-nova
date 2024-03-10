@@ -45,8 +45,9 @@ class Chapter extends EdukaResource
                 ->rules($this->model()->rule('description')),
 
             // Confirmed.
-            Number::make('Index')
-                ->rules($this->model()->rule('index')),
+            Number::make('Index'),
+            // No need to apply the index rules, since it's not required.
+            //->rules($this->model()->rule('index')),
 
             // Confirmed.
             KeyValue::make('meta_names')
@@ -73,8 +74,7 @@ class Chapter extends EdukaResource
                 ->hideFromIndex(),
 
             // Confirmed.
-            EdBelongsTo::make('Course', 'course', Course::class)
-                ->exceptOnForms(),
+            EdBelongsTo::make('Course', 'course', Course::class),
 
             // Confirmed.
             Panel::make('Timestamps', $this->timestamps($request)),

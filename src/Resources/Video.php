@@ -83,6 +83,7 @@ class Video extends EdukaResource
                     });
                 })
                 ->sortable()
+                ->nullable()
                 ->rules($this->model()->rule('chapter_id')),
 
             // Confirmed.
