@@ -74,12 +74,9 @@ class Course extends EdukaResource
                 ->rules($this->model()->rule('retired_at')),
             Timestamp::make('Retired at'),
 
-            // Confirmed.
-            KeyValue::make('meta_names')
-                ->rules($this->model()->rule('meta_names')),
-
-            KeyValue::make('meta_properties')
-                ->rules($this->model()->rule('meta_properties')),
+            // Confirmed. Computed.
+            KeyValue::make('metas')
+                ->readonly(),
 
             // Confirmed.
             Panel::make('Timestamps', $this->timestamps($request)),
