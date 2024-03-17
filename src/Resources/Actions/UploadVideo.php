@@ -11,7 +11,7 @@ use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class UploadVideo extends Action
+class UploadEpisode extends Action
 {
     use InteractsWithQueue, Queueable;
 
@@ -19,29 +19,29 @@ class UploadVideo extends Action
     {
         try {
             /**
-             * We only upload the video to the server. Then the "updated"
+             * We only upload the episode to the server. Then the "updated"
              * model observer method will trigger the necessary jobs to
              * upload it to Youtube (if free), Backblaze and Vimeo.
              */
 
-            // Context the selected video instance.
-            $videoModel = $models->first();
+            // Context the selected episode instance.
+            $episodeModel = $models->first();
 
-            // Context the selected video file.
-            $videoFile = $fields->video;
+            // Context the selected episode file.
+            $episodeFile = $fields->episode;
 
-            // Upload the video to the eduka web server.
-            $path = Storage::putFile('videos', $fields->video);
+            // Upload the episode to the eduka web server.
+            $path = Storage::putFile('episodes', $fields->episode);
 
             /**
-             * Path will be smth like videos/<filename>.mp4. Then we can fetch
-             * the full url using storage_path('app/$path'). Update video.
+             * Path will be smth like episodes/<filename>.mp4. Then we can fetch
+             * the full url using storage_path('app/$path'). Update episode.
              */
-            $videoModel->update([
+            $episodeModel->update([
                 'temp_filename_path' => $path,
             ]);
 
-            return Action::message('Video uploaded to web server. Actions for further uploads to video platforms are triggered');
+            return Action::message('Episode uploaded to web server. Actions for further uploads to episode platforms are triggered');
         } catch (\Exception $e) {
             return Action::message($e->getMessage());
         }
@@ -50,8 +50,8 @@ class UploadVideo extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            File::make('Video')
-                ->rules('required', 'file', 'mimetypes:video/avi,video/mp4,video/mpeg,video/quicktime', 'max:20480'),
+            File::make('Episode')
+                ->rules('required', 'file', 'mimetypes:episode/avi,episode/mp4,episode/mpeg,episode/quicktime', 'max:20480'),
         ];
     }
 }

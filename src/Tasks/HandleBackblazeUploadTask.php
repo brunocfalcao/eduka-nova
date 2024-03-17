@@ -2,10 +2,10 @@
 
 namespace Eduka\Nova\Tasks;
 
+use Eduka\Cube\Actions\Episode\UpdateBackblazeBucketName;
+use Eduka\Cube\Actions\EpisodeStorage\FindEpisodeStorageForBackblazeUpload;
+use Eduka\Cube\Actions\EpisodeStorage\UpdateBackblazeId;
 use Eduka\Cube\Actions\FindCourseById;
-use Eduka\Cube\Actions\Video\UpdateBackblazeBucketName;
-use Eduka\Cube\Actions\VideoStorage\FindVideoStorageForBackblazeUpload;
-use Eduka\Cube\Actions\VideoStorage\UpdateBackblazeId;
 use Eduka\Nova\Tasks\Traits\Notifier;
 use Eduka\Services\External\Backblaze\BackblazeClient;
 use Exception;
@@ -19,10 +19,10 @@ class HandleBackblazeUploadTask
         $notifier = new NotifyAdminTask;
 
         // @todo select only necessary columns
-        $videoStorage = FindVideoStorageForBackblazeUpload::find($storageId);
+        $episodeStorage = FindEpisodeStorageForBackblazeUpload::find($storageId);
 
-        if (! $videoStorage) {
-            $this->notifyVideoStorageNotFound($notifier, $notificationRecipients, $storageId);
+        if (! $episodeStorage) {
+            $this->notifyEpisodeStorageNotFound($notifier, $notificationRecipients, $storageId);
 
             return;
         }
@@ -53,11 +53,11 @@ class HandleBackblazeUploadTask
                 UpdateBackblazeBucketName::update($course, $bucket);
             }
 
-            $bbClient->uploadTo($videoStorage->path_on_disk, $bucket, $videoStorage->video->name);
+            $bbClient->uploadTo($episodeStorage->path_on_disk, $bucket, $episodeStorage->episode->name);
 
-            UpdateBackblazeId::handle($videoStorage, 'video uploaded; attention: could not parse response');
+            UpdateBackblazeId::handle($episodeStorage, 'episode uploaded; attention: could not parse response');
 
-            $this->notifyVideoUploadedSuccessfully($notifier, $notificationRecipients, $videoStorage->video->name, 'backblaze');
+            $this->notifyEpisodeUploadedSuccessfully($notifier, $notificationRecipients, $episodeStorage->episode->name, 'backblaze');
         } catch (Exception $e) {
             $this->notifyException($notifier, $notificationRecipients, $e);
         }

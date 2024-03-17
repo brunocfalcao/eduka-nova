@@ -6,7 +6,7 @@ use Eduka\Cube\Models\Course;
 use Laravel\Nova\Filters\Filter;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class ByUserCourse extends Filter
+class ByStudentCourse extends Filter
 {
     /**
      * The filter's component.

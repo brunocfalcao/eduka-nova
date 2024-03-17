@@ -2,7 +2,7 @@
 
 namespace Eduka\Nova\Resources;
 
-use Eduka\Cube\Models\User as UserModel;
+use Eduka\Cube\Models\Student as StudentModel;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Actions\ResetUserPassword;
 use Eduka\Nova\Resources\Fields\EdID;
@@ -15,9 +15,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
-class User extends EdukaResource
+class Student extends EdukaResource
 {
-    public static $model = UserModel::class;
+    public static $model = StudentModel::class;
 
     public static $title = 'name';
 
@@ -54,10 +54,10 @@ class User extends EdukaResource
                 }),
 
             // Confirmed.
-            BelongsToMany::make('Seen Videos', 'videosThatWereSeen', Video::class),
+            BelongsToMany::make('Seen Episodes', 'episodesThatWereSeen', Episode::class),
 
             // Confirmed.
-            BelongsToMany::make('Bookmarked Videos', 'videosThatWereBookmarked', Video::class),
+            BelongsToMany::make('Bookmarked Episodes', 'episodesThatWereBookmarked', Episode::class),
 
             // Confirmed.
             BelongsToMany::make('Variants', 'variants', Variant::class),

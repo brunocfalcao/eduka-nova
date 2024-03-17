@@ -83,7 +83,7 @@ class Chapter extends EdukaResource
             BelongsToMany::make('Related Variants', 'variants', Variant::class),
 
             // Confirmed.
-            HasMany::make('Videos', 'videos', Video::class),
+            HasMany::make('Episodes', 'episodes', Episode::class),
         ];
     }
 

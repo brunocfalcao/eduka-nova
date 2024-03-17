@@ -6,15 +6,16 @@ use Eduka\Abstracts\Classes\EdukaServiceProvider;
 use Eduka\Nova\Resources\Backend;
 use Eduka\Nova\Resources\Chapter;
 use Eduka\Nova\Resources\Course;
+use Eduka\Nova\Resources\Dashboards\CourseInsights;
+use Eduka\Nova\Resources\Episode;
 use Eduka\Nova\Resources\Link;
 use Eduka\Nova\Resources\Order;
 use Eduka\Nova\Resources\RequestLog;
 use Eduka\Nova\Resources\Series;
+use Eduka\Nova\Resources\Student;
 use Eduka\Nova\Resources\Subscriber;
 use Eduka\Nova\Resources\Tag;
-use Eduka\Nova\Resources\User;
 use Eduka\Nova\Resources\Variant;
-use Eduka\Nova\Resources\Video;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
@@ -24,6 +25,10 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
 {
     public function boot()
     {
+        Nova::dashboards([
+            new CourseInsights(),
+        ]);
+
         $items = [];
 
         $items['course'] = MenuItem::resource(Course::class)
@@ -46,12 +51,13 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
         $items['eduka_request_log'] = MenuItem::resource(RequestLog::class)
             ->name('Request Logs (done)');
 
-        $items['student'] = MenuItem::resource(User::class)
-            ->name('Users (done)');
+        $items['student'] = MenuItem::resource(Student::class)
+            ->name('Students (done)');
 
         Nova::mainMenu(function (Request $request) use ($items) {
             return [
-                MenuSection::dashboard(Main::class)->icon('video-camera'),
+                MenuSection::dashboard(CourseInsights::class)
+                    ->icon('episode-camera'),
 
                 MenuSection::make('Entities', [
 
@@ -60,7 +66,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
                     $items['variant'],
                     $items['chapter'],
 
-                    MenuItem::resource(Video::class),
+                    MenuItem::resource(Episode::class),
 
                     $items['link'],
 
@@ -82,9 +88,9 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
             Series::class,
             Subscriber::class,
             Tag::class,
-            User::class,
+            Student::class,
             Variant::class,
-            Video::class,
+            Episode::class,
             Backend::class,
             RequestLog::class,
         ]);

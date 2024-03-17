@@ -4,9 +4,9 @@ namespace Eduka\Nova\Resources;
 
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Brunocfalcao\LaravelNovaHelpers\Traits\DefaultDescPKSorting;
-use Eduka\Cube\Models\Video as VideoModel;
+use Eduka\Cube\Models\Episode as EpisodeModel;
 use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Actions\UploadVideo;
+use Eduka\Nova\Resources\Actions\UploadEpisode;
 use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdHasMany;
 use Eduka\Nova\Resources\Fields\EdID;
@@ -23,17 +23,17 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
-class Video extends EdukaResource
+class Episode extends EdukaResource
 {
     use DefaultDescPKSorting;
 
-    public static $model = \Eduka\Cube\Models\Video::class;
+    public static $model = \Eduka\Cube\Models\Episode::class;
 
     public static function defaultOrderings($query)
     {
         // Useful if it's via resource to see the index ASC (E.g. from Chapters).
         if (via_resource()) {
-            return $query->orderBy('videos.index');
+            return $query->orderBy('episodes.index');
         } else {
             // Just use default ordering desc
             $model = $query->getModel();
@@ -46,9 +46,9 @@ class Video extends EdukaResource
 
     public function title()
     {
-        $video = VideoModel::with('chapter')->find($this->id);
+        $episode = EpisodeModel::with('chapter')->find($this->id);
 
-        return $this->name.($video->chapter ? " ({$video->chapter->name})" : '');
+        return $this->name.($episode->chapter ? " ({$episode->chapter->name})" : '');
     }
 
     public static $search = [
@@ -129,7 +129,7 @@ class Video extends EdukaResource
 
             // Confirmed.
             Boolean::make('Is Free')
-                ->helpInfo('In case the video is marked as free, it will be automatically uploaded to Youtube'),
+                ->helpInfo('In case the episode is marked as free, it will be automatically uploaded to Youtube'),
 
             // Confirmed.
             KeyValue::make('Meta data (name)', 'meta_names')
@@ -150,7 +150,7 @@ class Video extends EdukaResource
     public function actions(NovaRequest $request)
     {
         return [
-            UploadVideo::make()->sole(),
+            UploadEpisode::make()->sole(),
         ];
     }
 

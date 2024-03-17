@@ -98,7 +98,7 @@ class Course extends EdukaResource
             HasMany::make('Chapters', 'chapters', Chapter::class),
 
             // Confirmed.
-            BelongsToMany::make('Users', 'students', User::class),
+            BelongsToMany::make('Students', 'students', Student::class),
 
             // Confirmed.
             HasMany::make('Orders', 'orders', Order::class),
@@ -116,7 +116,7 @@ class Course extends EdukaResource
             HasMany::make('Series', 'series', Series::class),
 
             // Confirmed.
-            HasMany::make('Videos', 'videos', Video::class),
+            HasMany::make('Episodes', 'episodes', Episode::class),
         ];
     }
 }

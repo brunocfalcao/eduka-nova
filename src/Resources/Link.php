@@ -3,9 +3,9 @@
 namespace Eduka\Nova\Resources;
 
 use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Episode as EpisodeResource;
 use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Resources\Video as VideoResource;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -38,7 +38,7 @@ class Link extends EdukaResource
             Panel::make('Timestamps', $this->timestamps($request)),
 
             // Confirmed.
-            EdBelongsTo::make('Video', 'video', VideoResource::class),
+            EdBelongsTo::make('Episode', 'episode', EpisodeResource::class),
         ];
     }
 }
