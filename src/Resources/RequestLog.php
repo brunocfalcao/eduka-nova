@@ -34,9 +34,9 @@ class RequestLog extends EdukaResource
         return [
             EdID::make(),
 
-            EdBelongsTo::make('User', 'user', User::class),
+            EdBelongsTo::make('User', 'student', User::class),
 
-            EdBelongsTo::make('Organization', 'organization', Organization::class)
+            EdBelongsTo::make('Backend', 'backend', Backend::class)
                 ->hideFromIndex(),
 
             EdBelongsTo::make('Course', 'course', Course::class)

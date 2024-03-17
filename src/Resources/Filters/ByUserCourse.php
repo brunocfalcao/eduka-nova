@@ -26,9 +26,9 @@ class ByUserCourse extends Filter
      */
     public function apply(NovaRequest $request, $query, $value)
     {
-        return $query->select('users.*')
-            ->bring('course_user')
-            ->where('course_user.course_id', $value);
+        return $query->select('students.*')
+            ->bring('course_student')
+            ->where('course_student.course_id', $value);
     }
 
     /**

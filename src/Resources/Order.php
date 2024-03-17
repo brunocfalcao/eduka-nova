@@ -15,13 +15,13 @@ class Order extends EdukaResource
 {
     public static $model = \Eduka\Cube\Models\Order::class;
 
-    public static $with = ['user'];
+    public static $with = ['student'];
 
     public function title()
     {
-        $order = OrderModel::with('user')->find($this->id);
+        $order = OrderModel::with('student')->find($this->id);
 
-        return 'Order from '.$this->user->name.' ('.$this->order_number.')';
+        return 'Order from '.$this->student->name.' ('.$this->order_number.')';
     }
 
     public static $search = [

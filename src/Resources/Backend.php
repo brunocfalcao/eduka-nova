@@ -9,9 +9,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
-class Organization extends EdukaResource
+class Backend extends EdukaResource
 {
-    public static $model = \Eduka\Cube\Models\Organization::class;
+    public static $model = \Eduka\Cube\Models\Backend::class;
 
     public static $title = 'name';
 
@@ -39,6 +39,7 @@ class Organization extends EdukaResource
 
             // Confimed.
             Text::make('Provider Namespace')
+                ->helpWarning('Please ensure the namespace class exists before creating the backend')
                 ->rules($this->model()->rule('provider_namespace')),
 
             // Confirmed.
