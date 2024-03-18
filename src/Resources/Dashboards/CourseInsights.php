@@ -2,8 +2,8 @@
 
 namespace Eduka\Nova\Resources\Dashboards;
 
-use Laravel\Nova\Dashboard;
 use Hapheus\NovaSingleValueCard\NovaSingleValueCard;
+use Laravel\Nova\Dashboard;
 
 class CourseInsights extends Dashboard
 {
@@ -26,6 +26,6 @@ class CourseInsights extends Dashboard
      */
     public function uriKey()
     {
-        return 'course-insights';
+        return 'main';
     }
 }

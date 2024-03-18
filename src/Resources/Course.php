@@ -40,10 +40,14 @@ class Course extends EdukaResource
 
             Textarea::make('Description')
                 ->helpInfo('A more elaborated description of your course, mostly for SEO fields')
+                ->hideFromIndex()
                 ->rules($this->model()->rule('description')),
+
+            EdBelongsTo::make('Admin user', 'admin', Student::class),
 
             // Confirmed.
             EdImage::make('SEO Image', 'filename')
+                ->hideFromIndex()
                 ->rules($this->model()->rule('filename')),
 
             // Confirmed.
@@ -65,30 +69,33 @@ class Course extends EdukaResource
             // Confirmed.
             Text::make('Service Provider class', 'provider_namespace')
                 ->helpInfo('E.g.: MasteringNovaOrion\MasteringNovaOrionServiceProvider')
+                ->helpWarning('Please ensure the namespace class exists before creating the backend')
                 ->hideFromIndex()
                 ->rules($this->model()->rule('provider_namespace')),
 
-            // Confirmed.
-            EdDate::make('Prelaunched at')
-                ->helpInfo('The zero-date for the announcement of your course<br/>A landing page that will get early interested subscribers')
-                ->rules($this->model()->rule('prelaunched_at')),
-            Timestamp::make('Prelaunched at'),
+            Panel::make('Course lifecycle dates', [
+                // Confirmed.
+                EdDate::make('Prelaunched at')
+                    ->helpInfo('The zero-date for the announcement of your course<br/>A landing page that will get early interested subscribers')
+                    ->rules($this->model()->rule('prelaunched_at')),
+                Timestamp::make('Prelaunched at'),
 
-            // Confirmed.
-            EdDate::make('Launched at')
-                ->helpInfo('The course launch date. At this moment, the prelaunched page will be disabled')
-                ->rules($this->model()->rule('launched_at')),
-            Timestamp::make('Launched at'),
+                // Confirmed.
+                EdDate::make('Launched at')
+                    ->helpInfo('The course launch date. At this moment, the prelaunched page will be disabled')
+                    ->rules($this->model()->rule('launched_at')),
+                Timestamp::make('Launched at'),
 
-            // Confirmed.
-            EdDate::make('Retired at')
-                ->helpInfo('Your course will be retired at this date, and a new retired page will appear. No further sales will be possible, but you can still have the course active, and allowing new episodes to be added')
-                ->rules($this->model()->rule('retired_at')),
-            Timestamp::make('Retired at'),
+                // Confirmed.
+                EdDate::make('Retired at')
+                    ->helpInfo('Your course will be retired at this date, and a new retired page will appear. No further sales will be possible, but you can still have the course active, and allowing new episodes to be added')
+                    ->rules($this->model()->rule('retired_at')),
+                Timestamp::make('Retired at'),
+            ]),
 
             // Confirmed. Computed.
             KeyValue::make('metas')
-                ->helpInfo('SEO data, auto-generated')
+                ->helpInfo('SEO data, auto-generated each time its called')
                 ->readonly(),
 
             // Confirmed.

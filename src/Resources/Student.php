@@ -6,7 +6,7 @@ use Eduka\Cube\Models\Student as StudentModel;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Actions\ResetUserPassword;
 use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Resources\Filters\ByUserCourse;
+use Eduka\Nova\Resources\Filters\ByStudentCourse;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\DateTime;
@@ -75,7 +75,7 @@ class Student extends EdukaResource
     public function filters(Request $request)
     {
         return [
-            ByUserCourse::make(),
+            ByStudentCourse::make(),
         ];
     }
 
