@@ -49,11 +49,13 @@ class Course extends EdukaResource
                 ->hideFromIndex()
                 ->rules($this->model()->rule('description')),
 
-            EdBelongsTo::make('Admin user', 'admin', Student::class),
+            EdBelongsTo::make('Admin user', 'admin', Student::class)
+                       ->helpInfo('You need to first create an user, and then connect it to the Course as the user that can login into Nova'),
 
             // Confirmed.
             EdImage::make('SEO Image', 'filename')
                 ->hideFromIndex()
+                ->helpInfo('The image for social integration purposes (resolution: 1200x600)')
                 ->rules($this->model()->rule('filename')),
 
             // Confirmed.
