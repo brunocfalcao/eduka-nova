@@ -2,26 +2,29 @@
 
 namespace Eduka\Nova\Resources;
 
-use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
-use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Fields\EdBelongsTo;
-use Eduka\Nova\Resources\Fields\EdDate;
-use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Resources\Fields\EdImage;
-use Eduka\Nova\Resources\Fields\EdUUID;
-use Eduka\Nova\Resources\Fields\Timestamp;
-use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Panel;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\KeyValue;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
+use Eduka\Nova\Resources\Fields\EdID;
+use Laravel\Nova\Fields\BelongsToMany;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdDate;
+use Eduka\Nova\Resources\Fields\EdUUID;
+use Eduka\Nova\Resources\Fields\EdImage;
+use Eduka\Nova\Resources\Fields\Timestamp;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Brunocfalcao\LaravelNovaHelpers\Traits\NovaHelpers;
 
 class Course extends EdukaResource
 {
+    use NovaHelpers;
+
     public static $model = \Eduka\Cube\Models\Course::class;
 
     public static $title = 'name';
@@ -80,7 +83,7 @@ class Course extends EdukaResource
                 ->rules($this->model()->rule('provider_namespace')),
 
             Boolean::make('Is PPP enabled?', 'is_ppp_enabled')
-                   ->helpInfo('If checked, then the LMS will present a message to the visitor with a discount coupon code based on the visitor country'),
+                ->helpInfo('If checked, then the LMS will present a message to the visitor with a discount coupon code based on the visitor country'),
 
             Panel::make('Course lifecycle dates', [
                 // Confirmed.
@@ -104,7 +107,7 @@ class Course extends EdukaResource
 
             // Confirmed.
             Boolean::make('Is Active?', 'is_active')
-                   ->helpInfo('This is a master state switch, if not active then the course will display the disabled page'),
+                ->helpInfo('This is a master state switch, if not active then the course will display the disabled page'),
 
             // Confirmed.
             Select::make('Progress', 'progress')->options([
@@ -135,20 +138,18 @@ class Course extends EdukaResource
 
             // Confirmed.
             Text::make('Vimeo URI', 'vimeo_uri')
-                ->hideFromIndex()
-                ->helpInfo('Vimeo URI')
-                ->rules($this->model()->rule('vimeo_uri')),
+                ->onlyOnDetail()
+                ->helpInfo('Vimeo URI'),
 
             // Confirmed.
             Text::make('Vimeo folder id', 'vimeo_folder_id')
-                ->hideFromIndex()
-                ->helpInfo('Vimeo folder ID')
-                ->rules($this->model()->rule('vimeo_folder_id')),
+                ->onlyOnDetail()
+                ->helpInfo('Vimeo folder ID'),
 
             // Confirmed.
             KeyValue::make('metas')
-                ->helpInfo('SEO data, auto-generated each time its called')
-                ->readonly(),
+                ->onlyOnDetail()
+                ->helpInfo('SEO data, auto-generated each time its called'),
 
             // Confirmed.
             Panel::make('Timestamps', $this->timestamps($request)),
