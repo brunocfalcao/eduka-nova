@@ -32,27 +32,27 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
         $items = [];
 
         $items['course'] = MenuItem::resource(Course::class)
-            ->name('Course (done)')
-            ->withBadge('+5', 'info');
+            ->name('Courses')
+            ->withBadge('done', 'info');
 
         $items['backend'] = MenuItem::resource(Backend::class)
-            ->name('Backends (done)')
-            ->withBadge('+2', 'warning');
+            ->name('Backends')
+            ->withBadge('done', 'info');
 
         $items['variant'] = MenuItem::resource(Variant::class)
-            ->name('Variants (done)');
+            ->name('Variants');
 
         $items['chapter'] = MenuItem::resource(Chapter::class)
-            ->name('Chapters (done)');
+            ->name('Chapters');
 
         $items['link'] = MenuItem::resource(Link::class)
-            ->name('Links (done)');
+            ->name('Links');
 
         $items['eduka_request_log'] = MenuItem::resource(RequestLog::class)
-            ->name('Request Logs (done)');
+            ->name('Request Logs');
 
         $items['student'] = MenuItem::resource(Student::class)
-            ->name('Students (done)');
+            ->name('Students');
 
         Nova::mainMenu(function (Request $request) use ($items) {
             return [

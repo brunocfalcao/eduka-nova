@@ -2,24 +2,24 @@
 
 namespace Eduka\Nova\Resources;
 
-use Laravel\Nova\Panel;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Select;
+use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Brunocfalcao\LaravelNovaHelpers\Traits\NovaHelpers;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Eduka\Nova\Resources\Fields\EdDate;
+use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Fields\EdImage;
+use Eduka\Nova\Resources\Fields\EdUUID;
+use Eduka\Nova\Resources\Fields\Timestamp;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\KeyValue;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
-use Eduka\Nova\Resources\Fields\EdID;
-use Laravel\Nova\Fields\BelongsToMany;
-use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Fields\EdDate;
-use Eduka\Nova\Resources\Fields\EdUUID;
-use Eduka\Nova\Resources\Fields\EdImage;
-use Eduka\Nova\Resources\Fields\Timestamp;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Eduka\Nova\Resources\Fields\EdBelongsTo;
-use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
-use Brunocfalcao\LaravelNovaHelpers\Traits\NovaHelpers;
+use Laravel\Nova\Panel;
 
 class Course extends EdukaResource
 {
@@ -50,7 +50,7 @@ class Course extends EdukaResource
                 ->rules($this->model()->rule('description')),
 
             EdBelongsTo::make('Admin user', 'admin', Student::class)
-                       ->helpInfo('You need to first create an user, and then connect it to the Course as the user that can login into Nova'),
+                ->helpInfo('You need to first create an user, and then connect it to the Course as the user that can login into Nova'),
 
             // Confirmed.
             EdImage::make('SEO Image', 'filename')

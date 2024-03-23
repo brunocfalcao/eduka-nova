@@ -47,6 +47,9 @@ class Backend extends EdukaResource
 
             // Confirmed.
             EdHasMany::make('Courses', 'courses', Course::class),
+
+            // Confirmed.
+            EdHasMany::make('Request Logs', 'requestLogs', RequestLog::class),
         ];
     }
 }
