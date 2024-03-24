@@ -40,10 +40,12 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
             ->withBadge('done', 'info');
 
         $items['variant'] = MenuItem::resource(Variant::class)
-            ->name('Variants');
+            ->name('Variants')
+            ->withBadge('done', 'info');
 
         $items['chapter'] = MenuItem::resource(Chapter::class)
-            ->name('Chapters');
+            ->name('Chapters')
+            ->withBadge('done', 'info');
 
         $items['link'] = MenuItem::resource(Link::class)
             ->name('Links');

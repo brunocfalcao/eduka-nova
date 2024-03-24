@@ -21,7 +21,7 @@ class UploadEpisode extends Action
             /**
              * We only upload the episode to the server. Then the "updated"
              * model observer method will trigger the necessary jobs to
-             * upload it to Youtube (if free), Backblaze and Vimeo.
+             * upload it to Youtube (if free), and Vimeo.
              */
 
             // Context the selected episode instance.
@@ -50,8 +50,8 @@ class UploadEpisode extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            File::make('Episode')
-                ->rules('required', 'file', 'mimetypes:episode/avi,episode/mp4,episode/mpeg,episode/quicktime', 'max:20480'),
+            File::make('Episode', 'episode')
+                ->rules('required', 'file', 'mimetypes:video/avi,video/mp4,video/mpeg,video/quicktime', 'max:20480'),
         ];
     }
 }

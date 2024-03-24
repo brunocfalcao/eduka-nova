@@ -12,7 +12,6 @@ use Eduka\Nova\Resources\Filters\ByCourse;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -38,27 +37,22 @@ class Chapter extends EdukaResource
 
             // Confirmed.
             Text::make('Name')
+                ->helpInfo('The chapter name')
                 ->rules($this->model()->rule('name')),
 
             // Confirmed.
             EdTextarea::make('description')
+                ->helpInfo('Elaborated chapter description')
                 ->rules($this->model()->rule('description')),
 
             // Confirmed.
-            Number::make('Index'),
-            // No need to apply the index rules, since it's not required.
-            //->rules($this->model()->rule('index')),
-
-            // Confirmed.
-            KeyValue::make('meta_names')
-                ->rules($this->model()->rule('meta_names')),
-
-            // Confirmed.
-            KeyValue::make('meta_properties')
-                ->rules($this->model()->rule('meta_properties')),
+            Number::make('Index')
+                ->helpInfo('The chapter index related to the course'),
 
             // Confirmed.
             EdImage::make('SEO Image', 'filename')
+                ->hideFromIndex()
+                ->helpInfo('The image for social integration purposes (resolution: 1200x600)')
                 ->rules($this->model()->rule('filename')),
 
             // Confirmed.
@@ -80,7 +74,7 @@ class Chapter extends EdukaResource
             Panel::make('Timestamps', $this->timestamps($request)),
 
             // Confirmed.
-            BelongsToMany::make('Related Variants', 'variants', Variant::class),
+            BelongsToMany::make('Variants', 'variants', Variant::class),
 
             // Confirmed.
             HasMany::make('Episodes', 'episodes', Episode::class),

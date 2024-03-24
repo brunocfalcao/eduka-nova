@@ -2,20 +2,21 @@
 
 namespace Eduka\Nova\Resources;
 
-use Laravel\Nova\Panel;
+use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Eduka\Nova\Resources\Fields\EdBelongsToMany;
+use Eduka\Nova\Resources\Fields\EdHasMany;
+use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Fields\EdUUID;
+use Eduka\Nova\Resources\Filters\ByCourse;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\KeyValue;
-use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Fields\EdUUID;
-use Eduka\Nova\Resources\Filters\ByCourse;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Eduka\Nova\Resources\Fields\EdBelongsTo;
-use Eduka\Nova\Resources\Fields\EdBelongsToMany;
-use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Laravel\Nova\Panel;
 
 class Variant extends EdukaResource
 {
@@ -27,7 +28,7 @@ class Variant extends EdukaResource
 
     public function title()
     {
-        return $this->name . ' (' . $this->course->name . ')';
+        return $this->name.' ('.$this->course->name.')';
     }
 
     public function fields(NovaRequest $request)
@@ -81,7 +82,13 @@ class Variant extends EdukaResource
             EdBelongsTo::make('Course', 'course', Course::class),
 
             // Confirmed.
-            EdBelongsToMany::make('Students', 'students', Student::class)
+            EdBelongsToMany::make('Students', 'students', Student::class),
+
+            // Confirmed.
+            EdBelongsToMany::make('Chapters', 'chapters', Chapter::class),
+
+            // Confirmed.
+            EdHasMany::make('Orders', 'orders', Order::class),
         ];
     }
 
