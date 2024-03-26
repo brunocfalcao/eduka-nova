@@ -18,30 +18,36 @@ class UploadEpisode extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         try {
-            /**
-             * We only upload the episode to the server. Then the "updated"
-             * model observer method will trigger the necessary jobs to
-             * upload it to Youtube (if free), and Vimeo.
-             */
-
-            // Context the selected episode instance.
             $episodeModel = $models->first();
-
-            // Context the selected episode file.
             $episodeFile = $fields->episode;
-
-            // Upload the episode to the eduka web server.
             $path = Storage::putFile('episodes', $fields->episode);
 
-            /**
-             * Path will be smth like episodes/<filename>.mp4. Then we can fetch
-             * the full url using storage_path('app/$path'). Update episode.
-             */
+            // Assuming your Laravel app is on a Linux server
+            $fullPath = storage_path('app/' . $path);
+
+            // Use FFmpeg to get the duration of the video
+            $command = "ffmpeg -i \"" . $fullPath . "\" 2>&1 | findstr \"Duration\"";
+            exec($command, $output);
+
+            // Example output: "  Duration: 00:01:23.08, start: 0.000000, bitrate: 1924 kb/s"
+            if (preg_match('/Duration: (\d+):(\d+):(\d+)/', implode("\n", $output), $matches)) {
+                $hours = $matches[1];
+                $minutes = $matches[2];
+                $seconds = $matches[3];
+
+                // Calculate total duration in seconds
+                $totalDuration = $hours * 3600 + $minutes * 60 + $seconds;
+            } else {
+                // Unable to find duration
+                $totalDuration = 0; // Consider how you want to handle errors
+            }
+
             $episodeModel->update([
                 'temp_filename_path' => $path,
+                'duration' => $totalDuration,
             ]);
 
-            return Action::message('Episode uploaded to web server. Actions for further uploads to episode platforms are triggered');
+            return Action::message('Episode uploaded and duration updated.');
         } catch (\Exception $e) {
             return Action::message($e->getMessage());
         }
