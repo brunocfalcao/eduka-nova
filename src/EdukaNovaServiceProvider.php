@@ -47,8 +47,13 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
             ->name('Chapters')
             ->withBadge('done', 'info');
 
+        $items['episode'] = MenuItem::resource(Episode::class)
+            ->name('Episodes')
+            ->withBadge('done', 'info');
+
         $items['link'] = MenuItem::resource(Link::class)
-            ->name('Links');
+            ->name('Links')
+            ->withBadge('done', 'info');
 
         $items['eduka_request_log'] = MenuItem::resource(RequestLog::class)
             ->name('Request Logs');
@@ -67,8 +72,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
                     $items['backend'],
                     $items['variant'],
                     $items['chapter'],
-
-                    MenuItem::resource(Episode::class),
+                    $items['episode'],
 
                     $items['link'],
 

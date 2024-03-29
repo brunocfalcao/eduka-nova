@@ -15,8 +15,6 @@ class Order extends EdukaResource
 {
     public static $model = \Eduka\Cube\Models\Order::class;
 
-    public static $with = ['student'];
-
     public function title()
     {
         $order = OrderModel::with('student')->find($this->id);

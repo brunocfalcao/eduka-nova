@@ -28,17 +28,22 @@ class Link extends EdukaResource
             EdID::make(),
 
             // Confimed.
-            Text::make('Name'),
+            Text::make('Name')
+                ->helpInfo('Link name, descriptive but might not appear everywhere')
+                ->rules($this->model()->rule('name')),
 
             // Confirmed.
             URL::make('Url')
+                ->rules($this->model()->rule('url'))
+                ->helpInfo('E.g.: https://www.publico.pt - Needs to be a full URL')
                 ->displayUsing(fn () => "{$this->url}"),
 
             // Confirmed.
             Panel::make('Timestamps', $this->timestamps($request)),
 
             // Confirmed.
-            EdBelongsTo::make('Episode', 'episode', EpisodeResource::class),
+            EdBelongsTo::make('Episode', 'episode', EpisodeResource::class)
+                ->helpInfo('Related episode'),
         ];
     }
 }

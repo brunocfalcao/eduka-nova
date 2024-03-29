@@ -22,9 +22,7 @@ class Variant extends EdukaResource
 {
     public static $model = \Eduka\Cube\Models\Variant::class;
 
-    public static $search = [
-        'canonical', 'description',
-    ];
+    public static $search = ['canonical', 'description'];
 
     public function title()
     {

@@ -15,9 +15,7 @@ class Backend extends EdukaResource
 
     public static $title = 'name';
 
-    public static $search = [
-        'name',
-    ];
+    public static $search = ['name'];
 
     public function fields(NovaRequest $request)
     {

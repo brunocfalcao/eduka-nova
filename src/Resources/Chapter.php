@@ -25,9 +25,7 @@ class Chapter extends EdukaResource
 
     public static $title = 'name';
 
-    public static $search = [
-        'name', 'description',
-    ];
+    public static $search = ['name', 'description'];
 
     public function fields(NovaRequest $request)
     {
