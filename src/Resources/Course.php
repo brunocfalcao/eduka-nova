@@ -149,7 +149,7 @@ class Course extends EdukaResource
                 ->helpInfo('Vimeo folder ID'),
 
             // Confirmed.
-            KeyValue::make('metas')
+            KeyValue::make('Metas', 'metas')
                 ->onlyOnDetail()
                 ->helpInfo('SEO data, auto-generated each time its called'),
 

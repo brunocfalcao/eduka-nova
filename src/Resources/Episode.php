@@ -8,6 +8,7 @@ use Eduka\Cube\Models\Episode as EpisodeModel;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\Resources\Actions\UploadEpisode;
 use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Eduka\Nova\Resources\Fields\EdBelongsToMany;
 use Eduka\Nova\Resources\Fields\EdHasMany;
 use Eduka\Nova\Resources\Fields\EdID;
 use Eduka\Nova\Resources\Fields\EdImage;
@@ -63,20 +64,24 @@ class Episode extends EdukaResource
 
             // Confirmed.
             Text::make('Name')
+                ->helpInfo('The Episode name (synced with Vimeo)')
                 ->rules($this->model()->rule('name')),
 
             // Confirmed.
             Text::make('Description')
+                ->helpInfo('A more detailed description about what the episode is about')
                 ->hideFromIndex()
                 ->rules($this->model()->rule('description')),
 
             // Confirmed.
             EdBelongsTo::make('Course', 'course', Course::class)
+                ->helpInfo('Related Course, where the episode is part of')
                 ->rules($this->model()->rule('course_id'))
                 ->hideFromIndex(),
 
             // Confirmed.
             EdBelongsTo::make('Chapter', 'chapter', Chapter::class)
+                ->helpInfo('Related Chapter, based on the previous selected course')
                 ->dependsOn(['course'], function (BelongsTo $field, NovaRequest $request, FormData $formData) {
                     $field->relatableQueryUsing(function (NovaRequest $request, $query) use ($formData) {
                         $query->where('course_id', $formData->course);
@@ -88,7 +93,8 @@ class Episode extends EdukaResource
 
             // Confirmed.
             Number::make('Index', 'index')
-                ->rules($this->model()->rule('index')),
+                ->helpInfo('If empty, will be given the next index of the related chapter')
+                ->rules('numeric'),
 
             // Confirmed.
             EdUUID::make('UUID'),
@@ -100,47 +106,62 @@ class Episode extends EdukaResource
 
             // Confirmed.
             EdImage::make('SEO Image', 'filename')
+                ->helpInfo('The image for social integration purposes (resolution: 1200x600)')
                 ->hideFromIndex()
                 ->rules($this->model()->rule('filename')),
 
             // Confirmed.
             Text::make('Vimeo URI', 'vimeo_uri')
-                ->rules($this->model()->rule('vimeo_uri'))
                 ->readonly()
                 ->hideFromIndex()
-                ->hideWhenCreating(),
+                ->canSee(function ($request) {
+                    return ! is_null($this->duration);
+                }),
 
             // Confirmed.
             Number::make('Duration (in secs)', 'duration')->displayUsing(function ($value) {
                 return human_duration($value);
             })
                 ->hideFromIndex()
-                ->rules($this->model()->rule('duration')),
+                ->canSee(function ($request) {
+                    return ! is_null($this->duration);
+                })
+                ->readonly(),
 
-            Boolean::make('Uploaded?', function () {
+            Boolean::make('Uploaded to Vimeo?', function () {
                 return ! is_null($this->vimeo_uri);
             }),
 
             // Confirmed.
-            Boolean::make('Is Visible'),
+            Boolean::make('Is Visible?')
+                ->helpInfo('Episode will appear on all collections where we ask what videos are active, to be rendered on screen'),
 
             // Confirmed.
-            Boolean::make('Is Active'),
+            Boolean::make('Is Active?')
+                ->helpInfo('Episode will be clickable, and playable/viewable'),
 
             // Confirmed.
-            Boolean::make('Is Free')
+            Boolean::make('Is Free?')
                 ->helpInfo('In case the episode is marked as free, it will be automatically uploaded to Youtube'),
 
-            // Confirmed.
-            KeyValue::make('Meta data (name)', 'meta_names')
-                ->rules($this->model()->rule('meta_names')),
-
-            // Confirmed.
-            KeyValue::make('Meta data (property)', 'meta_properties')
-                ->rules($this->model()->rule('meta_properties')),
+            KeyValue::make('Metas', 'metas')
+                ->onlyOnDetail()
+                ->helpInfo('SEO data, auto-generated each time its called'),
 
             // Confirmed.
             EdHasMany::make('Links', 'links', Link::class),
+
+            // Confirmed.
+            EdBelongsToMany::make('Series', 'series', Series::class),
+
+            // Confirmed.
+            EdBelongsToMany::make('Tags', 'tags', Tag::class),
+
+            // Confirmed.
+            EdBelongsToMany::make('Bookmarked', 'studentsThatBookmarked', Student::class),
+
+            // Confirmed.
+            EdBelongsToMany::make('Seen', 'studentsThatSaw', Student::class),
 
             // Confirmed.
             Panel::make('Timestamps', $this->timestamps($request)),
