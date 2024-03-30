@@ -2,13 +2,15 @@
 
 namespace Eduka\Nova\Resources;
 
-use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Resources\Filters\ByCourse;
+use Laravel\Nova\Panel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Filters\ByCourse;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Eduka\Nova\Resources\Fields\EdBelongsToMany;
 
 class Tag extends EdukaResource
 {
@@ -16,16 +18,22 @@ class Tag extends EdukaResource
 
     public static $title = 'name';
 
-    public static $search = [
-        'name',
-    ];
+    public static $search = ['name'];
 
     public function fields(NovaRequest $request)
     {
         return [
             EdID::make(),
 
-            Text::make('Name'),
+            Text::make('Name')
+                ->helpInfo('Tag name. Obviously')
+                ->rules($this->model()->rule('name')),
+
+            EdBelongsTo::make('Course', 'course', Course::class)
+                       ->helpInfo('Related course')
+                       ->rules($this->model()->rule('course')),
+
+            EdBelongsToMany::make('Episodes', 'episodes', Episode::class),
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];

@@ -65,6 +65,18 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
             ->name('Orders')
             ->withBadge('done', 'info');
 
+        $items['series'] = MenuItem::resource(Link::class)
+            ->name('Series')
+            ->withBadge('done', 'info');
+
+        $items['tag'] = MenuItem::resource(Order::class)
+            ->name('Tags')
+            ->withBadge('done', 'info');
+
+        $items['subscriber'] = MenuItem::resource(Subscriber::class)
+            ->name('Subscribers')
+            ->withBadge('done', 'info');
+
         Nova::mainMenu(function (Request $request) use ($items) {
             return [
                 MenuSection::dashboard(CourseInsights::class)
@@ -79,10 +91,10 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
                     $items['episode'],
                     $items['link'],
                     $items['order'],
+                    $items['series'],
+                    $items['tag'],
+                    $items['subscriber'],
 
-                    MenuItem::resource(Series::class),
-                    MenuItem::resource(Tag::class),
-                    MenuItem::resource(Subscriber::class),
                     $items['student'],
                     $items['eduka_request_log'],
                 ])->icon('student'),
