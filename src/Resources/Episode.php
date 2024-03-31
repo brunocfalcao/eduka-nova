@@ -133,15 +133,15 @@ class Episode extends EdukaResource
             }),
 
             // Confirmed.
-            Boolean::make('Is Visible?')
+            Boolean::make('Is Visible?', 'is_visible')
                 ->helpInfo('Episode will appear on all collections where we ask what videos are active, to be rendered on screen'),
 
             // Confirmed.
-            Boolean::make('Is Active?')
+            Boolean::make('Is Active?', 'is_active')
                 ->helpInfo('Episode will be clickable, and playable/viewable'),
 
             // Confirmed.
-            Boolean::make('Is Free?')
+            Boolean::make('Is Free?', 'is_free')
                 ->helpInfo('In case the episode is marked as free, it will be automatically uploaded to Youtube'),
 
             KeyValue::make('Metas', 'metas')

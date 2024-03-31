@@ -34,17 +34,17 @@ class Chapter extends EdukaResource
             EdID::make(),
 
             // Confirmed.
-            Text::make('Name')
+            Text::make('Name', 'name')
                 ->helpInfo('The chapter name')
                 ->rules($this->model()->rule('name')),
 
             // Confirmed.
-            EdTextarea::make('description')
+            EdTextarea::make('description', 'description')
                 ->helpInfo('Elaborated chapter description')
                 ->rules($this->model()->rule('description')),
 
             // Confirmed.
-            Number::make('Index')
+            Number::make('Index', 'index')
                 ->helpInfo('The chapter index related to the course'),
 
             // Confirmed.

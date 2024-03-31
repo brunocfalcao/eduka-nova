@@ -56,10 +56,12 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
             ->withBadge('done', 'info');
 
         $items['eduka_request_log'] = MenuItem::resource(RequestLog::class)
-            ->name('Request Logs');
+            ->name('Request Logs')
+            ->withBadge('done', 'info');
 
         $items['student'] = MenuItem::resource(Student::class)
-            ->name('Students');
+            ->name('Students')
+            ->withBadge('done', 'info');
 
         $items['order'] = MenuItem::resource(Order::class)
             ->name('Orders')

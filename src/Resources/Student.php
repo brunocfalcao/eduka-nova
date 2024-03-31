@@ -4,7 +4,6 @@ namespace Eduka\Nova\Resources;
 
 use Eduka\Cube\Models\Student as StudentModel;
 use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Actions\ResetUserPassword;
 use Eduka\Nova\Resources\Fields\EdID;
 use Eduka\Nova\Resources\Filters\ByStudentCourse;
 use Illuminate\Http\Request;
@@ -21,9 +20,7 @@ class Student extends EdukaResource
 
     public static $title = 'name';
 
-    public static $search = [
-        'name', 'email',
-    ];
+    public static $search = ['name', 'email'];
 
     public function fields(NovaRequest $request)
     {
@@ -76,13 +73,6 @@ class Student extends EdukaResource
     {
         return [
             ByStudentCourse::make(),
-        ];
-    }
-
-    public function actions(Request $request)
-    {
-        return [
-            ResetUserPassword::make(),
         ];
     }
 }

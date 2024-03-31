@@ -24,19 +24,19 @@ class Backend extends EdukaResource
             EdID::make(),
 
             // Confimed.
-            Text::make('Name')
+            Text::make('Name', 'name')
                 ->rules($this->model()->rule('name')),
 
             // Confimed.
-            Text::make('Description')
+            Text::make('Description', 'description')
                 ->rules($this->model()->rule('description')),
 
             // Confirmed.
-            Text::make('Domain')
+            Text::make('Domain', 'domain')
                 ->rules($this->model()->rule('domain')),
 
             // Confimed.
-            Text::make('Provider Namespace')
+            Text::make('Provider Namespace', 'provider_namespace')
                 ->helpWarning('Please ensure the namespace class exists before creating the backend')
                 ->rules($this->model()->rule('provider_namespace')),
 

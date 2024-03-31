@@ -2,14 +2,15 @@
 
 namespace Eduka\Nova\Resources;
 
-use Laravel\Nova\Panel;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Filters\ByCourse;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Email;
-use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Filters\ByCourse;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Laravel\Nova\Panel;
 
 class Subscriber extends EdukaResource
 {
@@ -25,12 +26,16 @@ class Subscriber extends EdukaResource
             EdID::make(),
 
             Email::make('Email')
-                 ->helpInfo('Subscriber email')
-                 ->rules($this->model()->rule('email')),
+                ->helpInfo('Subscriber email')
+                ->rules($this->model()->rule('email')),
 
             EdBelongsTo::make('Course', 'course', Course::class)
-                 ->helpInfo('Related course')
-                 ->rules($this->model()->rule('course')),
+                ->helpInfo('Related course')
+                ->rules($this->model()->rule('course')),
+
+            Text::make('Subscribed At', function ($request) {
+                return \Carbon\Carbon::parse($this->created_at)->diffForHumans();
+            }),
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];

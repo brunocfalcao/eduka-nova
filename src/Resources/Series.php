@@ -2,15 +2,15 @@
 
 namespace Eduka\Nova\Resources;
 
-use Laravel\Nova\Panel;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Fields\EdTextarea;
+use Eduka\Nova\Resources\Filters\ByCourse;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
-use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Filters\ByCourse;
-use Eduka\Nova\Resources\Fields\EdTextarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Laravel\Nova\Panel;
 
 class Series extends EdukaResource
 {
@@ -33,7 +33,7 @@ class Series extends EdukaResource
                 ->hideFromIndex(),
 
             EdBelongsTo::make('Course', 'course', Course::class)
-                       ->rules($this->model()->rule('course')),
+                ->rules($this->model()->rule('course')),
 
             Panel::make('Timestamps', $this->timestamps($request)),
         ];

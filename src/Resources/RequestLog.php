@@ -17,9 +17,7 @@ class RequestLog extends EdukaResource
 {
     public static $model = \Eduka\Cube\Models\RequestLog::class;
 
-    public static $search = [
-        'referrer', 'url', 'route',
-    ];
+    public static $search = ['referrer', 'url', 'route'];
 
     public function title()
     {
