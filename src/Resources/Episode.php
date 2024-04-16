@@ -128,7 +128,7 @@ class Episode extends EdukaResource
                 })
                 ->readonly(),
 
-            Boolean::make('Uploaded to Vimeo?', function () {
+            Boolean::make('Uploaded?', function () {
                 return ! is_null($this->vimeo_uri);
             }),
 
