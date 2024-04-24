@@ -51,10 +51,16 @@ class Course extends EdukaResource
                 ->helpInfo('You need to first create an user, and then connect it to the Course as the user that can login into Nova'),
 
             // Confirmed.
-            EdImage::make('SEO Image', 'filename')
+            EdImage::make('Image Logo', 'filename_logo')
                 ->hideFromIndex()
                 ->helpInfo('The image for social integration purposes (resolution: 1200x600)')
-                ->rules($this->model()->rule('filename')),
+                ->rules($this->model()->rule('filename_logo')),
+
+            // Confirmed.
+            EdImage::make('Twitter image', 'filename_twitter')
+                ->hideFromIndex()
+                ->helpInfo('The image for social integration purposes (resolution: 1200x600)')
+                ->rules($this->model()->rule('filename_twitter')),
 
             // Confirmed.
             Canonical::make()
@@ -81,6 +87,9 @@ class Course extends EdukaResource
                 ->helpWarning('Please ensure the namespace class exists before creating the backend')
                 ->hideFromIndex()
                 ->rules($this->model()->rule('provider_namespace')),
+
+            Text::make('Clarity code', 'clarity_code')
+                ->helpInfo('Microsoft Clarity script code, auto-generated'),
 
             Boolean::make('Is PPP enabled?', 'is_ppp_enabled')
                 ->helpInfo('If checked, then the LMS will present a message to the visitor with a discount coupon code based on the visitor country'),
@@ -132,7 +141,7 @@ class Course extends EdukaResource
                 ->rules($this->model()->rule('lemon_squeezy_api_key')),
 
             // Confirmed.
-            Textarea::make('LS Hash', 'lemon_squeezy_hash')
+            Text::make('LS Hash', 'lemon_squeezy_hash')
                 ->hideFromIndex()
                 ->helpInfo('Lemon Squeezy Hash')
                 ->rules($this->model()->rule('lemon_squeezy_hash')),
