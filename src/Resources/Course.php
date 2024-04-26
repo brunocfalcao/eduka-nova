@@ -5,14 +5,18 @@ namespace Eduka\Nova\Resources;
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Brunocfalcao\LaravelNovaHelpers\Traits\NovaHelpers;
 use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\FileUploads\StoreFromCourse;
 use Eduka\Nova\Resources\Fields\EdBelongsTo;
 use Eduka\Nova\Resources\Fields\EdDate;
 use Eduka\Nova\Resources\Fields\EdID;
 use Eduka\Nova\Resources\Fields\EdImage;
 use Eduka\Nova\Resources\Fields\EdUUID;
 use Eduka\Nova\Resources\Fields\Timestamp;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Color;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Select;
@@ -52,15 +56,44 @@ class Course extends EdukaResource
 
             // Confirmed.
             EdImage::make('Image Logo', 'filename_logo')
+                ->store(new StoreFromCourse())
+                /*
+                ->store(function (Request $request, $model) {
+                    $randomFileName = Str::random(40) . '.' . $request->filename_logo->getClientOriginalExtension();
+                    $path = $request->filename_logo->storeAs(
+                        $model->canonical,
+                        $randomFileName,
+                        'public'
+                    );
+                    return [
+                        'filename_logo' => $path,
+                    ];
+                })
+                */
+                ->canSee(function ($request) {
+                    return $this->novaGetContext() != 'creating';
+                })
                 ->hideFromIndex()
                 ->helpInfo('The image for social integration purposes (resolution: 1200x600)')
                 ->rules($this->model()->rule('filename_logo')),
 
             // Confirmed.
             EdImage::make('Twitter image', 'filename_twitter')
+                ->canSee(function ($request) {
+                    return $this->novaGetContext() != 'creating';
+                })
                 ->hideFromIndex()
                 ->helpInfo('The image for social integration purposes (resolution: 1200x600)')
                 ->rules($this->model()->rule('filename_twitter')),
+
+            // Confirmed.
+            Text::make('Twitter handle', 'twitter_handle')
+                ->helpInfo('Twitter handle without the @')
+                ->rules($this->model()->rule('twitter_handle')),
+
+            // Confirmed.
+            Color::make('Theme color', 'theme_color')
+                ->rules($this->model()->rule('theme_color')),
 
             // Confirmed.
             Canonical::make()
