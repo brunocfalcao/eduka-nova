@@ -85,6 +85,7 @@ class Course extends EdukaResource
 
             // Confirmed.
             Text::make('Twitter handle', 'twitter_handle')
+                ->hideFromIndex()
                 ->helpInfo('Twitter handle without the @')
                 ->rules($this->model()->rule('twitter_handle')),
 
@@ -119,6 +120,7 @@ class Course extends EdukaResource
                 ->rules($this->model()->rule('provider_namespace')),
 
             Text::make('Clarity code', 'clarity_code')
+                ->hideFromIndex()
                 ->helpInfo('Microsoft Clarity script code, auto-generated'),
 
             Boolean::make('Is PPP enabled?', 'is_ppp_enabled')
