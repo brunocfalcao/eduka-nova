@@ -55,27 +55,24 @@ class Course extends EdukaResource
                 ->helpInfo('You need to first create an user, and then connect it to the Course as the user that can login into Nova'),
 
             // Confirmed.
-            EdImage::make('Image Logo', 'filename_logo')
+            EdImage::make('Email Logo', 'filename_email_logo')
                 ->store(new StoreFromCourse())
-                /*
-                ->store(function (Request $request, $model) {
-                    $randomFileName = Str::random(40) . '.' . $request->filename_logo->getClientOriginalExtension();
-                    $path = $request->filename_logo->storeAs(
-                        $model->canonical,
-                        $randomFileName,
-                        'public'
-                    );
-                    return [
-                        'filename_logo' => $path,
-                    ];
-                })
-                */
                 ->canSee(function ($request) {
                     return $this->novaGetContext() != 'creating';
                 })
                 ->hideFromIndex()
-                ->helpInfo('The image for social integration purposes (resolution: 1200x600)')
-                ->rules($this->model()->rule('filename_logo')),
+                ->helpInfo('The image for email purposes (width: 200px, height: variable), attention to the background')
+                ->rules($this->model()->rule('filename_email_logo')),
+
+            // Confirmed.
+            EdImage::make('Main Logo', 'filename_main_logo')
+                ->store(new StoreFromCourse())
+                ->canSee(function ($request) {
+                    return $this->novaGetContext() != 'creating';
+                })
+                ->hideFromIndex()
+                ->helpInfo('The main logo image (1200x600), to be used on SEO integrations')
+                ->rules($this->model()->rule('filename_main_logo')),
 
             // Confirmed.
             EdImage::make('Twitter image', 'filename_twitter')
