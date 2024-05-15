@@ -12,8 +12,6 @@ use Eduka\Nova\Resources\Fields\EdID;
 use Eduka\Nova\Resources\Fields\EdImage;
 use Eduka\Nova\Resources\Fields\EdUUID;
 use Eduka\Nova\Resources\Fields\Timestamp;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Color;
