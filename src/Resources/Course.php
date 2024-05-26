@@ -14,7 +14,6 @@ use Eduka\Nova\Resources\Fields\EdUUID;
 use Eduka\Nova\Resources\Fields\Timestamp;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\Color;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Select;
@@ -88,8 +87,8 @@ class Course extends EdukaResource
                 ->rules($this->model()->rule('twitter_handle')),
 
             // Confirmed.
-            Color::make('Theme color', 'theme_color')
-                ->rules($this->model()->rule('theme_color')),
+            KeyValue::make('Theme', 'theme')
+                ->rules($this->model()->rule('theme')),
 
             // Confirmed.
             Canonical::make()
