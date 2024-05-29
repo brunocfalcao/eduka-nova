@@ -17,6 +17,7 @@
     "require":{
         "php":"^8.2",
         "brunocfalcao/eduka-abstracts":"dev-master",
+        "brunocfalcao/eduka-helpers": "dev-master",
         "illuminate/contracts":"^10.0||^11.0",
         "laravel/nova":"^4.0",
         "league/flysystem":"^3.19",
@@ -33,15 +34,12 @@
     "autoload":{
         "psr-4":{
             "Eduka\\Nova\\":"src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+        }
     },
     "config":{
-        "optimize-autoloader":true,
-        "preferred-install":"dist",
-        "sort-eduka-novas":true
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-eduka-novas": true
     },
     "extra":{
         "laravel":{
