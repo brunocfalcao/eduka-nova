@@ -62,14 +62,14 @@ class Course extends EdukaResource
                 ->rules($this->model()->rule('filename_email_logo')),
 
             // Confirmed.
-            EdImage::make('Main Logo', 'filename_main_logo')
+            EdImage::make('Main Logo', 'filename_email_logo')
                 ->store(new StoreFromCourse())
                 ->canSee(function ($request) {
                     return $this->novaGetContext() != 'creating';
                 })
                 ->hideFromIndex()
                 ->helpInfo('The main logo image (1200x600), to be used on SEO integrations')
-                ->rules($this->model()->rule('filename_main_logo')),
+                ->rules($this->model()->rule('filename_email_logo')),
 
             // Confirmed.
             EdImage::make('Twitter image', 'filename_twitter')
