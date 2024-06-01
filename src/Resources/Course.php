@@ -72,15 +72,6 @@ class Course extends EdukaResource
                 ->rules($this->model()->rule('filename_email_logo')),
 
             // Confirmed.
-            EdImage::make('Twitter image', 'filename_twitter')
-                ->canSee(function ($request) {
-                    return $this->novaGetContext() != 'creating';
-                })
-                ->hideFromIndex()
-                ->helpInfo('The image for social integration purposes (resolution: 1200x600)')
-                ->rules($this->model()->rule('filename_twitter')),
-
-            // Confirmed.
             Text::make('Twitter handle', 'twitter_handle')
                 ->hideFromIndex()
                 ->helpInfo('Twitter handle without the @')

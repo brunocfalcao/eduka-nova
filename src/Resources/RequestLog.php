@@ -50,7 +50,7 @@ class RequestLog extends EdukaResource
 
             Text::make('Referrer', 'referrer')
                 ->displayUsing(function ($value) {
-                    return extract_host_from_url($value);
+                    return parse_url($value)['host'];
                 }),
 
             Text::make('url')
