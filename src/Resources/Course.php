@@ -53,22 +53,13 @@ class Course extends EdukaResource
 
             // Confirmed.
             EdImage::make('Email Logo', 'filename_email_logo')
+                ->disk($this->canonical)
                 ->store(new StoreFromCourse())
                 ->canSee(function ($request) {
                     return $this->novaGetContext() != 'creating';
                 })
                 ->hideFromIndex()
                 ->helpInfo('The image for email purposes (width: 200px, height: variable), attention to the background')
-                ->rules($this->model()->rule('filename_email_logo')),
-
-            // Confirmed.
-            EdImage::make('Main Logo', 'filename_email_logo')
-                ->store(new StoreFromCourse())
-                ->canSee(function ($request) {
-                    return $this->novaGetContext() != 'creating';
-                })
-                ->hideFromIndex()
-                ->helpInfo('The main logo image (1200x600), to be used on SEO integrations')
                 ->rules($this->model()->rule('filename_email_logo')),
 
             // Confirmed.

@@ -25,6 +25,8 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
 {
     public function boot()
     {
+        push_canonicals_filesystem_disks();
+
         Nova::dashboards([
             new CourseInsights(),
         ]);
