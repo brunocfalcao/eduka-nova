@@ -28,7 +28,7 @@ class EdukaNovaServiceProvider extends EdukaServiceProvider
         push_canonicals_filesystem_disks();
 
         Nova::dashboards([
-            new CourseInsights(),
+            new CourseInsights,
         ]);
 
         $items = [];

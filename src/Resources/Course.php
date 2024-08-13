@@ -54,7 +54,7 @@ class Course extends EdukaResource
             // Confirmed.
             EdImage::make('Email Logo', 'filename_email_logo')
                 ->disk($this->canonical)
-                ->store(new StoreFromCourse())
+                ->store(new StoreFromCourse)
                 ->canSee(function ($request) {
                     return $this->novaGetContext() != 'creating';
                 })
@@ -92,11 +92,11 @@ class Course extends EdukaResource
                 ->rules($this->model()->rule('backend')),
 
             // Confirmed.
-            Text::make('Service Provider class', 'provider_namespace')
+            Text::make('Service Provider class', 'service_provider_class')
                 ->helpInfo('E.g.: MasteringNovaOrion\MasteringNovaOrionServiceProvider')
                 ->helpWarning('Please ensure the namespace class exists before creating the backend')
                 ->hideFromIndex()
-                ->rules($this->model()->rule('provider_namespace')),
+                ->rules($this->model()->rule('service_provider_class')),
 
             Text::make('Clarity code', 'clarity_code')
                 ->hideFromIndex()

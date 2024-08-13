@@ -56,14 +56,14 @@ class Variant extends EdukaResource
                 ->helpInfo('In case of several variants for the same course, you can force this one to be the default one'),
 
             // Confirmed.
-            Text::make('Variant ID (LS)', 'lemon_squeezy_variant_id')
-                ->rules($this->model()->rule('lemon_squeezy_variant_id'))
+            Text::make('Variant ID (LS)', 'product_id')
+                ->rules($this->model()->rule('product_id'))
                 ->helpInfo('This is the Lemon Squeezy Variant ID and not any other variant code. Please check your Lemon Squeezy Store information')
                 ->hideFromIndex(),
 
             // Confirmed.
-            Currency::make('Price override (LS)', 'lemon_squeezy_price_override')
-                ->rules($this->model()->rule('lemon_squeezy_price_override'))
+            Currency::make('Price override (LS)', 'price_override')
+                ->rules($this->model()->rule('price_override'))
                 ->canSee(function ($request) {
                     return ! via_resource();
                 })
@@ -93,7 +93,7 @@ class Variant extends EdukaResource
     public function filters(Request $request)
     {
         return [
-            new ByCourse(),
+            new ByCourse,
         ];
     }
 }

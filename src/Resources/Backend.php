@@ -36,9 +36,9 @@ class Backend extends EdukaResource
                 ->rules($this->model()->rule('domain')),
 
             // Confimed.
-            Text::make('Provider Namespace', 'provider_namespace')
+            Text::make('Provider Namespace', 'service_provider_class')
                 ->helpWarning('Please ensure the namespace class exists before creating the backend')
-                ->rules($this->model()->rule('provider_namespace')),
+                ->rules($this->model()->rule('service_provider_class')),
 
             // Confirmed.
             Panel::make('Timestamps', $this->timestamps($request)),

@@ -44,7 +44,7 @@ class Subscriber extends EdukaResource
     public function filters(Request $request)
     {
         return [
-            new ByCourse(),
+            new ByCourse,
         ];
     }
 }

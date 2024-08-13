@@ -75,7 +75,7 @@ class Order extends EdukaResource
 
             Text::make('LS Product ID', 'lemon_squeezy_product_id'),
 
-            Text::make('LS Variant ID', 'lemon_squeezy_variant_id'),
+            Text::make('LS Variant ID', 'product_id'),
 
             Text::make('LS Product name', 'lemon_squeezy_product_name'),
 
@@ -96,7 +96,7 @@ class Order extends EdukaResource
     public function filters(Request $request)
     {
         return [
-            new ByCourse(),
+            new ByCourse,
         ];
     }
 }
