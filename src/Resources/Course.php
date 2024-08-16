@@ -4,6 +4,7 @@ namespace Eduka\Nova\Resources;
 
 use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
 use Brunocfalcao\LaravelNovaHelpers\Traits\NovaHelpers;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Eduka\Nova\Abstracts\EdukaResource;
 use Eduka\Nova\FileUploads\StoreFromCourse;
 use Eduka\Nova\Resources\Fields\EdBelongsTo;
@@ -51,16 +52,19 @@ class Course extends EdukaResource
             EdBelongsTo::make('Admin user', 'admin', Student::class)
                 ->helpInfo('You need to first create an user, and then connect it to the Course as the user that can login into Nova'),
 
+            Images::make('Logo', 'filename_logo'),
+            /*
             // Confirmed.
-            EdImage::make('Email Logo', 'filename_email_logo')
+            EdImage::make('Logo', 'filename_logo')
                 ->disk($this->canonical)
                 ->store(new StoreFromCourse)
                 ->canSee(function ($request) {
                     return $this->novaGetContext() != 'creating';
                 })
                 ->hideFromIndex()
-                ->helpInfo('The image for email purposes (width: 200px, height: variable), attention to the background')
-                ->rules($this->model()->rule('filename_email_logo')),
+                ->helpInfo('The image for email purposes (width: 200px, height: variable), best is to use a transparent background (PNG)')
+                ->rules($this->model()->rule('filename_logo')),
+            */
 
             // Confirmed.
             Text::make('Twitter handle', 'twitter_handle')
