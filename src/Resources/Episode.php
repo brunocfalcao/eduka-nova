@@ -2,27 +2,28 @@
 
 namespace Eduka\Nova\Resources;
 
-use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
-use Brunocfalcao\LaravelNovaHelpers\Traits\DefaultDescPKSorting;
-use Eduka\Cube\Models\Episode as EpisodeModel;
-use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Actions\UploadEpisode;
-use Eduka\Nova\Resources\Fields\EdBelongsTo;
-use Eduka\Nova\Resources\Fields\EdBelongsToMany;
-use Eduka\Nova\Resources\Fields\EdHasMany;
-use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Resources\Fields\EdImage;
-use Eduka\Nova\Resources\Fields\EdUUID;
-use Eduka\Nova\Resources\Filters\ByCourse;
+use Laravel\Nova\Panel;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\KeyValue;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\BelongsTo;
+use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Fields\EdUUID;
+use Eduka\Nova\Resources\Fields\EdImage;
+use Eduka\Nova\Resources\Fields\EdHasMany;
+use Eduka\Nova\Resources\Filters\ByCourse;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Eduka\Cube\Models\Episode as EpisodeModel;
+use Eduka\Nova\Resources\Actions\UploadEpisode;
+use Eduka\Nova\Resources\Fields\EdBelongsToMany;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Brunocfalcao\LaravelNovaHelpers\Traits\DefaultDescPKSorting;
 
 class Episode extends EdukaResource
 {
@@ -104,11 +105,9 @@ class Episode extends EdukaResource
                 ->readonly()
                 ->onlyOnDetail(),
 
-            // Confirmed.
-            EdImage::make('SEO Image', 'filename')
-                ->helpInfo('The image for social integration purposes (resolution: 1200x600)')
-                ->hideFromIndex()
-                ->rules($this->model()->rule('filename')),
+            Images::make('Social image', 'default')
+                ->conversionOnIndexView('thumbnail')
+                ->withResponsiveImages(),
 
             // Confirmed.
             Text::make('Vimeo URI', 'vimeo_uri')

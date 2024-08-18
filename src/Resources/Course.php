@@ -50,7 +50,7 @@ class Course extends EdukaResource
             EdBelongsTo::make('Admin user', 'admin', Student::class)
                 ->helpInfo('You need to first create an user, and then connect it to the Course as the user that can login into Nova'),
 
-            Images::make('Logo')
+            Images::make('Logo', 'default')
                 ->conversionOnIndexView('thumbnail')
                 ->withResponsiveImages(),
 
