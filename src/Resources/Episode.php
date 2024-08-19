@@ -2,28 +2,27 @@
 
 namespace Eduka\Nova\Resources;
 
-use Laravel\Nova\Panel;
+use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
+use Brunocfalcao\LaravelNovaHelpers\Traits\DefaultDescPKSorting;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use Eduka\Cube\Models\Episode as EpisodeModel;
+use Eduka\Nova\Abstracts\EdukaResource;
+use Eduka\Nova\Resources\Actions\UploadEpisode;
+use Eduka\Nova\Resources\Fields\EdBelongsTo;
+use Eduka\Nova\Resources\Fields\EdBelongsToMany;
+use Eduka\Nova\Resources\Fields\EdHasMany;
+use Eduka\Nova\Resources\Fields\EdID;
+use Eduka\Nova\Resources\Fields\EdUUID;
+use Eduka\Nova\Resources\Filters\ByCourse;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\KeyValue;
-use Laravel\Nova\Fields\BelongsTo;
-use Eduka\Nova\Resources\Fields\EdID;
-use Eduka\Nova\Abstracts\EdukaResource;
-use Eduka\Nova\Resources\Fields\EdUUID;
-use Eduka\Nova\Resources\Fields\EdImage;
-use Eduka\Nova\Resources\Fields\EdHasMany;
-use Eduka\Nova\Resources\Filters\ByCourse;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Eduka\Nova\Resources\Fields\EdBelongsTo;
-use Eduka\Cube\Models\Episode as EpisodeModel;
-use Eduka\Nova\Resources\Actions\UploadEpisode;
-use Eduka\Nova\Resources\Fields\EdBelongsToMany;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
-use Brunocfalcao\LaravelNovaHelpers\Fields\Canonical;
-use Brunocfalcao\LaravelNovaHelpers\Traits\DefaultDescPKSorting;
+use Laravel\Nova\Panel;
 
 class Episode extends EdukaResource
 {
